@@ -1,0 +1,139 @@
+{
+  "adsense": {
+    "enabled": false,
+    "client": ""
+  },
+  "slots": [
+    {
+      "id": "header_leaderboard",
+      "enabled": true,
+      "label": "Header Leaderboard",
+      "type": "custom",
+      "custom": {
+        "image": "/assets/uploads/ads/header-leaderboard.jpg",
+        "href": "https://example.com",
+        "alt": "Advertisement",
+        "openInNewTab": true,
+        "width": 970,
+        "height": 90
+      },
+      "adsense": {
+        "slot": "",
+        "format": "auto",
+        "responsive": true
+      }
+    },
+    {
+      "id": "sidebar_top",
+      "enabled": true,
+      "label": "Sidebar Top",
+      "type": "custom",
+      "custom": {
+        "image": "/assets/uploads/ads/sidebar.png",
+        "href": "https://example.com",
+        "alt": "Advertisement",
+        "openInNewTab": true,
+        "width": 300,
+        "height": 250
+      }
+    },
+    {
+      "id": "sidebar_mid",
+      "enabled": true,
+      "label": "Sidebar Mid",
+      "type": "custom",
+      "custom": {
+        "image": "/assets/uploads/ads/sidebar.png",
+        "href": "https://example.com",
+        "alt": "Advertisement",
+        "openInNewTab": true,
+        "width": 300,
+        "height": 250
+      }
+    },
+    {
+      "id": "sidebar_bottom",
+      "enabled": true,
+      "label": "Sidebar Bottom",
+      "type": "custom",
+      "custom": {
+        "image": "/assets/uploads/ads/sidebar.png",
+        "href": "https://example.com",
+        "alt": "Advertisement",
+        "openInNewTab": true,
+        "width": 300,
+        "height": 250
+      }
+    },
+    {
+      "id": "archive-inline-1",
+      "enabled": true,
+      "label": "Archive Inline 1",
+      "type": "custom",
+      "custom": {
+        "image": "/assets/uploads/ads/archive-inline.jpg",
+        "href": "https://example.com",
+        "alt": "Advertisement",
+        "openInNewTab": true,
+        "width": 970,
+        "height": 250
+      }
+    },
+    {
+      "id": "archive-inline-2",
+      "enabled": true,
+      "label": "Archive Inline 2",
+      "type": "custom",
+      "custom": {
+        "image": "/assets/uploads/ads/archive-inline.jpg",
+        "href": "https://example.com",
+        "alt": "Advertisement",
+        "openInNewTab": true,
+        "width": 970,
+        "height": 250
+      }
+    },
+    {
+      "id": "home-inline-1",
+      "enabled": true,
+      "label": "Home Inline 1",
+      "type": "custom",
+      "custom": {
+        "image": "/assets/uploads/ads/archive-inline.jpg",
+        "href": "https://example.com",
+        "alt": "Advertisement",
+        "openInNewTab": true,
+        "width": 970,
+        "height": 250
+      }
+    },
+    {
+      "id": "home-inline-2",
+      "enabled": true,
+      "label": "Home Inline 2",
+      "type": "custom",
+      "custom": {
+        "image": "/assets/uploads/ads/archive-inline.jpg",
+        "href": "https://example.com",
+        "alt": "Advertisement",
+        "openInNewTab": true,
+        "width": 970,
+        "height": 250
+      }
+    },
+    {
+      "id": "home-inline-3",
+      "enabled": true,
+      "label": "Home Inline 3",
+      "type": "custom",
+      "custom": {
+        "image": "/assets/uploads/ads/archive-inline.jpg",
+        "href": "https://example.com",
+        "alt": "Advertisement",
+        "openInNewTab": true,
+        "width": 970,
+        "height": 250
+      }
+    }
+  ]
+}

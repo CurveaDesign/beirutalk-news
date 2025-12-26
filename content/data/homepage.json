@@ -1,0 +1,8 @@
+{
+  "blocks": [
+    { "type": "categorySpotlight", "title": "لبنان", "slug": "lebanon", "limit": 4 },
+    { "type": "threeCards", "title": "العالم", "slug": "world", "limit": 3 },
+    { "type": "horizontal", "title": "اقتصاد", "slug": "economy", "limit": 4 },
+    { "type": "textList", "title": "تحليلات", "slug": "analysis", "limit": 3 }
+  ]
+}

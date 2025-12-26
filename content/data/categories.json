@@ -1,0 +1,9 @@
+{
+  "categories": [
+    { "title": "لبنان", "slug": "lebanon" },
+    { "title": "العالم", "slug": "world" },
+    { "title": "اقتصاد", "slug": "economy" },
+    { "title": "تحليلات", "slug": "analysis" },
+    { "title": "زاوية المحرّر", "slug": "editorial" }
+  ]
+}

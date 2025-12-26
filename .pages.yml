@@ -1,0 +1,286 @@
+media:
+  input: public/assets/uploads
+  output: /assets/uploads
+
+content:
+  # -------------------------
+  # Posts (Markdown)
+  # -------------------------
+  - name: posts
+    label: Posts
+    type: collection
+    path: content/posts
+    filename: "{slug}.md"
+    view:
+      fields: [title, date, category, breaking, editor_pick]
+      sort: [date, title]
+      default:
+        sort: date
+        order: desc
+    fields:
+      - name: title
+        label: Title (Arabic)
+        type: string
+        required: true
+
+      - name: slug
+        label: Slug (latin)
+        type: string
+        required: true
+        description: "Used for the URL: /news/{slug}"
+        pattern:
+          regex: "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          message: "Use lowercase latin letters, numbers, and dashes only."
+
+      - name: date
+        label: Date & Time
+        type: date
+        required: true
+        options:
+          time: true
+
+      - name: description
+        label: SEO Description
+        type: text
+        required: true
+
+      - name: category
+        label: Category (Arabic)
+        type: select
+        required: true
+        options:
+          values:
+            - لبنان
+            - العالم
+            - اقتصاد
+            - تحليلات
+            - زاوية المحرّر
+
+      - name: category_slug
+        label: Category Slug
+        type: select
+        required: true
+        options:
+          values: [lebanon, world, economy, analysis, editorial]
+
+      - name: author
+        label: Author
+        type: reference
+        collection: authors
+        display: name
+        value: id
+        required: true
+
+      - name: featured_image
+        label: Featured Image
+        type: image
+        required: true
+
+      - name: tags
+        label: Tags
+        type: multiselect
+        required: false
+        options:
+          source:
+            file: content/data/tags.json
+            path: tags
+
+      - name: hero
+        label: Show in Hero
+        type: boolean
+        default: false
+
+      - name: breaking
+        label: Breaking News (Ticker)
+        type: boolean
+        default: false
+
+      - name: breaking_text
+        label: Breaking Ticker Text
+        type: text
+        required: false
+        hint: "Optional short text for ticker. Falls back to title if empty."
+
+      - name: editor_pick
+        label: Editor Pick (مختارات المحرّر)
+        type: boolean
+        default: false
+
+      - name: editor_pick_order
+        label: Editor Pick Order
+        type: number
+        required: false
+        hint: "Optional. Lower numbers appear first (1 = top)."
+
+      - name: body
+        label: Article Body
+        type: rich-text
+        required: true
+        options:
+          extensions: [jpg, jpeg, png, webp]
+
+  # -------------------------
+  # Authors (JSON)
+  # -------------------------
+  - name: authors
+    label: Authors
+    type: collection
+    path: content/data/authors
+    filename: "{slug}.json"
+    fields:
+      - name: id
+        label: ID (latin)
+        type: string
+        required: true
+        pattern:
+          regex: "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+
+      - name: name
+        label: Name (Arabic)
+        type: string
+        required: true
+
+      - name: role
+        label: Role
+        type: string
+        required: false
+
+      - name: avatar
+        label: Avatar
+        type: image
+        required: false
+
+  # -------------------------
+  # Tags list (JSON)
+  # -------------------------
+  - name: tags_list
+    label: Tags
+    type: file
+    path: content/data/tags.json
+    fields:
+      - name: tags
+        label: Tags
+        type: list
+        field:
+          type: string
+
+  # -------------------------
+  # Homepage blocks (JSON)
+  # -------------------------
+  - name: homepage
+    label: Homepage Layout
+    type: file
+    path: content/data/homepage.json
+    fields:
+      - name: blocks
+        label: Blocks
+        type: object
+        list: true
+        fields:
+          - name: type
+            label: Block Type
+            type: select
+            options:
+              values: [categorySpotlight, threeCards, horizontal, textList]
+
+          - name: title
+            label: Title (Arabic)
+            type: string
+            required: true
+
+          - name: slug
+            label: Category Slug
+            type: select
+            options: { values: [lebanon, world, economy, analysis, editorial] }
+
+          - name: limit
+            label: Limit
+            type: number
+            options:
+              min: 1
+              max: 12
+
+  # -------------------------
+  # Categories (JSON)
+  # -------------------------
+  - name: categories
+    label: Categories
+    type: file
+    path: content/data/categories.json
+    fields:
+      - name: categories
+        type: object
+        list: true
+        fields:
+          - name: title
+            label: Title (Arabic)
+            type: string
+          - name: slug
+            label: Slug
+            type: string
+
+  # -------------------------
+  # Site Contact (JSON)
+  # -------------------------
+  - name: site_contact
+    label: Site Contact
+    type: file
+    path: lib/content/data/siteContact.json
+    fields:
+      - name: email
+        type: string
+      - name: whatsapp
+        type: string
+      - name: socials
+        type: object
+        fields:
+          - { name: facebook, type: string }
+          - { name: instagram, type: string }
+          - { name: x, type: string }
+          - { name: youtube, type: string }
+          - { name: tiktok, type: string }
+          - { name: linkedin, type: string }
+
+  # -------------------------
+  # Ads (JSON)
+  # -------------------------
+  - name: ads
+    label: Ads
+    type: file
+    path: content/data/ads.json
+    fields:
+      - name: adsense
+        type: object
+        fields:
+          - { name: enabled, type: boolean, default: false }
+          - { name: client, type: string }
+
+      - name: slots
+        type: object
+        list: true
+        fields:
+          - { name: id, type: string, required: true }
+          - { name: enabled, type: boolean, default: true }
+          - { name: label, type: string }
+          - name: type
+            type: select
+            options:
+              values: [custom, adsense]
+          - name: custom
+            type: object
+            fields:
+              - { name: image, type: image }
+              - { name: href, type: string }
+              - { name: alt, type: string }
+              - { name: openInNewTab, type: boolean, default: true }
+          - name: adsense
+            type: object
+            fields:
+              - { name: slot, type: string }
+              - { name: format, type: string }
+              - { name: responsive, type: boolean, default: true }
+
+settings:
+  hide: true
+  content:
+    merge: true
