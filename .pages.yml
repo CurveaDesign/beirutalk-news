@@ -17,7 +17,6 @@ content:
       default:
         sort: date
         order: desc
-
     fields:
       - name: title
         label: Title (Arabic)
@@ -45,7 +44,6 @@ content:
         type: text
         required: true
 
-      # Category as slug value + Arabic label (clean + avoids mismatch)
       - name: category
         label: Category
         type: select
@@ -69,16 +67,15 @@ content:
         required: true
         options:
           collection: authors
-          search: "name"
-          value: "{id}"
-          label: "{name}"
+          search: name
+          value: id
+          label: name
 
       - name: featured_image
         label: Featured Image
         type: image
         required: true
 
-      # Tags = taxonomy via collection reference (multiple)
       - name: tags
         label: Tags
         type: reference
@@ -86,9 +83,9 @@ content:
         options:
           collection: tags
           multiple: true
-          search: "name"
-          value: "{id}"
-          label: "{name}"
+          search: name
+          value: id
+          label: name
 
       - name: hero
         label: Show in Hero
@@ -125,29 +122,36 @@ content:
   # -------------------------
   # Authors (JSON)
   # -------------------------
-  - name: author
-    label: Author
-    type: reference
-    required: true
-    options:
-      collection: authors
-      search: name
-      value: id
-      label: name
+  - name: authors
+    label: Authors
+    type: collection
+    path: content/data/authors
+    filename: "{id}.json"
+    fields:
+      - name: id
+        label: ID (latin)
+        type: string
+        required: true
+        pattern:
+          regex: "^[a-z0-9]+(?:-[a-z0-9]+)*$"
 
-  - name: tags
-    label: Tags
-    type: reference
-    required: false
-    options:
-      collection: tags
-      multiple: true
-      search: name
-      value: id
-      label: name
+      - name: name
+        label: Name (Arabic)
+        type: string
+        required: true
+
+      - name: role
+        label: Role
+        type: string
+        required: false
+
+      - name: avatar
+        label: Avatar
+        type: image
+        required: false
+
   # -------------------------
-  # Tags (JSON)  ✅ taxonomy folder
-  # Folder: content/data/tags/<slug>.json
+  # Tags (JSON)
   # -------------------------
   - name: tags
     label: Tags
@@ -155,14 +159,18 @@ content:
     path: content/data/tags
     filename: "{id}.json"
     fields:
-    - name: id
-      label: ID (latin)
-      type: string
-      required: true
-    - name: name
-      label: Name (Arabic)
-      type: string
-      required: true
+      - name: id
+        label: ID (latin)
+        type: string
+        required: true
+        pattern:
+          regex: "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+
+      - name: name
+        label: Name (Arabic)
+        type: string
+        required: true
+
   # -------------------------
   # Homepage blocks (JSON)
   # -------------------------
