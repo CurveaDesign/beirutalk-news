@@ -129,29 +129,29 @@ content:
     label: Authors
     type: collection
     path: content/data/authors
-    filename: "{slug}.json"
+    filename: "{id}.json"
     fields:
-      - name: id
-        label: ID (latin)
-        type: string
-        required: true
-        pattern:
-          regex: "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    - name: id
+      label: ID (latin)
+      type: string
+      required: true
+      pattern:
+        regex: "^[a-z0-9]+(?:-[a-z0-9]+)*$"
 
-      - name: name
-        label: Name (Arabic)
-        type: string
-        required: true
+    - name: name
+      label: Name (Arabic)
+      type: string
+      required: true
 
-      - name: role
-        label: Role
-        type: string
-        required: false
+    - name: role
+      label: Role
+      type: string
+      required: false
 
-      - name: avatar
-        label: Avatar
-        type: image
-        required: false
+    - name: avatar
+      label: Avatar
+      type: image
+      required: false
 
   # -------------------------
   # Tags (JSON)  ✅ taxonomy folder
@@ -161,20 +161,19 @@ content:
     label: Tags
     type: collection
     path: content/data/tags
-    filename: "{slug}.json"
+    filename: "{id}.json"
     fields:
-      - name: id
-        label: ID (latin)
-        type: string
-        required: true
-        pattern:
-          regex: "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    - name: id
+      label: ID (latin)
+      type: string
+      required: true
+      pattern:
+        regex: "^[a-z0-9]+(?:-[a-z0-9]+)*$"
 
-      - name: name
-        label: Name (Arabic)
-        type: string
-        required: true
-
+    - name: name
+      label: Name (Arabic)
+      type: string
+      required: true
   # -------------------------
   # Homepage blocks (JSON)
   # -------------------------
