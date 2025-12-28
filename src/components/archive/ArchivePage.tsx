@@ -6,13 +6,14 @@ import Sidebar from "@/components/sidebar/Sidebar"
 import AdSlot from "@/components/ads/AdSlot"
 import type { Post } from "@/lib/content/types"
 import type { AdsConfig, MenusConfig } from "@/lib/content/data"
+import type { SiteContactConfig } from "@/lib/siteConfig"
 
 function postHref(slug: string) {
   return `/news/${slug}`
 }
 
 function safeImg(src?: string) {
-  return src && src.trim().length ? src : "/assets/placeholders/hero2.jpg"
+  return src && src.trim().length ? src : "/assets/placeholders/placeholder.jpg"
 }
 
 function formatArabicDate(dateISO?: string) {
@@ -214,7 +215,8 @@ export default function ArchivePage({
     breaking: Post[]
     editorPicks: { title: string; slug: string }[]
     categories: { title: string; slug: string }[]
-    social: { facebook?: string; instagram?: string; youtube?: string; x?: string }
+    contact: SiteContactConfig
+
   }
   ads?: AdsConfig
   menus?: MenusConfig
@@ -261,7 +263,7 @@ export default function ArchivePage({
             breaking={sidebar.breaking}
             editorPicks={sidebar.editorPicks}
             categories={sidebar.categories}
-            social={sidebar.social}
+            contact={sidebar.contact}
             ads={ads}
           />
         }

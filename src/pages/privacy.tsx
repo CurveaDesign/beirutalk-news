@@ -15,6 +15,7 @@ export default function PrivacyPage({ menus }: { menus: MenusConfig }) {
         title="سياسة الخصوصية"
         description="تعرف على سياسة الخصوصية وكيفية تعامل BeiruTalk مع بيانات الزوار."
         path="/privacy"
+        noIndex
       />
       <SiteLayout menus={menus}>
         <section className="relative overflow-hidden">

@@ -68,7 +68,7 @@ export default function HeroStack({ posts }: { posts?: Post[] }) {
           const isFront = pos === 0
 
           const href = `/news/${p.fm.slug}`
-          const img = p.fm.featured_image || "/assets/placeholders/hero.jpg"
+          const img = p.fm.featured_image || "/assets/placeholders/placeholder.jpg"
 
           const t =
             pos === 0

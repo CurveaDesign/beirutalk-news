@@ -6,7 +6,7 @@ description: "توجهات جديدة وطلب متزايد على مهارات 
 category: "لبنان"
 category_slug: "lebanon"
 author: "هبة شمس"
-featured_image: "/assets/placeholders/hero2.jpg"
+featured_image: "/assets/placeholders/placeholder.jpg"
 breaking: false
 hero: true
 tags: ["تعليم", "شباب", "وظائف"]

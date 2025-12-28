@@ -6,7 +6,7 @@ description: "حاجات ميدانية تتصاعد وتحديات لوجستي
 category: "العالم"
 category_slug: "world"
 author: "مراسلو BeiruTalk"
-featured_image: "/assets/placeholders/hero2.jpg"
+featured_image: "/assets/placeholders/placeholder.jpg"
 breaking: false
 hero: false
 tags: ["إنساني", "مساعدات"]

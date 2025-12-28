@@ -6,7 +6,7 @@ description: "أين ستذهب الأرقام، وماذا يعني ذلك لل
 category: "اقتصاد"
 category_slug: "economy"
 author: "قسم الاقتصاد"
-featured_image: "/assets/placeholders/hero.jpg"
+featured_image: "/assets/placeholders/placeholder.jpg"
 breaking: true
 breaking_text: "عاجل: أرقام أولية في مشروع الميزانية"
 hero: false

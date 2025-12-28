@@ -6,7 +6,7 @@ description: "بين الخصوصية والمنافسة… من يدفع الث
 category: "العالم"
 category_slug: "world"
 author: "سارة مراد"
-featured_image: "/assets/placeholders/hero3.jpg"
+featured_image: "/assets/placeholders/placeholder.jpg"
 breaking: false
 hero: false
 tags: ["تقنية", "تشريعات"]

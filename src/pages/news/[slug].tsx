@@ -56,7 +56,77 @@ function absoluteUrl(pathname: string) {
 }
 
 function safeImg(src?: string) {
-  return src && src.trim().length ? src : "/assets/placeholders/hero2.jpg"
+  return src && src.trim().length ? src : "/assets/placeholders/placeholder.jpg"
+}
+function youtubeId(url?: string) {
+  const u = (url || "").trim()
+  if (!u) return ""
+
+  // youtu.be/VIDEO_ID
+  const m1 = u.match(/youtu\.be\/([A-Za-z0-9_-]{6,})/i)
+  if (m1?.[1]) return m1[1]
+
+  // youtube.com/watch?v=VIDEO_ID
+  const m2 = u.match(/[?&]v=([A-Za-z0-9_-]{6,})/i)
+  if (m2?.[1]) return m2[1]
+
+  // youtube.com/embed/VIDEO_ID
+  const m3 = u.match(/\/embed\/([A-Za-z0-9_-]{6,})/i)
+  if (m3?.[1]) return m3[1]
+
+  // youtube.com/shorts/VIDEO_ID
+  const m4 = u.match(/\/shorts\/([A-Za-z0-9_-]{6,})/i)
+  if (m4?.[1]) return m4[1]
+
+  return ""
+}
+
+function TvPlayer({
+  title,
+  youtubeUrl,
+}: {
+  title: string
+  youtubeUrl?: string
+}) {
+  const id = youtubeId(youtubeUrl)
+  if (!id) return null
+
+  const embed = `https://www.youtube-nocookie.com/embed/${id}`
+
+  return (
+    <section className="bt-container mt-6">
+      <div className="bt-rail p-5 md:p-7">
+        <div className="overflow-hidden rounded-[22px] border border-black/10 bg-black/5">
+          <div className="relative aspect-[16/9] w-full">
+            <iframe
+              className="absolute inset-0 h-full w-full"
+              src={embed}
+              title={title}
+              loading="lazy"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+              referrerPolicy="strict-origin-when-cross-origin"
+            />
+          </div>
+        </div>
+
+        <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+          <div className="text-[12px] font-extrabold text-black/50">
+            BeiruTalk TV
+          </div>
+
+          <a
+            href={`https://www.youtube.com/watch?v=${id}`}
+            target="_blank"
+            rel="noreferrer"
+            className="rounded-2xl border border-black/10 bg-white/70 px-4 py-2 text-[12px] font-extrabold text-black/70 transition hover:bg-black/[0.03]"
+          >
+            مشاهدة على YouTube
+          </a>
+        </div>
+      </div>
+    </section>
+  )
 }
 
 type TagChip = { slug: string; label: string }
@@ -188,13 +258,14 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
       ads: getAdsConfig(),
       authorsMap: getAuthorsMap(),
       tagsMap: getTagsMap(),
-       menus,
+      menus,
     },
   }
-  
+
 }
 
 export default function NewsArticlePage({
+
   post,
   latest,
   related,
@@ -207,7 +278,7 @@ export default function NewsArticlePage({
   post: Post
   latest: Post[]
   related: Post[]
-   ads?: AdsConfig
+  ads?: AdsConfig
   breaking?: Post[]
   authorsMap: Record<string, { slug: string; display_name: string }>
   tagsMap: Record<string, { slug: string; display_name: string }>
@@ -226,20 +297,21 @@ export default function NewsArticlePage({
     .map((t) => String(t || "").trim())
     .filter(Boolean)
     .map((slug) => ({ slug, label: tagsMap?.[slug]?.display_name || slug }))
-
+  const isTv = post.fm.type === "tv"
+  const yt = post.fm.youtube?.trim()
   return (
     <SiteLayout ads={ads} breaking={breaking} menus={menus}>
       <SeoHead
         title={post.fm.title}
         description={post.fm.description}
         path={`/news/${post.fm.slug}`}
-        image={post.fm.featured_image || "/assets/placeholder-article.jpg"}
+        image={post.fm.featured_image || "/assets/placeholders/placeholder.jpg"}
         type="article"
         publishedTime={post.fm.date}
         authorName={authorName}
         tags={tags}
       />
-
+      {isTv ? <TvPlayer title={post.fm.title} youtubeUrl={yt} /> : null}
       <ArticleHero
         title={post.fm.title}
         description={post.fm.description}
@@ -286,7 +358,7 @@ export default function NewsArticlePage({
 
           <aside className="sticky top-[110px]">
             <div className="hidden xl:block space-y-6">
-              <ArticleSidebar latest={latest} related={related} ads={ads}/>
+              <ArticleSidebar latest={latest} related={related} ads={ads} />
             </div>
           </aside>
         </div>

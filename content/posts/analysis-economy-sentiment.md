@@ -6,7 +6,7 @@ description: "عندما يصبح الخوف مؤشراً أقوى من التق
 category: "تحليلات"
 category_slug: "analysis"
 author: "قسم التحليلات"
-featured_image: "/assets/placeholders/hero3.jpg"
+featured_image: "/assets/placeholders/placeholder.jpg"
 breaking: false
 hero: false
 tags: ["اقتصاد", "سلوك"]

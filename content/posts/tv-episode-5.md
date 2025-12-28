@@ -6,7 +6,7 @@ description: "نص تجريبي لتوازن العنوان مع الصورة."
 category: "فيديو"
 category_slug: "tv"
 author: "BeiruTalk TV"
-featured_image: "/assets/placeholders/hero2.jpg"
+featured_image: "/assets/placeholders/placeholder.jpg"
 breaking: false
 hero: false
 tags: ["فيديو"]

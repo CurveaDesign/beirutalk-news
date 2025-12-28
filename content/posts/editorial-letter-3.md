@@ -6,7 +6,7 @@ description: "أحياناً، السؤال الصحيح أهم من مئة جو
 category: "زاوية المحرّر"
 category_slug: "editorial"
 author: "رئيس التحرير"
-featured_image: "/assets/placeholders/hero3.jpg"
+featured_image: "/assets/placeholders/placeholder.jpg"
 breaking: false
 hero: false
 tags: ["افتتاحية"]

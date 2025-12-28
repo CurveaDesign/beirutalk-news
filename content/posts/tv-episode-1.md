@@ -6,7 +6,7 @@ description: "ملخص فيديو سريع لاختبار شريط الفيدي�
 category: "فيديو"
 category_slug: "tv"
 author: "BeiruTalk TV"
-featured_image: "/assets/placeholders/hero.jpg"
+featured_image: "/assets/placeholders/placeholder.jpg"
 breaking: false
 hero: false
 tags: ["فيديو"]

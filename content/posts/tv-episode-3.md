@@ -6,7 +6,7 @@ description: "اختبار تصميم الفيديو مع صورة قوية."
 category: "فيديو"
 category_slug: "tv"
 author: "BeiruTalk TV"
-featured_image: "/assets/placeholders/hero3.jpg"
+featured_image: "/assets/placeholders/placeholder.jpg"
 breaking: false
 hero: false
 tags: ["فيديو"]

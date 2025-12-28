@@ -3,6 +3,7 @@ import Image from "next/image"
 import React from "react"
 import ReactMarkdown from "react-markdown"
 import remarkGfm from "remark-gfm"
+import type { Components } from "react-markdown"
 
 function isExternal(href?: string) {
   if (!href) return false
@@ -58,37 +59,28 @@ export default function ArticleBody({ markdown }: { markdown: string }) {
           ),
 
           // ✅ Fix hydration mismatch:
-          // If a paragraph contains ONLY an image (or an image wrapped in a link),
-          // don't render <p> around it, because our img renderer returns <figure>.
-p: ({ children }) => {
-  const arr = Array.isArray(children) ? children : [children]
+          p: ({ node, children }) => {
+            const n: any = node
+            const only = n?.children?.length === 1 ? n.children[0] : null
 
-  const containsFigure = arr.some((child) => {
-    if (!React.isValidElement(child)) return false
+            // ![alt](src)
+            if (only?.tagName === "img") return <>{children}</>
 
-    // our img renderer returns <figure />
-    if (child.type === "figure") return true
+            // [![alt](src)](link)
+            if (
+              only?.tagName === "a" &&
+              only?.children?.length === 1 &&
+              only.children[0]?.tagName === "img"
+            ) {
+              return <>{children}</>
+            }
 
-    // sometimes images are wrapped in a link: <a><figure/></a>
-    if (
-      child.type === "a" &&
-      React.isValidElement((child as any).props?.children) &&
-      (child as any).props.children.type === "figure"
-    ) {
-      return true
-    }
-
-    return false
-  })
-
-  if (containsFigure) return <>{children}</>
-
-  return (
-    <p className="mt-4 text-[15px] leading-8 text-black/75 md:text-[16px]">
-      {children}
-    </p>
-  )
-},
+            return (
+              <p className="mt-4 text-[15px] leading-8 text-black/75 md:text-[16px]">
+                {children}
+              </p>
+            )
+          },
 
           ul: ({ children }) => (
             <ul className="mt-5 space-y-2 pr-6 text-[15px] leading-8 text-black/75 md:text-[16px]">
@@ -147,7 +139,10 @@ p: ({ children }) => {
             )
           },
 
-          img: ({ src, alt }: ImgProps) => {
+          img: (props) => {
+            const src = typeof props.src === "string" ? props.src : undefined
+            const alt = typeof props.alt === "string" ? props.alt : undefined
+
             const finalSrc = normalizeSrc(src)
             if (!finalSrc) return null
 
@@ -177,7 +172,6 @@ p: ({ children }) => {
               </figure>
             )
           },
-
           code: (props: CodeProps) => {
             const { inline, className, children, ...rest } = props
             const txt = String(children ?? "")

@@ -6,13 +6,12 @@ import {
   getAdsConfig,
   getCategories,
   getEditorPicks,
-  getSocialLinks,
   getMenusConfig,
   type AdsConfig,
   type MenusConfig,
 } from "@/lib/content/data"
-
 import type { Post } from "@/lib/content/types"
+import { siteContact, type SiteContactConfig } from "@/lib/siteConfig"
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const categories = getCategories()
@@ -46,7 +45,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
         breaking,
         editorPicks: getEditorPicks(posts),
         categories,
-        social: getSocialLinks(),
+        contact: siteContact,
       },
       ads: getAdsConfig(),
       menus,
@@ -72,7 +71,7 @@ export default function CategoryArchive({
     breaking: Post[]
     editorPicks: { title: string; slug: string }[]
     categories: { title: string; slug: string }[]
-    social: { facebook?: string; instagram?: string; youtube?: string; x?: string }
+    contact: SiteContactConfig
   }
   ads?: AdsConfig
   menus: MenusConfig
@@ -81,10 +80,17 @@ export default function CategoryArchive({
     <>
       <SeoHead
         title={title}
-        description={`أرشيف أخبار ${title} على BeiruTalk.`}
+        description={`أرشيف أخبار قسم ${title} مع أحدث العناوين اليومية والتقارير على BeiruTalk.`}
         path={`/category/${slug}`}
       />
-      <ArchivePage title={title} kicker={kicker} posts={posts} sidebar={sidebar} ads={ads} menus={menus} />
+      <ArchivePage
+        title={title}
+        kicker={kicker}
+        posts={posts}
+        sidebar={sidebar}
+        ads={ads}
+        menus={menus}
+      />
     </>
   )
 }

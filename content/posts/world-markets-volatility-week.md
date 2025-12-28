@@ -6,7 +6,7 @@ description: "تذبذب سريع يعكس حساسية المستثمرين."
 category: "العالم"
 category_slug: "world"
 author: "نادر صعب"
-featured_image: "/assets/placeholders/hero.jpg"
+featured_image: "/assets/placeholders/placeholder.jpg"
 breaking: false
 hero: false
 tags: ["أسواق", "دولي"]

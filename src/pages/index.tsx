@@ -16,11 +16,13 @@ import SeoHead from "@/components/seo/SeoHead"
 
 import type { Post } from "@/lib/content/types"
 import { getAllPosts, pickEditorialPosts, pickHeroPosts, pickCategoryPosts } from "@/lib/content/posts"
-import { getAdsConfig, getCategories, getSocialLinks } from "@/lib/content/data"
+import { getAdsConfig, getCategories } from "@/lib/content/data"
 import { getHomepageConfig, type HomeBlock } from "@/lib/content/homepage"
 import type { AdsConfig } from "@/lib/content/data"
 import { getMenusConfig } from "@/lib/content/data"
 import type { MenusConfig } from "@/lib/content/data"
+import { siteContact } from "@/lib/siteConfig"
+import type { SiteContactConfig } from "@/lib/siteConfig"
 
 function blockHref(block: HomeBlock) {
   if (block.href) return block.href
@@ -71,7 +73,6 @@ export async function getStaticProps() {
     .slice(0, 5)
     .map((p) => ({ title: p.fm.title, slug: p.fm.slug }))
   const categories = getCategories()
-  const social = getSocialLinks()
   const breaking = posts.filter((p) => p.fm.breaking === true).slice(0, 6)
 
   // Dynamic homepage config
@@ -89,7 +90,7 @@ export async function getStaticProps() {
       editorial,
       latest,
       blocks,
-      sidebar: { editorPicks, categories, social, breaking },
+      sidebar: { editorPicks, categories, contact: siteContact, breaking },
       ads: getAdsConfig(),
       menus,
     },
@@ -112,7 +113,7 @@ export default function HomePage({
   sidebar: {
     editorPicks: { title: string; slug: string }[]
     categories: { title: string; slug: string }[]
-    social: { facebook?: string; instagram?: string; youtube?: string; x?: string }
+    contact: SiteContactConfig
     breaking: Post[]
   }
   ads: AdsConfig
@@ -122,7 +123,7 @@ export default function HomePage({
     <>
       <SeoHead
         title="الرئيسية"
-        description="أحدث أخبار لبنان والعالم وتحليلات BeiruTalk في مكان واحد."
+        description="تابع أبرز أخبار لبنان والعالم وتحليلات BeiruTalk اليومية في صفحة واحدة."
         path="/"
       />
       <SiteLayout ads={ads} breaking={sidebar.breaking} menus={menus}>
@@ -162,7 +163,8 @@ export default function HomePage({
               breaking={sidebar.breaking}
               editorPicks={sidebar.editorPicks}
               categories={sidebar.categories}
-              social={sidebar.social}
+              contact={sidebar.contact}
+
               ads={ads}
             />
           }

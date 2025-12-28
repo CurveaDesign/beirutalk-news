@@ -6,7 +6,7 @@ description: "تصريحات علنية… وتفاهمات خلف الأبوا�
 category: "العالم"
 category_slug: "world"
 author: "مراسلو BeiruTalk"
-featured_image: "/assets/placeholders/hero2.jpg"
+featured_image: "/assets/placeholders/placeholder.jpg"
 breaking: true
 breaking_text: "عاجل: بيان ختامي مختصر… وخلافات مؤجلة"
 hero: true

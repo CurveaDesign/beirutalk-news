@@ -6,7 +6,7 @@ description: "من الإيجارات إلى المواد الأولية… من
 category: "اقتصاد"
 category_slug: "economy"
 author: "ريما ناصر"
-featured_image: "/assets/placeholders/hero2.jpg"
+featured_image: "/assets/placeholders/placeholder.jpg"
 breaking: false
 hero: false
 tags: ["أعمال", "مؤسسات"]

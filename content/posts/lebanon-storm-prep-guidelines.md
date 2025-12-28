@@ -6,7 +6,7 @@ description: "قائمة مختصرة بالأولويات، من الكهربا
 category: "لبنان"
 category_slug: "lebanon"
 author: "هيئة التحرير"
-featured_image: "/assets/placeholders/hero.jpg"
+featured_image: "/assets/placeholders/placeholder.jpg"
 breaking: false
 hero: false
 tags: ["طقس", "سلامة", "إرشادات"]

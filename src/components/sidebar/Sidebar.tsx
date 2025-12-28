@@ -68,7 +68,7 @@ function ListPostRows({ posts }: { posts: Post[] }) {
   return (
     <div className="divide-y divide-black/10">
       {posts.map((p) => {
-        const img = p.fm.featured_image || "/assets/placeholders/hero.jpg"
+        const img = p.fm.featured_image || "/assets/placeholders/placeholder.jpg"
         return (
           <Link
             key={p.fm.slug}

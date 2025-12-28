@@ -6,7 +6,7 @@ description: "لماذا لا تتحول التحذيرات إلى قرارات�
 category: "العالم"
 category_slug: "world"
 author: "هيئة التحرير"
-featured_image: "/assets/placeholders/hero.jpg"
+featured_image: "/assets/placeholders/placeholder.jpg"
 breaking: false
 hero: false
 tags: ["مناخ", "بيئة"]

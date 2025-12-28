@@ -6,7 +6,7 @@ description: "تأثير العناوين، واللقطات، وإعادة ال
 category: "تحليلات"
 category_slug: "analysis"
 author: "قسم التحليلات"
-featured_image: "/assets/placeholders/hero.jpg"
+featured_image: "/assets/placeholders/placeholder.jpg"
 breaking: false
 hero: false
 tags: ["إعلام", "سرديات"]

@@ -14,6 +14,9 @@ export type PostFrontmatter = {
   editor_pick?: boolean
   editor_pick_order?: number
 
+  // ✅ NEW: content type + video source
+  type?: "article" | "tv"
+  youtube?: string
 }
 
 export type Post = {

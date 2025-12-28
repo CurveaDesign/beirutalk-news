@@ -6,7 +6,7 @@ description: "السلة اليومية تتغير عندما تتحرك الأ�
 category: "اقتصاد"
 category_slug: "economy"
 author: "قسم الاقتصاد"
-featured_image: "/assets/placeholders/hero.jpg"
+featured_image: "/assets/placeholders/placeholder.jpg"
 breaking: false
 hero: false
 tags: ["محروقات", "تكلفة معيشة"]

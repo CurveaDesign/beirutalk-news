@@ -53,7 +53,7 @@ export default function LatestBlock({ posts }: { posts?: Post[] }) {
             <Link href={hrefFor(lead)} className="block">
               <div className="relative aspect-[16/9] bg-black/5">
                 <Image
-                  src={lead.fm.featured_image || "/assets/placeholders/hero.jpg"}
+                  src={lead.fm.featured_image || "/assets/placeholders/placeholder.jpg"}
                   alt={lead.fm.title}
                   fill
                   sizes="(max-width: 768px) 100vw, 900px"

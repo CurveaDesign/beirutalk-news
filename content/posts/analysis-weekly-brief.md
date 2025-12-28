@@ -6,7 +6,7 @@ description: "ملخص تحليلي سريع يساعد على فهم الصور
 category: "تحليلات"
 category_slug: "analysis"
 author: "قسم التحليلات"
-featured_image: "/assets/placeholders/hero2.jpg"
+featured_image: "/assets/placeholders/placeholder.jpg"
 breaking: false
 hero: false
 tags: ["ملف", "أسبوعي"]

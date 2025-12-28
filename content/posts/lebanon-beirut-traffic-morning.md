@@ -6,7 +6,7 @@ description: "تغيّر بسيط في حركة السير لا يعني تحس�
 category: "لبنان"
 category_slug: "lebanon"
 author: "رامي حيدر"
-featured_image: "/assets/placeholders/hero3.jpg"
+featured_image: "/assets/placeholders/placeholder.jpg"
 breaking: false
 hero: false
 tags: ["بيروت", "سير", "يوميات"]

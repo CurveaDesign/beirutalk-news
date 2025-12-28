@@ -13,6 +13,7 @@ import {
   type AdsConfig,
   type MenusConfig,
 } from "@/lib/content/data"
+import { siteContact, type SiteContactConfig } from "@/lib/siteConfig"
 
 /* ======================
    Sidebar builder
@@ -28,9 +29,10 @@ function buildSidebar(all: Post[]) {
     }
   }
 
-  const categories = Array.from(categoriesMap.entries()).map(
-    ([title, slug]) => ({ title, slug })
-  )
+  const categories = Array.from(categoriesMap.entries()).map(([title, slug]) => ({
+    title,
+    slug,
+  }))
 
   const editorPicks = getEditorPicks(all)
 
@@ -39,12 +41,7 @@ function buildSidebar(all: Post[]) {
     breaking,
     editorPicks,
     categories,
-    social: {
-      facebook: "",
-      instagram: "",
-      youtube: "",
-      x: "",
-    },
+    contact: siteContact as SiteContactConfig,
   }
 }
 
@@ -70,7 +67,7 @@ export default function TagArchive({
     <>
       <SeoHead
         title={tagName}
-        description={`أرشيف الوسم ${tagName} على BeiruTalk.`}
+        description={`أرشيف الوسم ${tagName} لأبرز الأخبار والمواضيع المتداولة على BeiruTalk.`}
         path={`/tag/${tagSlug}`}
       />
       <ArchivePage
@@ -92,9 +89,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const tags = getTags()
 
   return {
-    paths: tags
-      .filter((t) => t?.slug)
-      .map((t) => ({ params: { tag: t.slug } })),
+    paths: tags.filter((t) => t?.slug).map((t) => ({ params: { tag: t.slug } })),
     fallback: false,
   }
 }
@@ -106,9 +101,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
   const tagSlug = String(ctx.params?.tag || "").trim().toLowerCase()
 
   const tags = getTags()
-  const tag = tags.find(
-    (t) => String(t.slug).trim().toLowerCase() === tagSlug
-  )
+  const tag = tags.find((t) => String(t.slug).trim().toLowerCase() === tagSlug)
 
   if (!tag) {
     return { notFound: true }

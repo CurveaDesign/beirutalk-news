@@ -6,7 +6,7 @@ description: "نص قصير لقياس حضور زاوية المحرّر على
 category: "زاوية المحرّر"
 category_slug: "editorial"
 author: "رئيس التحرير"
-featured_image: "/assets/placeholders/hero2.jpg"
+featured_image: "/assets/placeholders/placeholder.jpg"
 breaking: false
 hero: false
 tags: ["افتتاحية"]

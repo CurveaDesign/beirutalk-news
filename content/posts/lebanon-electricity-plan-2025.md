@@ -6,7 +6,7 @@ description: "تفاصيل أولية عن المسار المقترح والت�
 category: "لبنان"
 category_slug: "lebanon"
 author: "هيئة التحرير"
-featured_image: "/assets/placeholders/hero.jpg"
+featured_image: "/assets/placeholders/placeholder.jpg"
 breaking: true
 breaking_text: "عاجل: مسودة خطة الكهرباء تتضمن مراحل تنفيذ خلال 12 شهراً"
 hero: true

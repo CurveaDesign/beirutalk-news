@@ -6,11 +6,11 @@ import {
   getAdsConfig,
   getCategories,
   getEditorPicks,
-  getSocialLinks,
   getMenusConfig,
   type AdsConfig,
   type MenusConfig,
 } from "@/lib/content/data"
+import { siteContact, type SiteContactConfig } from "@/lib/siteConfig"
 
 export async function getStaticProps() {
   const posts = getAllPosts()
@@ -28,7 +28,7 @@ export async function getStaticProps() {
         breaking,
         editorPicks: getEditorPicks(posts),
         categories: getCategories(),
-        social: getSocialLinks(),
+        contact: siteContact,
       },
       ads: getAdsConfig(),
       menus: getMenusConfig(),
@@ -52,7 +52,7 @@ export default function LatestNewsArchive({
     breaking: Post[]
     editorPicks: { title: string; slug: string }[]
     categories: { title: string; slug: string }[]
-    social: { facebook?: string; instagram?: string; youtube?: string; x?: string }
+    contact: SiteContactConfig
   }
   ads?: AdsConfig
   menus: MenusConfig
@@ -61,10 +61,18 @@ export default function LatestNewsArchive({
     <>
       <SeoHead
         title={title}
-        description="آخر الأخبار العاجلة والمحدثة من لبنان والعالم على BeiruTalk."
+        description="آخر الأخبار العاجلة والمحدثة من لبنان والعالم مع تغطية لحظية على BeiruTalk."
         path="/latest"
       />
-      <ArchivePage title={title} kicker={kicker} posts={posts} sidebar={sidebar} ads={ads} menus={menus} />
+
+      <ArchivePage
+        title={title}
+        kicker={kicker}
+        posts={posts}
+        sidebar={sidebar}
+        ads={ads}
+        menus={menus}
+      />
     </>
   )
 }

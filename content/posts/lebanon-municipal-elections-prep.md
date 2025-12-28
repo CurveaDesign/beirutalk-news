@@ -6,7 +6,7 @@ description: "من النفايات إلى الطرقات، ما الذي سيح
 category: "لبنان"
 category_slug: "lebanon"
 author: "جنى حمادة"
-featured_image: "/assets/placeholders/hero2.jpg"
+featured_image: "/assets/placeholders/placeholder.jpg"
 breaking: false
 hero: false
 tags: ["بلديات", "خدمات", "سياسة محلية"]

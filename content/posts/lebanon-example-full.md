@@ -6,7 +6,7 @@ description: "سطر تمهيدي قصير يختصر الخبر ويظهر عل
 category: "لبنان"
 category_slug: "lebanon"
 author: "اسم الكاتب"
-featured_image: "/assets/placeholders/hero.jpg"
+featured_image: "/assets/placeholders/placeholder.jpg"
 breaking: false
 breaking_text: ""
 hero: true
@@ -39,4 +39,4 @@ tags: ["لبنان", "سياسة", "خدمات"]
 ## ما التالي؟
 فقرة أخيرة توضح السيناريوهات أو الخطوة التالية.
 
-![صورة داخل المقال](/assets/placeholders/hero2.jpg)
+![صورة داخل المقال](/assets/placeholders/placeholder.jpg)

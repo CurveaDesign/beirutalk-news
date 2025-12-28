@@ -6,7 +6,7 @@ description: "كيف يقرأ الناس هذه الرسوم، وكيف تبرر
 category: "اقتصاد"
 category_slug: "economy"
 author: "نادر صعب"
-featured_image: "/assets/placeholders/hero2.jpg"
+featured_image: "/assets/placeholders/placeholder.jpg"
 breaking: false
 hero: false
 tags: ["مصارف", "رسوم"]

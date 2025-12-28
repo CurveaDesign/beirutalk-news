@@ -3,7 +3,7 @@ import Image from "next/image"
 import type { Post } from "@/lib/content/types"
 
 function safeImg(src?: string) {
-  return src && src.trim().length ? src : "/assets/placeholders/hero2.jpg"
+  return src && src.trim().length ? src : "/assets/placeholders/placeholder.jpg"
 }
 
 export default function RelatedPosts({

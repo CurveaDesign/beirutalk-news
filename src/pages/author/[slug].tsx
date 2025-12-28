@@ -11,6 +11,7 @@ import {
   type AdsConfig,
   type MenusConfig,
 } from "@/lib/content/data"
+import { siteContact, type SiteContactConfig } from "@/lib/siteConfig"
 
 function buildSidebar(all: Post[]) {
   const latest = all.slice(0, 8)
@@ -31,7 +32,7 @@ function buildSidebar(all: Post[]) {
     breaking,
     editorPicks,
     categories,
-    social: { facebook: "", instagram: "", youtube: "", x: "" },
+    contact: siteContact as SiteContactConfig,
   }
 }
 
@@ -56,7 +57,7 @@ export default function AuthorArchive({
     <>
       <SeoHead
         title={authorName}
-        description={`مقالات وأخبار الكاتب ${authorName} على BeiruTalk.`}
+        description={`مقالات وأخبار الكاتب ${authorName} مع أحدث التحليلات والتقارير على BeiruTalk.`}
         path={`/author/${authorSlug}`}
       />
       <ArchivePage
