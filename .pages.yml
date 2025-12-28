@@ -50,18 +50,35 @@ content:
         required: true
         options:
           values:
-            - لبنان
-            - العالم
-            - اقتصاد
-            - تحليلات
-            - زاوية المحرّر
+            - value: "لبنان"
+              label: "لبنان"
+            - value: "العالم"
+              label: "العالم"
+            - value: "اقتصاد"
+              label: "اقتصاد"
+            - value: "تحليلات"
+              label: "تحليلات"
+            - value: "زاوية المحرّر"
+              label: "زاوية المحرّر"
 
       - name: category_slug
         label: Category Slug
         type: select
         required: true
         options:
-          values: [lebanon, world, economy, analysis, editorial]
+          options:
+                values:
+                  - value: lebanon
+                    label: lebanon
+                  - value: world
+                    label: world
+                  - value: economy
+                    label: economy
+                  - value: analysis
+                    label: analysis
+                  - value: editorial
+                    label: editorial
+
 
       - name: author
         label: Author
@@ -181,7 +198,16 @@ content:
             label: Block Type
             type: select
             options:
-              values: [categorySpotlight, threeCards, horizontal, textList]
+                values:
+                  - value: categorySpotlight
+                    label: categorySpotlight
+                  - value: threeCards
+                    label: threeCards
+                  - value: horizontal
+                    label: horizontal
+                  - value: textList
+                    label: textList
+
 
           - name: title
             label: Title (Arabic)
@@ -191,7 +217,19 @@ content:
           - name: slug
             label: Category Slug
             type: select
-            options: { values: [lebanon, world, economy, analysis, editorial] }
+            options:
+                  values:
+                    - value: lebanon
+                      label: lebanon
+                    - value: world
+                      label: world
+                    - value: economy
+                      label: economy
+                    - value: analysis
+                      label: analysis
+                    - value: editorial
+                      label: editorial
+
 
           - name: limit
             label: Limit
