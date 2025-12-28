@@ -134,68 +134,68 @@ export default function TopSystem({
                 </Link>
 
                 <div className="hidden md:flex justify-end">
-                  <button
-                    type="button"
+                  <Link
+                    href="/search"
                     className="rounded-2xl border border-black/10 bg-white/70 px-4 py-2 text-sm font-semibold text-black/70 transition hover:bg-black/5"
                     aria-label="بحث"
                   >
                     بحث
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* =================================================
+            {/* =================================================
               STICKY NAVBAR (ONLY THIS STICKS)
              ================================================= */}
-          <div className="sticky top-0 z-50 bg-[color:var(--bt-bg)]/95 backdrop-blur">
-            {/* nav rail */}
-            <div className="border-t border-black/10 px-4 py-3">
-              <div className="no-scrollbar flex items-center gap-2 overflow-x-auto overflow-y-hidden whitespace-nowrap [-webkit-overflow-scrolling:touch] [scrollbar-width:none]">
-                {NAV.map((it) => (
+            <div className="sticky top-0 z-50 bg-[color:var(--bt-bg)]/95 backdrop-blur">
+              {/* nav rail */}
+              <div className="border-t border-black/10 px-4 py-3">
+                <div className="no-scrollbar flex items-center gap-2 overflow-x-auto overflow-y-hidden whitespace-nowrap [-webkit-overflow-scrolling:touch] [scrollbar-width:none]">
+                  {NAV.map((it) => (
+                    <Link
+                      key={it.href}
+                      href={it.href}
+                      className="bt-sweep relative shrink-0 rounded-2xl px-3 py-2 text-[15px] font-semibold text-[color:var(--bt-headline)] transition hover:bg-black/5"
+                    >
+                      {it.label}
+                    </Link>
+                  ))}
+
+                  {/* search on mobile */}
                   <Link
-                    key={it.href}
-                    href={it.href}
-                    className="bt-sweep relative shrink-0 rounded-2xl px-3 py-2 text-[15px] font-semibold text-[color:var(--bt-headline)] transition hover:bg-black/5"
+                    href="/search"
+                    className="rounded-2xl border border-black/10 bg-white/70 px-4 py-2 text-sm font-semibold text-black/70 transition hover:bg-black/5"
+                    aria-label="بحث"
                   >
-                    {it.label}
+                    بحث
                   </Link>
-                ))}
-
-                {/* search on mobile */}
-                <button
-                  type="button"
-                  className="md:hidden shrink-0 rounded-2xl border border-black/10 bg-white/70 px-4 py-2 text-sm font-semibold text-black/70 transition hover:bg-black/5"
-                  aria-label="بحث"
-                >
-                  بحث
-                </button>
-              </div>
-            </div>
-
-            {/* breaking ticker */}
-            <div className="border-t border-black/10 bg-[color:var(--bt-breaking)] text-white">
-              <div className="flex items-center gap-3 px-4 py-2">
-                <span className="shrink-0 rounded-full bg-white/15 px-3 py-1 text-xs font-extrabold">
-                  عاجل
-                </span>
-
-                <div className="relative flex-1 overflow-hidden">
-                  <div className="bt-marquee whitespace-nowrap text-sm font-semibold text-white/95">
-                    {breaking.slice(0, 8).map((p) => (
-                      <Link key={p.fm.slug} href={`/news/${p.fm.slug}`} className="mx-4 inline-block hover:underline">
-                        {p.fm.title}
-                        <span className="mx-4 text-white/40">•</span>
-                      </Link>
-                    ))}
-
-                  </div>
                 </div>
+              </div>
 
-                <span className="hidden sm:block text-xs text-white/75">
-                  تحديثات مباشرة
-                </span>
+              {/* breaking ticker */}
+              <div className="border-t border-black/10 bg-[color:var(--bt-breaking)] text-white">
+                <div className="flex items-center gap-3 px-4 py-2">
+                  <span className="shrink-0 rounded-full bg-white/15 px-3 py-1 text-xs font-extrabold">
+                    عاجل
+                  </span>
+
+                  <div className="relative flex-1 overflow-hidden">
+                    <div className="bt-marquee whitespace-nowrap text-sm font-semibold text-white/95">
+                      {breaking.slice(0, 8).map((p) => (
+                        <Link key={p.fm.slug} href={`/news/${p.fm.slug}`} className="mx-4 inline-block hover:underline">
+                          {p.fm.title}
+                          <span className="mx-4 text-white/40">•</span>
+                        </Link>
+                      ))}
+
+                    </div>
+                  </div>
+
+                  <span className="hidden sm:block text-xs text-white/75">
+                    تحديثات مباشرة
+                  </span>
+                </div>
               </div>
             </div>
           </div>
