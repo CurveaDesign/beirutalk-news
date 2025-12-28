@@ -1,18 +1,72 @@
 {
   "header": [
-    { "type": "home", "label": "الرئيسية", "href": "/", "enabled": true },
-    { "type": "category", "label": "لبنان", "slug": "lebanon", "enabled": true },
-    { "type": "category", "label": "العالم", "slug": "world", "enabled": true },
-    { "type": "category", "label": "اقتصاد", "slug": "economy", "enabled": true },
-    { "type": "category", "label": "تحليلات", "slug": "analysis", "enabled": true },
-    { "type": "category", "label": "زاوية المحرّر", "slug": "editorial", "enabled": true },
-    { "type": "custom", "label": "BeiruTalk TV", "href": "/videos", "enabled": true }
+    {
+      "enabled": true,
+      "type": "home",
+      "label": "الرئيسية",
+      "href": "/"
+    },
+    {
+      "enabled": true,
+      "type": "category",
+      "label": "لبنان",
+      "slug": "lebanon"
+    },
+    {
+      "enabled": true,
+      "type": "category",
+      "label": "العالم",
+      "slug": "world"
+    },
+    {
+      "enabled": true,
+      "type": "category",
+      "label": "اقتصاد",
+      "slug": "economy"
+    },
+    {
+      "enabled": true,
+      "type": "category",
+      "label": "تحليلات",
+      "slug": "analysis"
+    },
+    {
+      "enabled": true,
+      "type": "category",
+      "label": "زاوية المحرّر",
+      "slug": "editorial"
+    }
   ],
   "footerSections": [
-    { "type": "custom", "label": "آخر الأخبار", "href": "/latest", "enabled": true },
-    { "type": "custom", "label": "كل الأخبار", "href": "/news", "enabled": true },
-    { "type": "category", "label": "لبنان", "slug": "lebanon", "enabled": true },
-    { "type": "category", "label": "العالم", "slug": "world", "enabled": true },
-    { "type": "category", "label": "اقتصاد", "slug": "economy", "enabled": true }
+    {
+      "type": "custom",
+      "label": "آخر الأخبار",
+      "href": "/latest",
+      "enabled": true
+    },
+    {
+      "type": "custom",
+      "label": "كل الأخبار",
+      "href": "/news",
+      "enabled": true
+    },
+    {
+      "type": "category",
+      "label": "لبنان",
+      "slug": "lebanon",
+      "enabled": true
+    },
+    {
+      "type": "category",
+      "label": "العالم",
+      "slug": "world",
+      "enabled": true
+    },
+    {
+      "type": "category",
+      "label": "اقتصاد",
+      "slug": "economy",
+      "enabled": true
+    }
   ]
 }
