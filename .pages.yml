@@ -30,7 +30,7 @@ content:
         description: "Used for the URL: /news/{slug}"
         pattern:
           regex: "^[a-z0-9]+(?:-[a-z0-9]+)*$"
-          message: "Use lowercase latin letters, numbers, and dashes only."
+          message: "Use lowercase latin letters, numbers, and dashes only (example: beirut-news)."
 
       - name: date
         label: Date & Time
@@ -67,9 +67,9 @@ content:
         required: true
         options:
           collection: authors
-          search: name
-          value: slug
-          label: name
+          search: display_name
+          value: name
+          label: display_name
 
       - name: featured_image
         label: Featured Image
@@ -83,9 +83,9 @@ content:
         options:
           collection: tags
           multiple: true
-          search: name
-          value: slug
-          label: name
+          search: display_name
+          value: name
+          label: display_name
 
       - name: hero
         label: Show in Hero
@@ -121,25 +121,25 @@ content:
 
   # -------------------------
   # Authors (JSON)
+  # filename uses latin ID stored in `name`
+  # display_name is Arabic label shown in dropdown
   # -------------------------
   - name: authors
     label: Authors
     type: collection
     path: content/data/authors
-    filename: "{slug}.json"
+    filename: "{name}.json"
     fields:
-      - name: slug
+      - name: name
         label: ID (latin)
-        type: slug
+        type: string
         required: true
+        description: "Used for filename. Example: elie-cherfan"
         pattern:
           regex: "^[a-z0-9]+(?:-[a-z0-9]+)*$"
-          message: "Use lowercase latin letters, numbers, and dashes only."
-        options:
-          from: name
-          transform: slugify
+          message: "Use lowercase latin letters, numbers, and dashes only. Replace spaces with -"
 
-      - name: name
+      - name: display_name
         label: Name (Arabic)
         type: string
         required: true
@@ -156,25 +156,25 @@ content:
 
   # -------------------------
   # Tags (JSON)
+  # filename uses latin ID stored in `name`
+  # display_name is Arabic label shown in dropdown
   # -------------------------
   - name: tags
     label: Tags
     type: collection
     path: content/data/tags
-    filename: "{slug}.json"
+    filename: "{name}.json"
     fields:
-      - name: slug
+      - name: name
         label: ID (latin)
-        type: slug
+        type: string
         required: true
+        description: "Used for filename. Example: beirut"
         pattern:
           regex: "^[a-z0-9]+(?:-[a-z0-9]+)*$"
-          message: "Use lowercase latin letters, numbers, and dashes only."
-        options:
-          from: name
-          transform: slugify
+          message: "Use lowercase latin letters, numbers, and dashes only. Replace spaces with -"
 
-      - name: name
+      - name: display_name
         label: Name (Arabic)
         type: string
         required: true
