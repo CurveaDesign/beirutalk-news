@@ -134,8 +134,21 @@ export default function HomePage({
             <>
               <EditorialReel posts={editorial} />
 
-              <div className="hidden lg:block pt-10">
-                <AdSlot id="home-inline-1" ads={ads} />
+              <div className="pt-6 sm:pt-8 lg:pt-10">
+                <div className="bt-noise overflow-hidden rounded-2xl border border-black/10 bg-white/70">
+                  <div className="flex items-center justify-between px-3 py-2">
+                    <div className="text-[11px] font-semibold text-black/45">Advertisement</div>
+                  </div>
+
+                  <div className="p-3">
+                    {/* This makes ANY img/iframe inside AdSlot scale nicely */}
+                    <div className="mx-auto w-full max-w-[360px] sm:max-w-[520px] lg:max-w-none
+                      [&_img]:h-auto [&_img]:w-full [&_img]:max-w-full
+                      [&_iframe]:w-full [&_iframe]:max-w-full">
+                      <AdSlot id="home-inline-1" ads={ads} />
+                    </div>
+                  </div>
+                </div>
               </div>
 
               <LatestBlock posts={latest} />
@@ -145,11 +158,23 @@ export default function HomePage({
                 if (!posts?.length) return null
                 return (
                   <div key={`${block.type}:${block.slug}:${idx}`}>
-                    <div className="hidden lg:block pt-10">
-                      <AdSlot
-                        id={["home-inline-2", "home-inline-3"][idx % 2]}
-                        ads={ads}
-                      />
+                    <div className="pt-6 sm:pt-8 lg:pt-10">
+                      <div className="bt-noise overflow-hidden rounded-2xl border border-black/10 bg-white/70">
+                        <div className="flex items-center justify-between px-3 py-2">
+                          <div className="text-[11px] font-semibold text-black/45">Advertisement</div>
+                        </div>
+
+                        <div className="p-3">
+                          <div className="mx-auto w-full max-w-[360px] sm:max-w-[520px] lg:max-w-none
+                      [&_img]:h-auto [&_img]:w-full [&_img]:max-w-full
+                      [&_iframe]:w-full [&_iframe]:max-w-full">
+                            <AdSlot
+                              id={["home-inline-2", "home-inline-3"][idx % 2]}
+                              ads={ads}
+                            />
+                          </div>
+                        </div>
+                      </div>
                     </div>
                     {renderBlock(block, posts)}
                   </div>
