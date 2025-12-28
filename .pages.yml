@@ -13,10 +13,11 @@ content:
     filename: "{slug}.md"
     view:
       fields: [title, date, category, breaking, editor_pick]
-      sort: [date, title]
+      sort: [date]
       default:
         sort: date
         order: desc
+
     fields:
       - name: title
         label: Title (Arabic)
@@ -44,63 +45,50 @@ content:
         type: text
         required: true
 
+      # Category as slug value + Arabic label (clean + avoids mismatch)
       - name: category
-        label: Category (Arabic)
+        label: Category
         type: select
         required: true
         options:
           values:
-            - value: "لبنان"
+            - value: lebanon
               label: "لبنان"
-            - value: "العالم"
+            - value: world
               label: "العالم"
-            - value: "اقتصاد"
+            - value: economy
               label: "اقتصاد"
-            - value: "تحليلات"
+            - value: analysis
               label: "تحليلات"
-            - value: "زاوية المحرّر"
+            - value: editorial
               label: "زاوية المحرّر"
-
-      - name: category_slug
-        label: Category Slug
-        type: select
-        required: true
-        options:
-                values:
-                  - value: lebanon
-                    label: lebanon
-                  - value: world
-                    label: world
-                  - value: economy
-                    label: economy
-                  - value: analysis
-                    label: analysis
-                  - value: editorial
-                    label: editorial
-
 
       - name: author
         label: Author
         type: reference
-        collection: authors
-        display: name
-        value: id
         required: true
-
+        options:
+          collection: authors
+          search: "name"
+          value: "{id}"
+          label: "{name}"
 
       - name: featured_image
         label: Featured Image
         type: image
         required: true
 
+      # Tags = taxonomy via collection reference (multiple)
       - name: tags
         label: Tags
-        type: multiselect
+        type: reference
         required: false
         options:
-          source:
-            file: content/data/tags.json
-            path: tags
+          collection: tags
+          multiple: true
+          search: "name"
+          value: "{id}"
+          label: "{name}"
 
       - name: hero
         label: Show in Hero
@@ -133,8 +121,6 @@ content:
         label: Article Body
         type: rich-text
         required: true
-        options:
-          extensions: [jpg, jpeg, png, webp]
 
   # -------------------------
   # Authors (JSON)
@@ -168,18 +154,26 @@ content:
         required: false
 
   # -------------------------
-  # Tags list (JSON)
+  # Tags (JSON)  ✅ taxonomy folder
+  # Folder: content/data/tags/<slug>.json
   # -------------------------
-  - name: tags_list
+  - name: tags
     label: Tags
-    type: file
-    path: content/data/tags.json
+    type: collection
+    path: content/data/tags
+    filename: "{slug}.json"
     fields:
-      - name: tags
-        label: Tags
-        type: list
-        field:
-          type: string
+      - name: id
+        label: ID (latin)
+        type: string
+        required: true
+        pattern:
+          regex: "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+
+      - name: name
+        label: Name (Arabic)
+        type: string
+        required: true
 
   # -------------------------
   # Homepage blocks (JSON)
@@ -198,16 +192,15 @@ content:
             label: Block Type
             type: select
             options:
-                values:
-                  - value: categorySpotlight
-                    label: categorySpotlight
-                  - value: threeCards
-                    label: threeCards
-                  - value: horizontal
-                    label: horizontal
-                  - value: textList
-                    label: textList
-
+              values:
+                - value: categorySpotlight
+                  label: categorySpotlight
+                - value: threeCards
+                  label: threeCards
+                - value: horizontal
+                  label: horizontal
+                - value: textList
+                  label: textList
 
           - name: title
             label: Title (Arabic)
@@ -218,18 +211,17 @@ content:
             label: Category Slug
             type: select
             options:
-                  values:
-                    - value: lebanon
-                      label: lebanon
-                    - value: world
-                      label: world
-                    - value: economy
-                      label: economy
-                    - value: analysis
-                      label: analysis
-                    - value: editorial
-                      label: editorial
-
+              values:
+                - value: lebanon
+                  label: lebanon
+                - value: world
+                  label: world
+                - value: economy
+                  label: economy
+                - value: analysis
+                  label: analysis
+                - value: editorial
+                  label: editorial
 
           - name: limit
             label: Limit
@@ -303,7 +295,11 @@ content:
           - name: type
             type: select
             options:
-              values: [custom, adsense]
+              values:
+                - value: custom
+                  label: custom
+                - value: adsense
+                  label: adsense
           - name: custom
             type: object
             fields:
