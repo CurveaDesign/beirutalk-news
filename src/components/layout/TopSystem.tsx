@@ -2,7 +2,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { useEffect, useMemo, useState } from "react"
 import AdSlot from "@/components/ads/AdSlot"
-import type { AdsConfig } from "@/lib/content/data"
+import type { AdsConfig, MenusConfig, MenuLink } from "@/lib/content/data"
 import type { Post } from "@/lib/content/types"
 
 /* =======================
@@ -40,7 +40,7 @@ function useBeirutClock() {
 /* =======================
    Data
 ======================= */
-const NAV = [
+const FALLBACK_NAV: Array<{ href: string; label: string }> = [
   { href: "/", label: "الرئيسية" },
   { href: "/category/lebanon", label: "لبنان" },
   { href: "/category/world", label: "العالم" },
@@ -50,13 +50,33 @@ const NAV = [
   { href: "/videos", label: "BeiruTalk TV" },
 ]
 
+function linkToHref(it: MenuLink): string {
+  if (it.type === "home") return it.href || "/"
+  if (it.type === "category") return `/category/${it.slug}`
+  return it.href || "/"
+}
+
 
 /* =======================
    Component
 ======================= */
-export default function TopSystem({ ads, breaking = [], }: { ads?: AdsConfig, breaking?: Post[] }) {
+export default function TopSystem({
+  ads,
+  breaking = [],
+  menus,
+}: {
+  ads?: AdsConfig
+  breaking?: Post[]
+  menus?: MenusConfig
+}) {
   const clock = useBeirutClock()
   const hasHeaderAd = !!ads?.slots?.some((s) => s.id === "header_leaderboard" && s.enabled)
+
+  const nav = (menus?.header || [])
+    .filter((x) => (x.enabled ?? true) && !!(x.label || "").trim())
+    .map((x) => ({ href: linkToHref(x), label: x.label }))
+
+  const NAV = nav.length ? nav : FALLBACK_NAV
 
   return (
     <header className="relative z-50 bg-[color:var(--bt-bg)]">

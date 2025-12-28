@@ -2,6 +2,13 @@ import Link from "next/link"
 import Image from "next/image"
 import { Facebook, Instagram, Youtube, Twitter, Linkedin, Music2 } from "lucide-react"
 import { siteContact } from "@/lib/siteConfig"
+import type { MenuLink, MenusConfig } from "@/lib/content/data"
+
+function linkToHref(it: MenuLink): string {
+  if (it.type === "home") return it.href || "/"
+  if (it.type === "category") return `/category/${it.slug}`
+  return it.href || "/"
+}
 
 function SocialIcon({ href, label, children }: { href?: string; label: string; children: React.ReactNode }) {
   if (!href || !href.trim()) return null
@@ -19,8 +26,22 @@ function SocialIcon({ href, label, children }: { href?: string; label: string; c
   )
 }
 
-export default function Footer() {
+export default function Footer({ menus }: { menus?: MenusConfig }) {
   const s = siteContact.socials || {}
+
+  const sectionLinks = (menus?.footerSections || [])
+    .filter((x) => (x.enabled ?? true) && !!(x.label || "").trim())
+    .map((x) => ({ href: linkToHref(x), label: x.label }))
+
+  const FALLBACK = [
+    { href: "/latest", label: "آخر الأخبار" },
+    { href: "/news", label: "كل الأخبار" },
+    { href: "/category/lebanon", label: "لبنان" },
+    { href: "/category/world", label: "العالم" },
+    { href: "/category/economy", label: "اقتصاد" },
+  ]
+
+  const LINKS = sectionLinks.length ? sectionLinks : FALLBACK
 
   return (
     <footer className="relative mt-24 overflow-hidden border-t border-black/10 bg-white/85 backdrop-blur">
@@ -69,31 +90,13 @@ export default function Footer() {
           <div>
             <div className="text-[13px] font-extrabold tracking-wide text-black/60">الأقسام</div>
             <ul className="mt-4 space-y-2 text-[14px] text-black/65">
-              <li>
-                <Link href="/latest" className="hover:text-black">
-                  آخر الأخبار
-                </Link>
-              </li>
-              <li>
-                <Link href="/news" className="hover:text-black">
-                  كل الأخبار
-                </Link>
-              </li>
-              <li>
-                <Link href="/category/lebanon" className="hover:text-black">
-                  لبنان
-                </Link>
-              </li>
-              <li>
-                <Link href="/category/world" className="hover:text-black">
-                  العالم
-                </Link>
-              </li>
-              <li>
-                <Link href="/category/economy" className="hover:text-black">
-                  اقتصاد
-                </Link>
-              </li>
+              {LINKS.map((it) => (
+                <li key={it.href}>
+                  <Link href={it.href} className="hover:text-black">
+                    {it.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 

@@ -68,7 +68,7 @@ content:
         required: true
         options:
           collection: authors
-          search: display_name
+          search: "display_name"
           value: "{slug}"
           label: "{display_name}"
 
@@ -84,7 +84,7 @@ content:
         options:
           collection: tags
           multiple: true
-          search: display_name
+          search: "display_name"
           value: "{slug}"
           label: "{display_name}"
 
@@ -246,6 +246,76 @@ content:
             options:
               min: 1
               max: 12
+
+  # -------------------------
+  # Menus (JSON)
+  # -------------------------
+  - name: menus
+    label: Menus
+    type: file
+    path: content/data/menus.json
+    fields:
+      - name: header
+        label: Header Menu
+        type: object
+        list: true
+        fields:
+          - name: enabled
+            label: Enabled
+            type: boolean
+            default: true
+          - name: type
+            label: Type
+            type: select
+            options:
+              values:
+                - { value: home, label: home }
+                - { value: category, label: category }
+                - { value: custom, label: custom }
+          - name: label
+            label: Label (Arabic)
+            type: string
+            required: true
+          - name: slug
+            label: Category Slug
+            type: string
+            required: false
+            hint: "Used when type=category. Example: lebanon"
+          - name: href
+            label: Custom Href
+            type: string
+            required: false
+            hint: "Used when type=custom or to override. Example: /about"
+
+      - name: footer_categories
+        label: Footer Categories Menu
+        type: object
+        list: true
+        fields:
+          - name: enabled
+            label: Enabled
+            type: boolean
+            default: true
+          - name: type
+            label: Type
+            type: select
+            options:
+              values:
+                - { value: home, label: home }
+                - { value: category, label: category }
+                - { value: custom, label: custom }
+          - name: label
+            label: Label (Arabic)
+            type: string
+            required: true
+          - name: slug
+            label: Category Slug
+            type: string
+            required: false
+          - name: href
+            label: Custom Href
+            type: string
+            required: false
 
   # -------------------------
   # Categories (JSON)

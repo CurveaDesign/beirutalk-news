@@ -5,7 +5,7 @@ import AfterHeroGrid from "@/components/layout/AfterHeroGrid"
 import Sidebar from "@/components/sidebar/Sidebar"
 import AdSlot from "@/components/ads/AdSlot"
 import type { Post } from "@/lib/content/types"
-import type { AdsConfig } from "@/lib/content/data"
+import type { AdsConfig, MenusConfig } from "@/lib/content/data"
 
 function postHref(slug: string) {
   return `/news/${slug}`
@@ -204,6 +204,7 @@ export default function ArchivePage({
   posts,
   sidebar,
   ads,
+  menus,
 }: {
   title: string
   kicker?: string
@@ -216,6 +217,7 @@ export default function ArchivePage({
     social: { facebook?: string; instagram?: string; youtube?: string; x?: string }
   }
   ads?: AdsConfig
+  menus?: MenusConfig
 }) {
 
   const lead = posts[0]
@@ -225,7 +227,7 @@ export default function ArchivePage({
   const stream = buildStream(rest, 5, 2)
 
   return (
-    <SiteLayout ads={ads} breaking={sidebar.breaking}>
+    <SiteLayout ads={ads} breaking={sidebar.breaking} menus={menus}>
 
       <Header title={title} kicker={kicker} count={posts.length} />
 

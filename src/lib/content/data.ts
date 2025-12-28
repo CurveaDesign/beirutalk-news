@@ -35,6 +35,62 @@ export function getAdsConfig() {
   return readJson<AdsConfig>("ads.json", { adsense: { enabled: false }, slots: [] })
 }
 
+export type MenuLink = {
+  /** home | category | custom */
+  type: "home" | "category" | "custom"
+  /** Label shown in UI (Arabic) */
+  label: string
+  /** For type=custom (or if you want to override) */
+  href?: string
+  /** For type=category */
+  slug?: string
+  /** Toggle visibility */
+  enabled?: boolean
+}
+export type MenusConfig = {
+  /** Header navbar items (order matters) */
+  header: MenuLink[]
+  /** Footer "الأقسام" links (order matters) */
+  footerSections: MenuLink[]
+}
+
+export function getMenusConfig(): MenusConfig {
+  const fallback: MenusConfig = {
+    header: [
+      { type: "home", label: "الرئيسية", href: "/", enabled: true },
+      { type: "category", label: "لبنان", slug: "lebanon", enabled: true },
+      { type: "category", label: "العالم", slug: "world", enabled: true },
+      { type: "category", label: "اقتصاد", slug: "economy", enabled: true },
+      { type: "category", label: "تحليلات", slug: "analysis", enabled: true },
+      { type: "category", label: "زاوية المحرّر", slug: "editorial", enabled: true },
+      { type: "custom", label: "BeiruTalk TV", href: "/videos", enabled: true },
+    ],
+    footerSections: [
+      { type: "custom", label: "آخر الأخبار", href: "/latest", enabled: true },
+      { type: "custom", label: "كل الأخبار", href: "/news", enabled: true },
+      { type: "category", label: "لبنان", slug: "lebanon", enabled: true },
+      { type: "category", label: "العالم", slug: "world", enabled: true },
+      { type: "category", label: "اقتصاد", slug: "economy", enabled: true },
+    ],
+  }
+
+  // menus.json is optional. If missing, fallback is used.
+  const cfg = readJson<Partial<MenusConfig>>("menus.json", fallback)
+
+  const normalize = (items?: MenuLink[]) =>
+    (items || [])
+      .filter((x) => (x?.enabled ?? true) && !!(x?.label || "").trim())
+      .map((x) => ({ ...x, enabled: x.enabled ?? true }))
+
+  const out: MenusConfig = {
+    header: normalize(cfg.header ?? fallback.header),
+    footerSections: normalize(cfg.footerSections ?? fallback.footerSections),
+  }
+
+  return out
+}
+
+
 export function getEditorPicks(allPosts: Post[] = []): EditorPick[] {
   // Preferred: editor chooses directly inside each post frontmatter
   // editor_pick: true
