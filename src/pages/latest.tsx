@@ -1,4 +1,5 @@
 import ArchivePage from "@/components/archive/ArchivePage"
+import SeoHead from "@/components/seo/SeoHead"
 import { getAllPosts } from "@/lib/content/posts"
 import type { Post } from "@/lib/content/types"
 import {
@@ -56,5 +57,14 @@ export default function LatestNewsArchive({
   ads?: AdsConfig
   menus: MenusConfig
 }) {
-  return <ArchivePage title={title} kicker={kicker} posts={posts} sidebar={sidebar} ads={ads} menus={menus}/>
+  return (
+    <>
+      <SeoHead
+        title={title}
+        description="آخر الأخبار العاجلة والمحدثة من لبنان والعالم على BeiruTalk."
+        path="/latest"
+      />
+      <ArchivePage title={title} kicker={kicker} posts={posts} sidebar={sidebar} ads={ads} menus={menus} />
+    </>
+  )
 }

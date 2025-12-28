@@ -1,6 +1,7 @@
 import SiteLayout from "@/components/layout/SiteLayout"
 import { getMenusConfig } from "@/lib/content/data"
 import type { MenusConfig } from "@/lib/content/data"
+import SeoHead from "@/components/seo/SeoHead"
 
 export const getStaticProps = async () => {
   const menus = getMenusConfig()
@@ -9,8 +10,14 @@ export const getStaticProps = async () => {
 
 export default function PrivacyPage({ menus }: { menus: MenusConfig }) {
   return (
-    <SiteLayout menus={menus}>
-      <section className="relative overflow-hidden">
+    <>
+      <SeoHead
+        title="سياسة الخصوصية"
+        description="تعرف على سياسة الخصوصية وكيفية تعامل BeiruTalk مع بيانات الزوار."
+        path="/privacy"
+      />
+      <SiteLayout menus={menus}>
+        <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(80%_60%_at_50%_0%,rgba(0,0,0,0.06),transparent)]" />
         <div className="absolute inset-0 bt-noise opacity-25" />
 
@@ -123,7 +130,8 @@ export default function PrivacyPage({ menus }: { menus: MenusConfig }) {
             </div>
           </div>
         </div>
-      </section>
-    </SiteLayout>
+        </section>
+      </SiteLayout>
+    </>
   )
 }

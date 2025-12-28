@@ -1,5 +1,4 @@
 import type { GetStaticPaths, GetStaticProps } from "next"
-import Head from "next/head"
 import Link from "next/link"
 import Image from "next/image"
 
@@ -16,6 +15,7 @@ import { getAllPosts, getPostBySlug, pickCategoryPosts } from "@/lib/content/pos
 import type { Post } from "@/lib/content/types"
 import { getMenusConfig } from "@/lib/content/data"
 import type { MenusConfig } from "@/lib/content/data"
+import SeoHead from "@/components/seo/SeoHead"
 
 function stripMarkdown(md: string) {
   return md
@@ -217,6 +217,7 @@ export default function NewsArticlePage({
   const readMins = estimateReadMinutes(clean)
   const dateText = formatArabicDate(post.fm.date)
   const url = absoluteUrl(`/news/${post.fm.slug}`)
+  const tags = (post.fm.tags || []).map((tag) => String(tag || "").trim()).filter(Boolean)
 
   const authorSlug = (post.fm.author || "").trim()
   const authorName = authorSlug ? authorsMap?.[authorSlug]?.display_name || authorSlug : undefined
@@ -228,10 +229,16 @@ export default function NewsArticlePage({
 
   return (
     <SiteLayout ads={ads} breaking={breaking} menus={menus}>
-      <Head>
-        <title>{`${post.fm.title} | BeiruTalk`}</title>
-        {post.fm.description ? <meta name="description" content={post.fm.description} /> : null}
-      </Head>
+      <SeoHead
+        title={post.fm.title}
+        description={post.fm.description}
+        path={`/news/${post.fm.slug}`}
+        image={post.fm.featured_image || "/assets/placeholder-article.jpg"}
+        type="article"
+        publishedTime={post.fm.date}
+        authorName={authorName}
+        tags={tags}
+      />
 
       <ArticleHero
         title={post.fm.title}

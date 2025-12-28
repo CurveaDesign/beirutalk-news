@@ -1,5 +1,6 @@
 import type { GetStaticPaths, GetStaticProps } from "next"
 import ArchivePage from "@/components/archive/ArchivePage"
+import SeoHead from "@/components/seo/SeoHead"
 import { getAllPosts, pickCategoryPosts } from "@/lib/content/posts"
 import {
   getAdsConfig,
@@ -37,6 +38,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
   return {
     props: {
       title,
+      slug,
       kicker: "أرشيف القسم",
       posts: items,
       sidebar: {
@@ -54,6 +56,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
 
 export default function CategoryArchive({
   title,
+  slug,
   kicker,
   posts,
   sidebar,
@@ -61,6 +64,7 @@ export default function CategoryArchive({
   menus,
 }: {
   title: string
+  slug: string
   kicker?: string
   posts: Post[]
   sidebar: {
@@ -73,6 +77,14 @@ export default function CategoryArchive({
   ads?: AdsConfig
   menus: MenusConfig
 }) {
-  return <ArchivePage title={title} kicker={kicker} posts={posts} sidebar={sidebar} ads={ads} menus={menus} />
+  return (
+    <>
+      <SeoHead
+        title={title}
+        description={`أرشيف أخبار ${title} على BeiruTalk.`}
+        path={`/category/${slug}`}
+      />
+      <ArchivePage title={title} kicker={kicker} posts={posts} sidebar={sidebar} ads={ads} menus={menus} />
+    </>
+  )
 }
-

@@ -12,6 +12,7 @@ import CategoryHorizontal from "@/components/home/CategoryHorizontal"
 import AnalysisList from "@/components/home/AnalysisList"
 import VideoStrip from "@/components/home/VideoStrip"
 import AdSlot from "@/components/ads/AdSlot"
+import SeoHead from "@/components/seo/SeoHead"
 
 import type { Post } from "@/lib/content/types"
 import { getAllPosts, pickEditorialPosts, pickHeroPosts, pickCategoryPosts } from "@/lib/content/posts"
@@ -118,48 +119,55 @@ export default function HomePage({
   menus: MenusConfig
 }) {
   return (
-    <SiteLayout ads={ads} breaking={sidebar.breaking} menus={menus}>
-      <HeroStack posts={hero} />
-
-      <AfterHeroGrid
-        main={
-          <>
-            <EditorialReel posts={editorial} />
-
-            <div className="hidden lg:block pt-10">
-              <AdSlot id="home-inline-1" ads={ads} />
-            </div>
-
-            <LatestBlock posts={latest} />
-
-            {/* Blocks controlled by homepage.json */}
-            {blocks.map(({ block, posts }, idx) => {
-              if (!posts?.length) return null
-              return (
-                <div key={`${block.type}:${block.slug}:${idx}`}>
-                  <div className="hidden lg:block pt-10">
-                    <AdSlot
-                      id={["home-inline-2", "home-inline-3"][idx % 2]}
-                      ads={ads}
-                    />
-                  </div>
-                  {renderBlock(block, posts)}
-                </div>
-              )
-            })}
-          </>
-        }
-        aside={
-          <Sidebar
-            latest={latest}
-            breaking={sidebar.breaking}
-            editorPicks={sidebar.editorPicks}
-            categories={sidebar.categories}
-            social={sidebar.social}
-            ads={ads}
-          />
-        }
+    <>
+      <SeoHead
+        title="الرئيسية"
+        description="أحدث أخبار لبنان والعالم وتحليلات BeiruTalk في مكان واحد."
+        path="/"
       />
-    </SiteLayout>
+      <SiteLayout ads={ads} breaking={sidebar.breaking} menus={menus}>
+        <HeroStack posts={hero} />
+
+        <AfterHeroGrid
+          main={
+            <>
+              <EditorialReel posts={editorial} />
+
+              <div className="hidden lg:block pt-10">
+                <AdSlot id="home-inline-1" ads={ads} />
+              </div>
+
+              <LatestBlock posts={latest} />
+
+              {/* Blocks controlled by homepage.json */}
+              {blocks.map(({ block, posts }, idx) => {
+                if (!posts?.length) return null
+                return (
+                  <div key={`${block.type}:${block.slug}:${idx}`}>
+                    <div className="hidden lg:block pt-10">
+                      <AdSlot
+                        id={["home-inline-2", "home-inline-3"][idx % 2]}
+                        ads={ads}
+                      />
+                    </div>
+                    {renderBlock(block, posts)}
+                  </div>
+                )
+              })}
+            </>
+          }
+          aside={
+            <Sidebar
+              latest={latest}
+              breaking={sidebar.breaking}
+              editorPicks={sidebar.editorPicks}
+              categories={sidebar.categories}
+              social={sidebar.social}
+              ads={ads}
+            />
+          }
+        />
+      </SiteLayout>
+    </>
   )
 }

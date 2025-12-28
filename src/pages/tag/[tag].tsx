@@ -1,5 +1,6 @@
 import type { GetStaticPaths, GetStaticProps } from "next"
 import ArchivePage from "@/components/archive/ArchivePage"
+import SeoHead from "@/components/seo/SeoHead"
 
 import { getAllPosts } from "@/lib/content/posts"
 import type { Post } from "@/lib/content/types"
@@ -52,26 +53,35 @@ function buildSidebar(all: Post[]) {
 ====================== */
 export default function TagArchive({
   tagName,
+  tagSlug,
   posts,
   sidebar,
   ads,
   menus,
 }: {
   tagName: string
+  tagSlug: string
   posts: Post[]
   sidebar: ReturnType<typeof buildSidebar>
   ads?: AdsConfig
   menus: MenusConfig
 }) {
   return (
-    <ArchivePage
-      title={tagName}
-      kicker="أرشيف الوسم"
-      posts={posts}
-      sidebar={sidebar}
-      ads={ads}
-      menus={menus}
-    />
+    <>
+      <SeoHead
+        title={tagName}
+        description={`أرشيف الوسم ${tagName} على BeiruTalk.`}
+        path={`/tag/${tagSlug}`}
+      />
+      <ArchivePage
+        title={tagName}
+        kicker="أرشيف الوسم"
+        posts={posts}
+        sidebar={sidebar}
+        ads={ads}
+        menus={menus}
+      />
+    </>
   )
 }
 
@@ -115,6 +125,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
   return {
     props: {
       tagName: tag.display_name || tag.slug,
+      tagSlug: tag.slug,
       posts,
       sidebar: buildSidebar(allPosts),
       ads: getAdsConfig(),
