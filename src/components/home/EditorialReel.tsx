@@ -1,6 +1,7 @@
 import Link from "next/link"
 import Image from "next/image"
 import type { Post } from "@/lib/content/types"
+import { resolvePostImage } from "@/lib/content/media"
 
 function fmt(dateISO?: string) {
   if (!dateISO) return ""
@@ -56,7 +57,7 @@ export default function EditorialReel({ posts }: { posts?: Post[] }) {
             <Link href={hrefFor(featured)} className="block">
               <div className="relative aspect-[16/9] bg-black/5">
                 <Image
-                  src={featured.fm.featured_image || "/assets/placeholders/placeholder.jpg"}
+                  src={resolvePostImage(featured.fm, "/assets/placeholders/placeholder.jpg")}
                   alt={featured.fm.title}
                   fill
                   sizes="(max-width: 768px) 100vw, 900px"
@@ -124,7 +125,7 @@ export default function EditorialReel({ posts }: { posts?: Post[] }) {
                 >
                   <div className="relative aspect-[4/3] bg-black/5">
                     <Image
-                      src={p.fm.featured_image || "/assets/placeholders/placeholder.jpg"}
+                      src={resolvePostImage(p.fm, "/assets/placeholders/placeholder.jpg")}
                       alt={p.fm.title}
                       fill
                       sizes="260px"
@@ -156,7 +157,7 @@ export default function EditorialReel({ posts }: { posts?: Post[] }) {
                       <div className="w-[190px] overflow-hidden rounded-[16px] border border-black/10 bg-white/80">
                         <div className="relative h-[86px] bg-black/5">
                           <Image
-                            src={p.fm.featured_image || "/assets/placeholders/placeholder.jpg"}
+                            src={resolvePostImage(p.fm, "/assets/placeholders/placeholder.jpg")}
                             alt={p.fm.title}
                             fill
                             sizes="220px"

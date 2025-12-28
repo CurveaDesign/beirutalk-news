@@ -5,6 +5,7 @@ import type { SiteContactConfig, SocialKey } from "@/lib/siteConfig" // adjust p
 import { Facebook, Instagram, Youtube, Twitter, Linkedin } from "lucide-react"
 import type { AdsConfig } from "@/lib/content/data"
 import AdSlot from "@/components/ads/AdSlot"
+import { resolvePostImage } from "@/lib/content/media"
 
 type EditorPick = { title: string; slug: string }
 type CategoryItem = { title: string; slug: string }
@@ -68,7 +69,7 @@ function ListPostRows({ posts }: { posts: Post[] }) {
   return (
     <div className="divide-y divide-black/10">
       {posts.map((p) => {
-        const img = p.fm.featured_image || "/assets/placeholders/placeholder.jpg"
+        const img = resolvePostImage(p.fm, "/assets/placeholders/placeholder.jpg")
         return (
           <Link
             key={p.fm.slug}

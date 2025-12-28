@@ -76,6 +76,23 @@ content:
         label: Featured Image
         type: image
         required: true
+      - name: type
+        label: Post Type
+        type: select
+        required: false
+        default: article
+        options:
+          values:
+            - value: article
+              label: "Article"
+            - value: tv
+              label: "BeiruTalk TV"
+
+      - name: youtube
+        label: YouTube URL (TV only)
+        type: string
+        required: false
+        hint: "Paste a YouTube link (watch, youtu.be, shorts). Used only when Post Type = TV."
 
       - name: tags
         label: Tags

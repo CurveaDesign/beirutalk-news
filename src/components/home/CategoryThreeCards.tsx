@@ -1,6 +1,7 @@
 import Link from "next/link"
 import Image from "next/image"
 import type { Post } from "@/lib/content/types"
+import { resolvePostImage } from "@/lib/content/media"
 
 function postHref(slug: string) {
   return `/news/${slug}`
@@ -40,7 +41,7 @@ export default function CategoryThreeCards({
         <div className="grid gap-4 px-5 pb-6 pt-5 md:grid-cols-3">
           {items.map((p) => {
             const m = p.fm
-            const img = m.featured_image || "/assets/placeholder/cover.jpg"
+            const img = resolvePostImage(m, "/assets/placeholder/cover.jpg")
 
             return (
               <article

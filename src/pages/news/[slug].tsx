@@ -16,6 +16,7 @@ import type { Post } from "@/lib/content/types"
 import { getMenusConfig } from "@/lib/content/data"
 import type { MenusConfig } from "@/lib/content/data"
 import SeoHead from "@/components/seo/SeoHead"
+import { resolvePostImage } from "@/lib/content/media"
 
 function stripMarkdown(md: string) {
   return md
@@ -55,9 +56,14 @@ function absoluteUrl(pathname: string) {
   return pathname
 }
 
-function safeImg(src?: string) {
-  return src && src.trim().length ? src : "/assets/placeholders/placeholder.jpg"
+function safeImg(src?: string, fallback?: string) {
+  const s = (src || "").trim()
+  if (s) return s
+  const f = (fallback || "").trim()
+  if (f) return f
+  return "/assets/placeholders/placeholder.jpg"
 }
+
 function youtubeId(url?: string) {
   const u = (url || "").trim()
   if (!u) return ""
@@ -79,6 +85,14 @@ function youtubeId(url?: string) {
   if (m4?.[1]) return m4[1]
 
   return ""
+}
+function youtubeThumb(url?: string, quality: "max" | "hq" = "max") {
+  const id = youtubeId(url)
+  if (!id) return ""
+  // maxresdefault may not exist for some videos, but it’s fine as first choice
+  return quality === "max"
+    ? `https://i.ytimg.com/vi/${id}/maxresdefault.jpg`
+    : `https://i.ytimg.com/vi/${id}/hqdefault.jpg`
 }
 
 function TvPlayer({
@@ -193,7 +207,7 @@ function RelatedGrid({
           >
             <div className="relative h-[70px] w-[70px] flex-none overflow-hidden rounded-[16px] border border-black/10 bg-black/5">
               <Image
-                src={safeImg(p.fm.featured_image)}
+                src={resolvePostImage(p.fm)}
                 alt={p.fm.title}
                 fill
                 sizes="70px"
@@ -299,13 +313,15 @@ export default function NewsArticlePage({
     .map((slug) => ({ slug, label: tagsMap?.[slug]?.display_name || slug }))
   const isTv = post.fm.type === "tv"
   const yt = post.fm.youtube?.trim()
+  const tvAutoThumb = isTv && yt ? youtubeThumb(yt, "hq") : ""
+  const heroImg = safeImg(post.fm.featured_image, tvAutoThumb)
   return (
     <SiteLayout ads={ads} breaking={breaking} menus={menus}>
       <SeoHead
         title={post.fm.title}
         description={post.fm.description}
         path={`/news/${post.fm.slug}`}
-        image={post.fm.featured_image || "/assets/placeholders/placeholder.jpg"}
+        image={heroImg}
         type="article"
         publishedTime={post.fm.date}
         authorName={authorName}
@@ -317,7 +333,7 @@ export default function NewsArticlePage({
         description={post.fm.description}
         category={post.fm.category}
         categorySlug={post.fm.category_slug}
-        image={post.fm.featured_image || "/assets/placeholder-article.jpg"}
+        image={heroImg}
         authorName={authorName}
         authorSlug={authorSlug}
         dateText={dateText}

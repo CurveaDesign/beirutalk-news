@@ -1,6 +1,7 @@
 import Link from "next/link"
 import Image from "next/image"
 import type { Post } from "@/lib/content/types"
+import { resolvePostImage } from "@/lib/content/media"
 
 function fmtDate(date?: string) {
   if (!date) return ""
@@ -37,7 +38,7 @@ export default function CategoryHighlight({
   const quick = posts.slice(6, 9)  // small row
 
   const f = feature.fm
-  const featureImg = f.featured_image || "/assets/placeholders/placeholder.jpg"
+  const featureImg = resolvePostImage(f, "/assets/placeholders/placeholder.jpg")
 
   return (
     <section className="bt-container mt-10">
@@ -130,7 +131,7 @@ export default function CategoryHighlight({
             <div className="mt-4 space-y-2">
               {follow.map((p, idx) => {
                 const m = p.fm
-                const img = m.featured_image || "/assets/placeholders/placeholder.jpg"
+                const img = resolvePostImage(m, "/assets/placeholders/placeholder.jpg")
                 const isFirst = idx === 0
 
                 return (
@@ -194,7 +195,7 @@ export default function CategoryHighlight({
               <div className="grid grid-cols-3 gap-3">
                 {quick.map((p) => {
                   const m = p.fm
-                  const img = m.featured_image || "/assets/placeholders/placeholder.jpg"
+                  const img = resolvePostImage(m, "/assets/placeholders/placeholder.jpg")
                   return (
                     <Link
                       key={m.slug}

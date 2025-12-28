@@ -1,6 +1,7 @@
 import Link from "next/link"
 import Image from "next/image"
 import type { Post } from "@/lib/content/types"
+import { resolvePostImage } from "@/lib/content/media"
 
 function safeImg(src?: string) {
   return src && src.trim().length ? src : "/assets/placeholders/placeholder.jpg"
@@ -44,7 +45,7 @@ export default function RelatedPosts({
             >
               <div className="relative h-[64px] w-[64px] flex-none overflow-hidden rounded-[14px] border border-black/10 bg-black/5">
                 <Image
-                  src={safeImg(p.fm.featured_image)}
+                  src={resolvePostImage(p.fm)}
                   alt={p.fm.title}
                   fill
                   sizes="64px"

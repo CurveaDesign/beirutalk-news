@@ -7,6 +7,7 @@ import AdSlot from "@/components/ads/AdSlot"
 import type { Post } from "@/lib/content/types"
 import type { AdsConfig, MenusConfig } from "@/lib/content/data"
 import type { SiteContactConfig } from "@/lib/siteConfig"
+import { resolvePostImage } from "@/lib/content/media"
 
 function postHref(slug: string) {
   return `/news/${slug}`
@@ -100,7 +101,7 @@ function Header({
 }
 
 function LeadStory({ post }: { post: Post }) {
-  const img = safeImg(post.fm.featured_image)
+  const img = resolvePostImage(post.fm)
   const date = formatArabicDate(post.fm.date)
 
   return (
@@ -151,7 +152,7 @@ function LeadStory({ post }: { post: Post }) {
 }
 
 function ListRow({ post }: { post: Post }) {
-  const img = safeImg(post.fm.featured_image)
+  const img = resolvePostImage(post.fm)
   const date = formatArabicDate(post.fm.date)
 
   return (

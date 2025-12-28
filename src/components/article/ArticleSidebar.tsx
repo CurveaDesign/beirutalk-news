@@ -2,6 +2,7 @@ import Image from "next/image"
 import type { Post } from "@/lib/content/types"
 import AdSlot from "@/components/ads/AdSlot"
 import type { AdsConfig } from "@/lib/content/data"
+import { resolvePostImage } from "@/lib/content/media"
 
 function formatArabicDate(dateISO?: string) {
   if (!dateISO) return ""
@@ -52,7 +53,7 @@ export default function ArticleSidebar({
               >
                 <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-2xl border border-black/10 bg-black/[0.03]">
                   <Image
-                    src={p.fm.featured_image || "/assets/placeholder-article.jpg"}
+                    src={resolvePostImage(p.fm, "/assets/placeholder-article.jpg")}
                     alt={p.fm.title}
                     fill
                     sizes="64px"

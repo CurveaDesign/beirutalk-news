@@ -1,6 +1,7 @@
 import Link from "next/link"
 import Image from "next/image"
 import type { Post } from "@/lib/content/types"
+import { resolvePostImage } from "@/lib/content/media"
 
 function fmt(dateISO?: string) {
   if (!dateISO) return ""
@@ -53,7 +54,7 @@ export default function LatestBlock({ posts }: { posts?: Post[] }) {
             <Link href={hrefFor(lead)} className="block">
               <div className="relative aspect-[16/9] bg-black/5">
                 <Image
-                  src={lead.fm.featured_image || "/assets/placeholders/placeholder.jpg"}
+                  src={resolvePostImage(lead.fm, "/assets/placeholders/placeholder.jpg")}
                   alt={lead.fm.title}
                   fill
                   sizes="(max-width: 768px) 100vw, 900px"

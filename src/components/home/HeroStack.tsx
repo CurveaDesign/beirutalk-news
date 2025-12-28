@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import type { Post } from "@/lib/content/types"
+import { resolvePostImage } from "@/lib/content/media"
 
 function fmt(dateISO?: string) {
   if (!dateISO) return ""
@@ -68,7 +69,7 @@ export default function HeroStack({ posts }: { posts?: Post[] }) {
           const isFront = pos === 0
 
           const href = `/news/${p.fm.slug}`
-          const img = p.fm.featured_image || "/assets/placeholders/placeholder.jpg"
+          const img = resolvePostImage(p.fm, "/assets/placeholders/placeholder.jpg")
 
           const t =
             pos === 0

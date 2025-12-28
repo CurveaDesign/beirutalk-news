@@ -1,6 +1,7 @@
 import Link from "next/link"
 import Image from "next/image"
 import type { Post } from "@/lib/content/types"
+import { resolvePostImage } from "@/lib/content/media"
 
 function postHref(slug: string) {
   return `/news/${slug}`
@@ -20,7 +21,7 @@ export default function RelatedStrip({ posts }: { posts: Post[] }) {
         <div className="no-scrollbar flex gap-4 overflow-x-auto overflow-y-hidden px-5 pb-6 pt-4 [-webkit-overflow-scrolling:touch] [scrollbar-width:none]">
           {items.map((p) => {
             const m = p.fm
-            const img = m.featured_image || "/assets/placeholders/cover-1.jpg"
+            const img = resolvePostImage(m, "/assets/placeholders/cover-1.jpg")
             return (
               <Link
                 key={m.slug}
