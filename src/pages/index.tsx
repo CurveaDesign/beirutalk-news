@@ -122,11 +122,7 @@ export default function HomePage({
     <>
       <SeoHead
         title="الرئيسية"
-<<<<<<< ours
         description="أحدث أخبار لبنان والعالم وتحليلات BeiruTalk في مكان واحد."
-=======
-        description="تابع أحدث أخبار لبنان والعالم وتحليلات BeiruTalk مع أبرز العناوين اليومية."
->>>>>>> theirs
         path="/"
       />
       <SiteLayout ads={ads} breaking={sidebar.breaking} menus={menus}>

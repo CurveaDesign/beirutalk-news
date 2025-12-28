@@ -81,11 +81,7 @@ export default function CategoryArchive({
     <>
       <SeoHead
         title={title}
-<<<<<<< ours
         description={`أرشيف أخبار ${title} على BeiruTalk.`}
-=======
-        description={`أرشيف أخبار قسم ${title} مع أحدث العناوين والتقارير على BeiruTalk.`}
->>>>>>> theirs
         path={`/category/${slug}`}
       />
       <ArchivePage title={title} kicker={kicker} posts={posts} sidebar={sidebar} ads={ads} menus={menus} />

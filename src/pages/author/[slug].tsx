@@ -56,11 +56,7 @@ export default function AuthorArchive({
     <>
       <SeoHead
         title={authorName}
-<<<<<<< ours
         description={`مقالات وأخبار الكاتب ${authorName} على BeiruTalk.`}
-=======
-        description={`مقالات وأخبار الكاتب ${authorName} مع أحدث التحليلات على BeiruTalk.`}
->>>>>>> theirs
         path={`/author/${authorSlug}`}
       />
       <ArchivePage

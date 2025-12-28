@@ -233,11 +233,7 @@ export default function NewsArticlePage({
         title={post.fm.title}
         description={post.fm.description}
         path={`/news/${post.fm.slug}`}
-<<<<<<< ours
         image={post.fm.featured_image || "/assets/placeholder-article.jpg"}
-=======
-        image={post.fm.featured_image || "/assets/placeholders/hero2.jpg"}
->>>>>>> theirs
         type="article"
         publishedTime={post.fm.date}
         authorName={authorName}

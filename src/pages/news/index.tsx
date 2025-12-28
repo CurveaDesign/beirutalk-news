@@ -1,12 +1,12 @@
 import type { GetStaticProps } from "next"
 import ArchivePage from "@/components/archive/ArchivePage"
-import SeoHead from "@/components/seo/SeoHead"
 import { getAllPosts } from "@/lib/content/posts"
 import type { Post } from "@/lib/content/types"
 import { getAdsConfig, getEditorPicks } from "@/lib/content/data"
 import type { AdsConfig } from "@/lib/content/data"
 import { getMenusConfig } from "@/lib/content/data"
 import type { MenusConfig } from "@/lib/content/data"
+
 
 function buildSidebar(all: Post[]) {
   const latest = all.slice(0, 8)
@@ -18,9 +18,9 @@ function buildSidebar(all: Post[]) {
       categoriesMap.set(p.fm.category, p.fm.category_slug)
     }
   }
-  const categories = Array.from(categoriesMap.entries()).map(([title, slug]) => ({ title, slug }))
+	const categories = Array.from(categoriesMap.entries()).map(([title, slug]) => ({ title, slug }))
 
-  const editorPicks = getEditorPicks(all)
+	const editorPicks = getEditorPicks(all)
 
   return {
     latest,
@@ -35,35 +35,19 @@ export default function AllNewsPage({
   posts,
   sidebar,
   ads,
-  menus,
+   menus,
 }: {
   posts: Post[]
   sidebar: ReturnType<typeof buildSidebar>
   ads?: AdsConfig
-  menus: MenusConfig
+   menus: MenusConfig
 }) {
-  return (
-    <>
-      <SeoHead
-        title="آخر الأخبار"
-        description="آخر الأخبار والتقارير المحلية من بيروت ولبنان مع تحديثات مستمرة."
-        path="/news"
-      />
-      <ArchivePage
-        title="كل الأخبار"
-        kicker="الأرشيف"
-        posts={posts}
-        sidebar={sidebar}
-        ads={ads}
-        menus={menus}
-      />
-    </>
-  )
+  return <ArchivePage title="كل الأخبار" kicker="الأرشيف" posts={posts} sidebar={sidebar} ads={ads}  menus={menus}/>
 }
 
 export const getStaticProps: GetStaticProps = async () => {
   const all = getAllPosts()
-  const menus = getMenusConfig()
+   const menus = getMenusConfig()
   return {
     props: {
       posts: all,

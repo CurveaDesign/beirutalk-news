@@ -14,10 +14,6 @@ export default function TermsPage({ menus }: { menus: MenusConfig }) {
         title="الشروط والأحكام"
         description="اطلع على شروط وأحكام استخدام موقع BeiruTalk."
         path="/terms"
-<<<<<<< ours
-=======
-        noIndex
->>>>>>> theirs
       />
       <SiteLayout menus={menus}>
         <section className="relative overflow-hidden">
