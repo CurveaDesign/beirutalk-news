@@ -125,34 +125,26 @@ content:
   # -------------------------
   # Authors (JSON)
   # -------------------------
-  - name: authors
-    label: Authors
-    type: collection
-    path: content/data/authors
-    filename: "{id}.json"
-    fields:
-    - name: id
-      label: ID (latin)
-      type: string
-      required: true
-      pattern:
-        regex: "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+  - name: author
+    label: Author
+    type: reference
+    required: true
+    options:
+    collection: authors
+    search: name
+    value: id
+    label: name
 
-    - name: name
-      label: Name (Arabic)
-      type: string
-      required: true
-
-    - name: role
-      label: Role
-      type: string
-      required: false
-
-    - name: avatar
-      label: Avatar
-      type: image
-      required: false
-
+  - name: tags
+    label: Tags
+    type: reference
+    required: false
+    options:
+    collection: tags
+    multiple: true
+    search: name
+    value: id
+    label: name
   # -------------------------
   # Tags (JSON)  ✅ taxonomy folder
   # Folder: content/data/tags/<slug>.json
@@ -167,9 +159,6 @@ content:
       label: ID (latin)
       type: string
       required: true
-      pattern:
-        regex: "^[a-z0-9]+(?:-[a-z0-9]+)*$"
-
     - name: name
       label: Name (Arabic)
       type: string
