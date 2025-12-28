@@ -25,13 +25,13 @@ content:
         required: true
 
       - name: slug
-        label: Slug (Arabic recommended)
+        label: Slug (latin)
         type: string
         required: true
-        description: "Used for the URL: /news/{slug}. Use Arabic words with dashes (مثال: لبنان-اليوم)"
+        description: "Used for the URL: /news/{slug}"
         pattern:
-          regex: "^[^\\s]+(?:-[^\\s]+)*$"
-          message: "No spaces. Use dashes between words."
+          regex: "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          message: "Use lowercase latin letters, numbers, and dashes only. Replace spaces with -"
 
       - name: date
         label: Date & Time
@@ -68,9 +68,9 @@ content:
         required: true
         options:
           collection: authors
-          search: "display_name"
-          value: "{slug}"
-          label: "{display_name}"
+          search: display_name
+          value: slug
+          label: display_name
 
       - name: featured_image
         label: Featured Image
@@ -84,9 +84,9 @@ content:
         options:
           collection: tags
           multiple: true
-          search: "display_name"
-          value: "{slug}"
-          label: "{display_name}"
+          search: display_name
+          value: slug
+          label: display_name
 
       - name: hero
         label: Show in Hero
