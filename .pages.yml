@@ -130,21 +130,21 @@ content:
     type: reference
     required: true
     options:
-    collection: authors
-    search: name
-    value: id
-    label: name
+      collection: authors
+      search: name
+      value: id
+      label: name
 
   - name: tags
     label: Tags
     type: reference
     required: false
     options:
-    collection: tags
-    multiple: true
-    search: name
-    value: id
-    label: name
+      collection: tags
+      multiple: true
+      search: name
+      value: id
+      label: name
   # -------------------------
   # Tags (JSON)  ✅ taxonomy folder
   # Folder: content/data/tags/<slug>.json
