@@ -61,7 +61,11 @@ export default function LatestNewsArchive({
     <>
       <SeoHead
         title={title}
+<<<<<<< ours
         description="آخر الأخبار العاجلة والمحدثة من لبنان والعالم على BeiruTalk."
+=======
+        description="آخر الأخبار العاجلة والمحدثة من لبنان والعالم مع تحديثات مستمرة على BeiruTalk."
+>>>>>>> theirs
         path="/latest"
       />
       <ArchivePage title={title} kicker={kicker} posts={posts} sidebar={sidebar} ads={ads} menus={menus} />

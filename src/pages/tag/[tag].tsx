@@ -70,7 +70,11 @@ export default function TagArchive({
     <>
       <SeoHead
         title={tagName}
+<<<<<<< ours
         description={`أرشيف الوسم ${tagName} على BeiruTalk.`}
+=======
+        description={`أرشيف الوسم ${tagName} لأبرز الأخبار والمواضيع على BeiruTalk.`}
+>>>>>>> theirs
         path={`/tag/${tagSlug}`}
       />
       <ArchivePage
