@@ -2,7 +2,7 @@ import type { GetStaticPaths, GetStaticProps } from "next"
 import ArchivePage from "@/components/archive/ArchivePage"
 import { getAllPosts } from "@/lib/content/posts"
 import type { Post } from "@/lib/content/types"
-import { getAdsConfig, getEditorPicks } from "@/lib/content/data"
+import { getAdsConfig, getEditorPicks, getTags } from "@/lib/content/data"
 import type { AdsConfig } from "@/lib/content/data"
 
 function buildSidebar(all: Post[]) {
@@ -37,56 +37,43 @@ function buildSidebar(all: Post[]) {
 }
 
 export default function TagArchive({
-  tag,
+  tagName,
+  tagSlug,
   posts,
   sidebar,
   ads,
 }: {
-  tag: string
+  tagName: string
+  tagSlug: string
   posts: Post[]
   sidebar: ReturnType<typeof buildSidebar>
   ads?: AdsConfig
 }) {
-  return <ArchivePage title={tag} kicker="أرشيف الوسم" posts={posts} sidebar={sidebar} ads={ads} />
+  return <ArchivePage title={tagName} kicker="أرشيف الوسم" posts={posts} sidebar={sidebar} ads={ads} />
 }
 
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const all = getAllPosts()
-
-  const tagsSet = new Set<string>()
-  for (const p of all) {
-    const tags = p.fm.tags || []
-    for (const t of tags) {
-      if (typeof t === "string" && t.trim()) tagsSet.add(t.trim())
-    }
-  }
-
   return {
-    // ✅ IMPORTANT: raw tag value here (NOT encoded)
-    paths: Array.from(tagsSet).map((t) => ({ params: { tag: t } })),
+    paths: getTags().filter((t) => t?.slug).map((t) => ({ params: { tag: t.slug } })),
     fallback: false,
   }
 }
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
-  const raw = String(ctx.params?.tag || "")
-  // ✅ Safe decode (works whether Next gives encoded or decoded)
-  let tag = raw
-  try {
-    tag = decodeURIComponent(raw)
-  } catch {
-    tag = raw
-  }
-  tag = tag.trim()
+  const tagSlug = String(ctx.params?.tag || "").trim().toLowerCase()
+  const tags = getTags()
+  const tag = tags.find((t) => String(t.slug).trim().toLowerCase() === tagSlug)
+  if (!tag) return { notFound: true }
 
   const all = getAllPosts()
 
-  const posts = all.filter((p) => (p.fm.tags || []).map((x) => String(x).trim()).includes(tag))
+  const posts = all.filter((p) => (p.fm.tags || []).map((x) => String(x).trim().toLowerCase()).includes(tagSlug))
 
   return {
     props: {
-      tag,
+      tagSlug,
+      tagName: tag.display_name || tag.slug,
       posts,
       sidebar: buildSidebar(all),
       ads: getAdsConfig(),

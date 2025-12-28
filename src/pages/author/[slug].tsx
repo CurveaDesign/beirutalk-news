@@ -2,7 +2,7 @@ import type { GetStaticPaths, GetStaticProps } from "next"
 import ArchivePage from "@/components/archive/ArchivePage"
 import { getAllPosts } from "@/lib/content/posts"
 import type { Post } from "@/lib/content/types"
-import { getAdsConfig, getEditorPicks } from "@/lib/content/data"
+import { getAdsConfig, getAuthors, getEditorPicks } from "@/lib/content/data"
 import type { AdsConfig } from "@/lib/content/data"
 
 function buildSidebar(all: Post[]) {
@@ -28,13 +28,7 @@ function buildSidebar(all: Post[]) {
   }
 }
 
-function authorSlug(name: string) {
-  return name
-    .trim()
-    .replace(/\s+/g, "-")
-    .replace(/[^\p{L}\p{N}\-]+/gu, "") // keep letters/numbers (Arabic ok) + dash
-    .toLowerCase()
-}
+// Author slug is stored directly in taxonomy files (content/data/authors/<slug>.json)
 
 export default function AuthorArchive({
   authorName,
@@ -60,45 +54,25 @@ export default function AuthorArchive({
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const all = getAllPosts()
-
-  const map = new Map<string, string>() // slug -> authorName
-  for (const p of all) {
-    const a = (p.fm.author || "").trim()
-    if (!a) continue
-    map.set(authorSlug(a), a)
-  }
-
+  const list = getAuthors()
   return {
-    paths: Array.from(map.keys()).map((slug) => ({ params: { slug } })),
+    paths: list.filter((a) => a?.slug).map((a) => ({ params: { slug: a.slug } })),
     fallback: false,
   }
 }
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
-  const raw = String(ctx.params?.slug || "")
-  const slug = raw.trim().toLowerCase()
+  const slug = String(ctx.params?.slug || "").trim().toLowerCase()
+  const authors = getAuthors()
+  const author = authors.find((a) => String(a.slug).trim().toLowerCase() === slug)
+  if (!author) return { notFound: true }
 
   const all = getAllPosts()
-
-  // Find the exact author name that matches this slug
-  let authorName = ""
-  for (const p of all) {
-    const a = (p.fm.author || "").trim()
-    if (!a) continue
-    if (authorSlug(a) === slug) {
-      authorName = a
-      break
-    }
-  }
-
-  if (!authorName) return { notFound: true }
-
-  const posts = all.filter((p) => (p.fm.author || "").trim() === authorName)
+  const posts = all.filter((p) => String(p.fm.author || "").trim().toLowerCase() === slug)
 
   return {
     props: {
-      authorName,
+      authorName: author.display_name || author.slug,
       posts,
       sidebar: buildSidebar(all),
       ads: getAdsConfig(),

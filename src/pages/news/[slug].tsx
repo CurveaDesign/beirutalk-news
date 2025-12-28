@@ -9,7 +9,7 @@ import ShareRail from "@/components/article/ShareRail"
 import ArticleSidebar from "@/components/article/ArticleSidebar"
 import ArticleBody from "@/components/article/ArticleBody"
 import CurveaMetaRail from "@/components/article/CurveaMetaRail"
-import { getAdsConfig } from "@/lib/content/data"
+import { getAdsConfig, getAuthorsMap, getTagsMap } from "@/lib/content/data"
 import type { AdsConfig } from "@/lib/content/data"
 
 import { getAllPosts, getPostBySlug, pickCategoryPosts } from "@/lib/content/posts"
@@ -57,7 +57,9 @@ function safeImg(src?: string) {
   return src && src.trim().length ? src : "/assets/placeholders/hero2.jpg"
 }
 
-function TagsSection({ tags }: { tags?: string[] }) {
+type TagChip = { slug: string; label: string }
+
+function TagsSection({ tags }: { tags?: TagChip[] }) {
   if (!tags?.length) return null
 
   return (
@@ -67,14 +69,14 @@ function TagsSection({ tags }: { tags?: string[] }) {
 
         <div className="flex flex-wrap gap-2">
           {tags.map((t) => {
-            const href = `/tag/${encodeURIComponent(t)}`
+            const href = `/tag/${encodeURIComponent(t.slug)}`
             return (
               <Link
-                key={t}
+                key={t.slug}
                 href={href}
                 className="rounded-full border border-black/10 bg-white px-3 py-1 text-[12px] font-extrabold text-black/60 hover:bg-black/[0.03]"
               >
-                {t}
+                {t.label}
               </Link>
             )
           })}
@@ -182,6 +184,8 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
       related: related.slice(0, 6),
       breaking,
       ads: getAdsConfig(),
+      authorsMap: getAuthorsMap(),
+      tagsMap: getTagsMap(),
     },
   }
 }
@@ -192,17 +196,29 @@ export default function NewsArticlePage({
   related,
   ads,
   breaking,
+  authorsMap,
+  tagsMap,
 }: {
   post: Post
   latest: Post[]
   related: Post[]
    ads?: AdsConfig
   breaking?: Post[]
+  authorsMap: Record<string, { slug: string; display_name: string }>
+  tagsMap: Record<string, { slug: string; display_name: string }>
 }) {
   const clean = stripMarkdown(post.content || "")
   const readMins = estimateReadMinutes(clean)
   const dateText = formatArabicDate(post.fm.date)
   const url = absoluteUrl(`/news/${post.fm.slug}`)
+
+  const authorSlug = (post.fm.author || "").trim()
+  const authorName = authorSlug ? authorsMap?.[authorSlug]?.display_name || authorSlug : undefined
+
+  const tagChips: TagChip[] = (post.fm.tags || [])
+    .map((t) => String(t || "").trim())
+    .filter(Boolean)
+    .map((slug) => ({ slug, label: tagsMap?.[slug]?.display_name || slug }))
 
   return (
     <SiteLayout ads={ads} breaking={breaking}>
@@ -217,7 +233,8 @@ export default function NewsArticlePage({
         category={post.fm.category}
         categorySlug={post.fm.category_slug}
         image={post.fm.featured_image || "/assets/placeholder-article.jpg"}
-        author={post.fm.author}
+        authorName={authorName}
+        authorSlug={authorSlug}
         dateText={dateText}
         readMins={readMins}
       />
@@ -225,7 +242,7 @@ export default function NewsArticlePage({
       {/* ✅ fixed meta bar (your first screenshot issue) */}
       <div className="bt-container">
         <div className="bt-rail">
-          <CurveaMetaRail author={post.fm.author} date={dateText} readMins={readMins} />
+          <CurveaMetaRail authorName={authorName} authorSlug={authorSlug} date={dateText} readMins={readMins} />
         </div>
       </div>
 
@@ -241,7 +258,7 @@ export default function NewsArticlePage({
                 </div>
 
                 {/* ✅ tags at bottom (as you want) */}
-                <TagsSection tags={post.fm.tags} />
+                <TagsSection tags={tagChips} />
               </div>
             </article>
 

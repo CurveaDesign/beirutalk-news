@@ -83,3 +83,70 @@ export function getCategories(): CategoryItem[] {
 export function getSocialLinks(): SocialLinks {
   return siteContact.socials || {}
 }
+
+// -------------------------
+// Authors & Tags taxonomies
+// Stored as individual JSON files in:
+// - content/data/authors/<slug>.json
+// - content/data/tags/<slug>.json
+// -------------------------
+
+export type TaxonomyItem = {
+  slug: string
+  display_name: string
+  [key: string]: unknown
+}
+
+function readJsonDir<T extends Record<string, unknown>>(
+  dirName: string,
+  fallback: T[] = [] as T[]
+): T[] {
+  try {
+    const dir = path.join(DATA_DIR, dirName)
+    if (!fs.existsSync(dir)) return fallback
+    const files = fs
+      .readdirSync(dir)
+      .filter((f) => f.toLowerCase().endsWith(".json"))
+      .sort()
+
+    const out: T[] = []
+    for (const f of files) {
+      try {
+        const raw = fs.readFileSync(path.join(dir, f), "utf8")
+        const obj = JSON.parse(raw) as T
+        out.push(obj)
+      } catch {
+        // ignore bad entry
+      }
+    }
+    return out
+  } catch {
+    return fallback
+  }
+}
+
+export function getAuthors(): TaxonomyItem[] {
+  return readJsonDir<TaxonomyItem>("authors", [])
+}
+
+export function getTags(): TaxonomyItem[] {
+  return readJsonDir<TaxonomyItem>("tags", [])
+}
+
+export function getAuthorsMap(): Record<string, TaxonomyItem> {
+  const list = getAuthors()
+  const map: Record<string, TaxonomyItem> = {}
+  for (const a of list) {
+    if (a?.slug) map[a.slug] = a
+  }
+  return map
+}
+
+export function getTagsMap(): Record<string, TaxonomyItem> {
+  const list = getTags()
+  const map: Record<string, TaxonomyItem> = {}
+  for (const t of list) {
+    if (t?.slug) map[t.slug] = t
+  }
+  return map
+}

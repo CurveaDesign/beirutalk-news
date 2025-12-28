@@ -1,4 +1,5 @@
 import Image from "next/image"
+import Link from "next/link"
 
 export default function ArticleHero({
   title,
@@ -6,7 +7,8 @@ export default function ArticleHero({
   image,
   category,
   categorySlug,
-  author,
+  authorName,
+  authorSlug,
   dateText,
   readMins,
 }: {
@@ -15,10 +17,12 @@ export default function ArticleHero({
   image: string
   category?: string
   categorySlug?: string
-  author?: string
+  authorName?: string
+  authorSlug?: string
   dateText?: string
   readMins?: number
 }) {
+  const authorHref = authorSlug ? `/author/${encodeURIComponent(authorSlug)}` : ""
   return (
     <section className="bt-container pt-4 md:pt-6">
       <div className="bt-rail bt-edge overflow-hidden">
@@ -43,12 +47,12 @@ export default function ArticleHero({
             {category ? (
               <div className="mb-2 flex items-center gap-2">
                 {categorySlug ? (
-                  <a
+                  <Link
                     href={`/category/${categorySlug}`}
                     className="inline-flex items-center rounded-full bg-white/15 px-3 py-1 text-[12px] font-extrabold text-white backdrop-blur"
                   >
                     {category}
-                  </a>
+                  </Link>
                 ) : (
                   <span className="inline-flex items-center rounded-full bg-white/15 px-3 py-1 text-[12px] font-extrabold text-white backdrop-blur">
                     {category}
@@ -67,12 +71,12 @@ export default function ArticleHero({
             <div className="bt-edge rounded-[28px] border border-white/10 bg-black/35 p-5 backdrop-blur-xl md:p-7">
               <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-white/80">
                 {categorySlug ? (
-                  <a
+                  <Link
                     href={`/category/${categorySlug}`}
                     className="rounded-full bg-white/10 px-3 py-1 text-white/90 hover:bg-white/15"
                   >
                     {category}
-                  </a>
+                  </Link>
                 ) : category ? (
                   <span className="rounded-full bg-white/10 px-3 py-1 text-white/90">
                     {category}
@@ -85,7 +89,13 @@ export default function ArticleHero({
                   <span className="text-white/55">• {readMins} دقائق</span>
                 ) : null}
 
-                {author ? <span className="ms-auto text-white/70">• {author}</span> : null}
+                {authorName && authorSlug ? (
+                  <Link href={authorHref} className="ms-auto text-white/70 hover:underline">
+                    • {authorName}
+                  </Link>
+                ) : authorName ? (
+                  <span className="ms-auto text-white/70">• {authorName}</span>
+                ) : null}
               </div>
 
               <h1 className="mt-3 text-3xl font-extrabold leading-tight text-white md:text-4xl">
