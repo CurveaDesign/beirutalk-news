@@ -15,6 +15,12 @@
     {
       "enabled": true,
       "type": "category",
+      "label": "زاوية المحرّر",
+      "slug": "editorial"
+    },
+    {
+      "enabled": true,
+      "type": "category",
       "label": "العالم",
       "slug": "world"
     },
@@ -29,12 +35,6 @@
       "type": "category",
       "label": "تحليلات",
       "slug": "analysis"
-    },
-    {
-      "enabled": true,
-      "type": "category",
-      "label": "زاوية المحرّر",
-      "slug": "editorial"
     }
   ],
   "footerSections": [
