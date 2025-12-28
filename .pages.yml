@@ -130,11 +130,14 @@ content:
     fields:
       - name: slug
         label: ID (latin)
-        type: string
+        type: slug
         required: true
         pattern:
           regex: "^[a-z0-9]+(?:-[a-z0-9]+)*$"
           message: "Use lowercase latin letters, numbers, and dashes only."
+        options:
+          from: name
+          transform: slugify
 
       - name: name
         label: Name (Arabic)
@@ -162,11 +165,14 @@ content:
     fields:
       - name: slug
         label: ID (latin)
-        type: string
+        type: slug
         required: true
         pattern:
           regex: "^[a-z0-9]+(?:-[a-z0-9]+)*$"
           message: "Use lowercase latin letters, numbers, and dashes only."
+        options:
+          from: name
+          transform: slugify
 
       - name: name
         label: Name (Arabic)
