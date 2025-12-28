@@ -69,8 +69,8 @@ content:
         options:
           collection: authors
           search: display_name
-          value: slug
-          label: display_name
+          value: "{slug}"
+          label: "{display_name}"
 
       - name: featured_image
         label: Featured Image
@@ -85,8 +85,8 @@ content:
           collection: tags
           multiple: true
           search: display_name
-          value: slug
-          label: display_name
+          value: "{slug}"
+          label: "{display_name}"
 
       - name: hero
         label: Show in Hero
