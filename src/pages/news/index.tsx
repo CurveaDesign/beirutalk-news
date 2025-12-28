@@ -4,6 +4,9 @@ import { getAllPosts } from "@/lib/content/posts"
 import type { Post } from "@/lib/content/types"
 import { getAdsConfig, getEditorPicks } from "@/lib/content/data"
 import type { AdsConfig } from "@/lib/content/data"
+import { getMenusConfig } from "@/lib/content/data"
+import type { MenusConfig } from "@/lib/content/data"
+
 
 function buildSidebar(all: Post[]) {
   const latest = all.slice(0, 8)
@@ -32,21 +35,25 @@ export default function AllNewsPage({
   posts,
   sidebar,
   ads,
+   menus,
 }: {
   posts: Post[]
   sidebar: ReturnType<typeof buildSidebar>
   ads?: AdsConfig
+   menus: MenusConfig
 }) {
-  return <ArchivePage title="كل الأخبار" kicker="الأرشيف" posts={posts} sidebar={sidebar} ads={ads} />
+  return <ArchivePage title="كل الأخبار" kicker="الأرشيف" posts={posts} sidebar={sidebar} ads={ads}  menus={menus}/>
 }
 
 export const getStaticProps: GetStaticProps = async () => {
   const all = getAllPosts()
+   const menus = getMenusConfig()
   return {
     props: {
       posts: all,
       sidebar: buildSidebar(all),
       ads: getAdsConfig(),
+      menus,
     },
   }
 }

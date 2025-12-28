@@ -18,6 +18,8 @@ import { getAllPosts, pickEditorialPosts, pickHeroPosts, pickCategoryPosts } fro
 import { getAdsConfig, getCategories, getSocialLinks } from "@/lib/content/data"
 import { getHomepageConfig, type HomeBlock } from "@/lib/content/homepage"
 import type { AdsConfig } from "@/lib/content/data"
+import { getMenusConfig } from "@/lib/content/data"
+import type { MenusConfig } from "@/lib/content/data"
 
 function blockHref(block: HomeBlock) {
   if (block.href) return block.href
@@ -47,26 +49,26 @@ function renderBlock(block: HomeBlock, posts: Post[]) {
 
 export async function getStaticProps() {
   const posts = getAllPosts()
-
+  const menus = getMenusConfig()
   // Core homepage sections (locked)
   const hero = pickHeroPosts(posts, 6)
   const editorial = pickEditorialPosts(posts, 10)
   const latest = posts.slice(0, 5)
 
   // Sidebar data
-const editorPicks = posts
-  .filter((p) => p.fm.editor_pick === true)
-  .sort((a, b) => {
-    const ao = a.fm.editor_pick_order ?? 9999
-    const bo = b.fm.editor_pick_order ?? 9999
-    if (ao !== bo) return ao - bo
+  const editorPicks = posts
+    .filter((p) => p.fm.editor_pick === true)
+    .sort((a, b) => {
+      const ao = a.fm.editor_pick_order ?? 9999
+      const bo = b.fm.editor_pick_order ?? 9999
+      if (ao !== bo) return ao - bo
 
-    const ad = a.fm.date ? new Date(a.fm.date).getTime() : 0
-    const bd = b.fm.date ? new Date(b.fm.date).getTime() : 0
-    return bd - ad
-  })
-  .slice(0, 5)
-  .map((p) => ({ title: p.fm.title, slug: p.fm.slug }))
+      const ad = a.fm.date ? new Date(a.fm.date).getTime() : 0
+      const bd = b.fm.date ? new Date(b.fm.date).getTime() : 0
+      return bd - ad
+    })
+    .slice(0, 5)
+    .map((p) => ({ title: p.fm.title, slug: p.fm.slug }))
   const categories = getCategories()
   const social = getSocialLinks()
   const breaking = posts.filter((p) => p.fm.breaking === true).slice(0, 6)
@@ -88,6 +90,7 @@ const editorPicks = posts
       blocks,
       sidebar: { editorPicks, categories, social, breaking },
       ads: getAdsConfig(),
+      menus,
     },
   }
 }
@@ -99,6 +102,7 @@ export default function HomePage({
   blocks = [],
   sidebar,
   ads,
+  menus,
 }: {
   hero: Post[]
   editorial: Post[]
@@ -111,9 +115,10 @@ export default function HomePage({
     breaking: Post[]
   }
   ads: AdsConfig
+  menus: MenusConfig
 }) {
   return (
-    <SiteLayout ads={ads} breaking={sidebar.breaking}>
+    <SiteLayout ads={ads} breaking={sidebar.breaking} menus={menus}>
       <HeroStack posts={hero} />
 
       <AfterHeroGrid

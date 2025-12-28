@@ -1,8 +1,15 @@
 import ArchivePage from "@/components/archive/ArchivePage"
 import { getAllPosts } from "@/lib/content/posts"
 import type { Post } from "@/lib/content/types"
-import { getAdsConfig, getCategories, getEditorPicks, getSocialLinks } from "@/lib/content/data"
-import type { AdsConfig } from "@/lib/content/data"
+import {
+  getAdsConfig,
+  getCategories,
+  getEditorPicks,
+  getSocialLinks,
+  getMenusConfig,
+  type AdsConfig,
+  type MenusConfig,
+} from "@/lib/content/data"
 
 export async function getStaticProps() {
   const posts = getAllPosts()
@@ -23,6 +30,7 @@ export async function getStaticProps() {
         social: getSocialLinks(),
       },
       ads: getAdsConfig(),
+      menus: getMenusConfig(),
     },
   }
 }
@@ -33,6 +41,7 @@ export default function LatestNewsArchive({
   posts,
   sidebar,
   ads,
+  menus,
 }: {
   title: string
   kicker?: string
@@ -45,6 +54,7 @@ export default function LatestNewsArchive({
     social: { facebook?: string; instagram?: string; youtube?: string; x?: string }
   }
   ads?: AdsConfig
+  menus: MenusConfig
 }) {
-  return <ArchivePage title={title} kicker={kicker} posts={posts} sidebar={sidebar} ads={ads} />
+  return <ArchivePage title={title} kicker={kicker} posts={posts} sidebar={sidebar} ads={ads} menus={menus}/>
 }

@@ -1,9 +1,16 @@
 import Link from "next/link"
 import SiteLayout from "@/components/layout/SiteLayout"
+import { getMenusConfig } from "@/lib/content/data"
+import type { MenusConfig } from "@/lib/content/data"
 
-export default function NotFoundPage() {
+export const getStaticProps = async () => {
+  const menus = getMenusConfig()
+  return { props: { menus } }
+}
+
+export default function NotFoundPage({ menus }: { menus: MenusConfig }) {
   return (
-    <SiteLayout>
+    <SiteLayout menus={menus}>
       <section className="bt-container py-12 sm:py-14">
         <div className="bt-rail">
           <div className="bt-edge rounded-[28px] border border-black/10 bg-white/80 p-7 text-center backdrop-blur md:p-10">

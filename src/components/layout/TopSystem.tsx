@@ -42,12 +42,6 @@ function useBeirutClock() {
 ======================= */
 const FALLBACK_NAV: Array<{ href: string; label: string }> = [
   { href: "/", label: "الرئيسية" },
-  { href: "/category/lebanon", label: "لبنان" },
-  { href: "/category/world", label: "العالم" },
-  { href: "/category/economy", label: "اقتصاد" },
-  { href: "/category/analysis", label: "تحليلات" },
-  { href: "/category/editorial", label: "زاوية المحرّر" },
-  { href: "/videos", label: "BeiruTalk TV" },
 ]
 
 function linkToHref(it: MenuLink): string {

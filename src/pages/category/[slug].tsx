@@ -1,9 +1,18 @@
 import type { GetStaticPaths, GetStaticProps } from "next"
 import ArchivePage from "@/components/archive/ArchivePage"
 import { getAllPosts, pickCategoryPosts } from "@/lib/content/posts"
-import { getAdsConfig, getCategories, getEditorPicks, getSocialLinks } from "@/lib/content/data"
+import {
+  getAdsConfig,
+  getCategories,
+  getEditorPicks,
+  getSocialLinks,
+  getMenusConfig,
+  type AdsConfig,
+  type MenusConfig,
+} from "@/lib/content/data"
+
 import type { Post } from "@/lib/content/types"
-import type { AdsConfig } from "@/lib/content/data" 
+
 export const getStaticPaths: GetStaticPaths = async () => {
   const categories = getCategories()
   return {
@@ -15,6 +24,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async (ctx) => {
   const slug = String(ctx.params?.slug || "")
   const posts = getAllPosts()
+  const menus = getMenusConfig()
 
   const categories = getCategories()
   const title = categories.find((c) => c.slug === slug)?.title || slug
@@ -37,6 +47,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
         social: getSocialLinks(),
       },
       ads: getAdsConfig(),
+      menus,
     },
   }
 }
@@ -47,6 +58,7 @@ export default function CategoryArchive({
   posts,
   sidebar,
   ads,
+  menus,
 }: {
   title: string
   kicker?: string
@@ -59,7 +71,8 @@ export default function CategoryArchive({
     social: { facebook?: string; instagram?: string; youtube?: string; x?: string }
   }
   ads?: AdsConfig
+  menus: MenusConfig
 }) {
-  return <ArchivePage title={title} kicker={kicker} posts={posts} sidebar={sidebar} ads={ads} />
+  return <ArchivePage title={title} kicker={kicker} posts={posts} sidebar={sidebar} ads={ads} menus={menus} />
 }
 

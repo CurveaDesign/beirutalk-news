@@ -60,13 +60,13 @@
       "type": "category",
       "label": "العالم",
       "slug": "world",
-      "enabled": true
+      "enabled": false
     },
     {
       "type": "category",
       "label": "اقتصاد",
       "slug": "economy",
-      "enabled": true
+      "enabled": false
     }
   ]
 }

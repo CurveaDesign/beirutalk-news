@@ -14,6 +14,8 @@ import type { AdsConfig } from "@/lib/content/data"
 
 import { getAllPosts, getPostBySlug, pickCategoryPosts } from "@/lib/content/posts"
 import type { Post } from "@/lib/content/types"
+import { getMenusConfig } from "@/lib/content/data"
+import type { MenusConfig } from "@/lib/content/data"
 
 function stripMarkdown(md: string) {
   return md
@@ -164,7 +166,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async (ctx) => {
   const slug = String(ctx.params?.slug || "")
   const posts = getAllPosts()
-
+  const menus = getMenusConfig()
   // ✅ correct usage from your zip
   const post = getPostBySlug(posts, slug)
   if (!post) return { notFound: true }
@@ -186,8 +188,10 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
       ads: getAdsConfig(),
       authorsMap: getAuthorsMap(),
       tagsMap: getTagsMap(),
+       menus,
     },
   }
+  
 }
 
 export default function NewsArticlePage({
@@ -198,6 +202,7 @@ export default function NewsArticlePage({
   breaking,
   authorsMap,
   tagsMap,
+  menus,
 }: {
   post: Post
   latest: Post[]
@@ -206,6 +211,7 @@ export default function NewsArticlePage({
   breaking?: Post[]
   authorsMap: Record<string, { slug: string; display_name: string }>
   tagsMap: Record<string, { slug: string; display_name: string }>
+  menus: MenusConfig
 }) {
   const clean = stripMarkdown(post.content || "")
   const readMins = estimateReadMinutes(clean)
@@ -221,7 +227,7 @@ export default function NewsArticlePage({
     .map((slug) => ({ slug, label: tagsMap?.[slug]?.display_name || slug }))
 
   return (
-    <SiteLayout ads={ads} breaking={breaking}>
+    <SiteLayout ads={ads} breaking={breaking} menus={menus}>
       <Head>
         <title>{`${post.fm.title} | BeiruTalk`}</title>
         {post.fm.description ? <meta name="description" content={post.fm.description} /> : null}

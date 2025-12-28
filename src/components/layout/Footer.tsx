@@ -36,9 +36,6 @@ export default function Footer({ menus }: { menus?: MenusConfig }) {
   const FALLBACK = [
     { href: "/latest", label: "آخر الأخبار" },
     { href: "/news", label: "كل الأخبار" },
-    { href: "/category/lebanon", label: "لبنان" },
-    { href: "/category/world", label: "العالم" },
-    { href: "/category/economy", label: "اقتصاد" },
   ]
 
   const LINKS = sectionLinks.length ? sectionLinks : FALLBACK

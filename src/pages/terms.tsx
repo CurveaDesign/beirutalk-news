@@ -1,8 +1,14 @@
 import SiteLayout from "@/components/layout/SiteLayout"
+import { getMenusConfig } from "@/lib/content/data"
+import type { MenusConfig } from "@/lib/content/data"
 
-export default function TermsPage() {
+export const getStaticProps = async () => {
+  const menus = getMenusConfig()
+  return { props: { menus } }
+}
+export default function TermsPage({ menus }: { menus: MenusConfig }) {
   return (
-    <SiteLayout>
+    <SiteLayout menus={menus}>
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(80%_60%_at_50%_0%,rgba(0,0,0,0.06),transparent)]" />
         <div className="absolute inset-0 bt-noise opacity-25" />

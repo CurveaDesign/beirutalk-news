@@ -11,7 +11,13 @@ import {
   Music2,
 } from "lucide-react"
 import { siteContact } from "@/lib/siteConfig"
+import { getMenusConfig } from "@/lib/content/data"
+import type { MenusConfig } from "@/lib/content/data"
 
+export const getStaticProps = async () => {
+  const menus = getMenusConfig()
+  return { props: { menus } }
+}
 function Icon({ href, label, children }: { href?: string; label: string; children: React.ReactNode }) {
   if (!href || !href.trim()) return null
   const external = /^https?:\/\//i.test(href) || /^mailto:/i.test(href)
@@ -31,7 +37,7 @@ function Icon({ href, label, children }: { href?: string; label: string; childre
   )
 }
 
-export default function ContactPage() {
+export default function ContactPage({ menus }: { menus: MenusConfig }) {
   const email = siteContact.email?.trim()
   const whatsapp = siteContact.whatsapp?.trim()
 
@@ -41,7 +47,7 @@ export default function ContactPage() {
   const s = siteContact.socials || {}
 
   return (
-    <SiteLayout>
+    <SiteLayout menus={menus}>
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(80%_60%_at_50%_0%,rgba(0,0,0,0.06),transparent)]" />
         <div className="absolute inset-0 bt-noise opacity-25" />

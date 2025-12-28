@@ -2,8 +2,8 @@ import type { GetStaticPaths, GetStaticProps } from "next"
 import ArchivePage from "@/components/archive/ArchivePage"
 import { getAllPosts } from "@/lib/content/posts"
 import type { Post } from "@/lib/content/types"
-import { getAdsConfig, getAuthors, getEditorPicks } from "@/lib/content/data"
-import type { AdsConfig } from "@/lib/content/data"
+import { getAdsConfig, getAuthors, getEditorPicks, getMenusConfig,type AdsConfig, type MenusConfig, } from "@/lib/content/data"
+
 
 function buildSidebar(all: Post[]) {
   const latest = all.slice(0, 8)
@@ -35,11 +35,13 @@ export default function AuthorArchive({
   posts,
   sidebar,
   ads,
+  menus,
 }: {
   authorName: string
   posts: Post[]
   sidebar: ReturnType<typeof buildSidebar>
   ads?: AdsConfig
+  menus: MenusConfig
 }) {
 
   return (
@@ -49,6 +51,7 @@ export default function AuthorArchive({
       posts={posts}
       sidebar={sidebar}
       ads={ads}
+      menus={menus}
     />
   )
 }
@@ -65,6 +68,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
   const slug = String(ctx.params?.slug || "").trim().toLowerCase()
   const authors = getAuthors()
   const author = authors.find((a) => String(a.slug).trim().toLowerCase() === slug)
+  const menus = getMenusConfig()
   if (!author) return { notFound: true }
 
   const all = getAllPosts()
@@ -76,6 +80,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
       posts,
       sidebar: buildSidebar(all),
       ads: getAdsConfig(),
+      menus,
     },
   }
 }
