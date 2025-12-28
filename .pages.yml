@@ -68,7 +68,7 @@ content:
         options:
           collection: authors
           search: name
-          value: id
+          value: slug
           label: name
 
       - name: featured_image
@@ -84,7 +84,7 @@ content:
           collection: tags
           multiple: true
           search: name
-          value: id
+          value: slug
           label: name
 
       - name: hero
@@ -126,14 +126,15 @@ content:
     label: Authors
     type: collection
     path: content/data/authors
-    filename: "{id}.json"
+    filename: "{slug}.json"
     fields:
-      - name: id
+      - name: slug
         label: ID (latin)
         type: string
         required: true
         pattern:
           regex: "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          message: "Use lowercase latin letters, numbers, and dashes only."
 
       - name: name
         label: Name (Arabic)
@@ -157,14 +158,15 @@ content:
     label: Tags
     type: collection
     path: content/data/tags
-    filename: "{id}.json"
+    filename: "{slug}.json"
     fields:
-      - name: id
+      - name: slug
         label: ID (latin)
         type: string
         required: true
         pattern:
           regex: "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          message: "Use lowercase latin letters, numbers, and dashes only."
 
       - name: name
         label: Name (Arabic)
