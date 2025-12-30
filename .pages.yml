@@ -304,7 +304,7 @@ content:
             required: false
             hint: "Used when type=custom or to override. Example: /about"
 
-      - name: footer_categories
+      - name: footerSections
         label: Footer Categories Menu
         type: object
         list: true
@@ -417,6 +417,100 @@ content:
               - { name: slot, type: string }
               - { name: format, type: string }
               - { name: responsive, type: boolean, default: true }
+
+
+  # -------------------------
+  # Head Inject
+  # -------------------------
+  - name: head
+    label: Head Injects
+    type: file
+    path: content/data/head.json
+    fields:
+      - name: enabled
+        label: Enabled
+        type: boolean
+        default: true
+
+      - name: meta
+        label: Meta tags
+        type: object
+        list: true
+        fields:
+          - name: enabled
+            label: Enabled
+            type: boolean
+            default: true
+          - name: name
+            label: Name
+            type: string
+            required: true
+          - name: content
+            label: Content
+            type: string
+
+      - name: scripts
+        label: External scripts
+        type: object
+        list: true
+        fields:
+          - name: enabled
+            label: Enabled
+            type: boolean
+            default: false
+          - name: id
+            label: ID
+            type: string
+            required: true
+          - name: strategy
+            label: Strategy
+            type: string
+            options:
+              - beforeInteractive
+              - afterInteractive
+              - lazyOnload
+            default: afterInteractive
+          - name: src
+            label: Script src
+            type: string
+            required: true
+          
+          - name: crossOrigin
+            label: crossOrigin
+            type: select
+            required: false
+            options:
+              values:
+                - { value: anonymous, label: anonymous }
+                - { value: use-credentials, label: use-credentials }
+
+      - name: inlineScripts
+        label: Inline scripts
+        type: object
+        list: true
+        fields:
+          - name: enabled
+            label: Enabled
+            type: boolean
+            default: false
+          - name: id
+            label: ID
+            type: string
+            required: true
+          - name: strategy
+            label: Strategy
+            type: select
+            required: false
+            options:
+              values:
+                - { value: beforeInteractive, label: beforeInteractive }
+                - { value: afterInteractive, label: afterInteractive }
+                - { value: lazyOnload, label: lazyOnload }
+            default: afterInteractive
+          - name: code
+            label: Code
+            type: code
+            language: javascript
 
 settings:
   hide: true
