@@ -176,21 +176,37 @@
   }
 }
 @layer utilities {
-  @keyframes bt-marquee {
+  .bt-marquee-wrap {
+    overflow: hidden;
+  }
+
+  .bt-marquee-track {
+    display: flex;
+    width: max-content;
+    will-change: transform;
+    animation: bt-marquee-seamless 26s linear infinite;
+  }
+
+  /* Pause on hover (keep your behavior) */
+  .bt-marquee-wrap:hover .bt-marquee-track {
+    animation-play-state: paused;
+  }
+
+  /* Seamless: move by half the track width (because content is duplicated) */
+  @keyframes bt-marquee-seamless {
     from {
-      transform: translateX(-15%);
+      transform: translateX(0);
     }
     to {
-      transform: translateX(115%);
+      transform: translateX(50%);
     }
   }
 
-  .bt-marquee {
-    animation: bt-marquee 26s linear infinite;
-  }
-
-  .bt-marquee:hover {
-    animation-play-state: paused;
+  @media (prefers-reduced-motion: reduce) {
+    .bt-marquee-track {
+      animation: none !important;
+      transform: none !important;
+    }
   }
 }
 @layer utilities {
@@ -368,5 +384,31 @@
 @media (min-width: 1024px) {
   .bt-container {
     padding-inline: 28px;
+  }
+}
+
+@layer utilities {
+  /* hint that the nav is scrollable (soft edge fades) */
+  .bt-scroll-fade::before,
+  .bt-scroll-fade::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 22px;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  /* left fade */
+  .bt-scroll-fade::before {
+    left: 0;
+    background: linear-gradient(to right, rgba(245, 245, 245, 1), rgba(245, 245, 245, 0));
+  }
+
+  /* right fade */
+  .bt-scroll-fade::after {
+    right: 0;
+    background: linear-gradient(to left, rgba(245, 245, 245, 1), rgba(245, 245, 245, 0));
   }
 }
