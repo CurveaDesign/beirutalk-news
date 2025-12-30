@@ -1,7 +1,10 @@
 {
   "enabled": true,
   "meta": [
-    { "enabled": true, "name": "google-site-verification", "content": "" }
+    {
+      "enabled": true,
+      "name": "google-site-verification"
+    }
   ],
   "scripts": [
     {
@@ -24,6 +27,12 @@
       "id": "ga4-inline",
       "strategy": "afterInteractive",
       "code": "window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-XXXXXXX');"
+    },
+    {
+      "enabled": true,
+      "id": "test-inline",
+      "strategy": "afterInteractive",
+      "code": "window.__HEAD_INJECT_OK__ = true;"
     }
   ]
 }
