@@ -2,7 +2,11 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+
+  output: "export",
+
   images: {
+    unoptimized: true,
     remotePatterns: [
       // YouTube thumbnails (for BeiruTalk TV auto images)
       { protocol: "https", hostname: "i.ytimg.com" },
