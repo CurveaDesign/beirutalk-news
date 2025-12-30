@@ -3,9 +3,6 @@ import Image from "next/image"
 import type { Post } from "@/lib/content/types"
 import { resolvePostImage } from "@/lib/content/media"
 
-function safeImg(src?: string) {
-  return src && src.trim().length ? src : "/assets/placeholders/placeholder.jpg"
-}
 
 export default function RelatedPosts({
   title = "مواضيع ذات صلة",

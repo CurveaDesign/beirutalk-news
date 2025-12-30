@@ -2,6 +2,7 @@ import fs from "fs"
 import path from "path"
 import matter from "gray-matter"
 import type { Post, PostFrontmatter } from "./types"
+import { getCategories } from "@/lib/content/data"
 
 const POSTS_DIR = path.join(process.cwd(), "content", "posts")
 
@@ -15,7 +16,7 @@ function safeReadDir(dir: string) {
 
 export function getAllPosts(): Post[] {
   const files = safeReadDir(POSTS_DIR).filter((f) => f.endsWith(".md"))
-
+  const categoryList = getCategories()
   const posts: Post[] = files.map((file) => {
     const fullPath = path.join(POSTS_DIR, file)
     const raw = fs.readFileSync(fullPath, "utf8")
@@ -25,6 +26,22 @@ export function getAllPosts(): Post[] {
 
     // fallback slug from filename
     if (!fm.slug) fm.slug = file.replace(/\.md$/, "")
+
+    const category = (fm.category || "").trim()
+    const categorySlug = (fm.category_slug || "").trim()
+
+    if (!categorySlug && category) {
+      fm.category_slug = category
+      const match = categoryList.find((c) => c.slug === fm.category_slug)
+      if (match) fm.category = match.title
+    }
+
+    if (fm.category_slug) {
+      const match = categoryList.find((c) => c.slug === fm.category_slug)
+      if (!category && match) fm.category = match.title
+      if (category && category === fm.category_slug && match) fm.category = match.title
+    }
+
 
     return {
       fm,

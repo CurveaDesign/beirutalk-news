@@ -3,6 +3,7 @@ import type { Post } from "@/lib/content/types"
 import AdSlot from "@/components/ads/AdSlot"
 import type { AdsConfig } from "@/lib/content/data"
 import { resolvePostImage } from "@/lib/content/media"
+import Link from "next/link"
 
 function formatArabicDate(dateISO?: string) {
   if (!dateISO) return ""
@@ -46,7 +47,7 @@ export default function ArticleSidebar({
 
           <div className="p-4 space-y-3">
             {topRelated.map((p) => (
-              <a
+              <Link
                 key={p.fm.slug}
                 href={`/news/${p.fm.slug}`}
                 className="group flex gap-3 rounded-2xl border border-black/10 bg-white/70 p-3 transition hover:bg-black/[0.03]"
@@ -69,7 +70,7 @@ export default function ArticleSidebar({
                     {p.fm.title}
                   </div>
                 </div>
-              </a>
+              </Link>
             ))}
           </div>
         </div>
@@ -82,18 +83,18 @@ export default function ArticleSidebar({
         <div className="bt-rail bt-edge overflow-hidden">
           <div className="flex items-center justify-between px-4 pt-4">
             <div className="text-sm font-extrabold text-[color:var(--bt-headline)]">آخر الأخبار</div>
-            <a
+            <Link
               href="/latest"
               className="rounded-xl border border-black/10 bg-white/70 px-3 py-1 text-xs font-semibold text-black/60 transition hover:bg-black/[0.03]"
             >
               عرض الكل
-            </a>
+            </Link>
           </div>
 
           <div className="p-4">
             <div className="space-y-2">
               {topLatest.map((p) => (
-                <a
+                <Link
                   key={p.fm.slug}
                   href={`/news/${p.fm.slug}`}
                   className="group block rounded-2xl border border-black/10 bg-white/70 px-3 py-3 transition hover:bg-black/[0.03]"
@@ -109,7 +110,7 @@ export default function ArticleSidebar({
                     </div>
                     <span className="h-2 w-2 shrink-0 rounded-full bg-[color:var(--bt-primary)] opacity-70" />
                   </div>
-                </a>
+                </Link>
               ))}
             </div>
           </div>

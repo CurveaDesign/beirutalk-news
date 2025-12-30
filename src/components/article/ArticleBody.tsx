@@ -3,7 +3,6 @@ import Image from "next/image"
 import React from "react"
 import ReactMarkdown from "react-markdown"
 import remarkGfm from "remark-gfm"
-import type { Components } from "react-markdown"
 
 function isExternal(href?: string) {
   if (!href) return false
@@ -31,11 +30,6 @@ type CodeProps = React.ComponentPropsWithoutRef<"code"> & {
   node?: unknown
 }
 
-type ImgProps = React.ComponentPropsWithoutRef<"img"> & {
-  src?: string
-  alt?: string
-}
-
 export default function ArticleBody({ markdown }: { markdown: string }) {
   return (
     <div className="bt-article">
@@ -60,7 +54,14 @@ export default function ArticleBody({ markdown }: { markdown: string }) {
 
           // ✅ Fix hydration mismatch:
           p: ({ node, children }) => {
-            const n: any = node
+            type MdNode = {
+              children?: Array<{
+                tagName?: string
+                children?: Array<{ tagName?: string }>
+              }>
+            }
+
+            const n = node as unknown as MdNode
             const only = n?.children?.length === 1 ? n.children[0] : null
 
             // ![alt](src)

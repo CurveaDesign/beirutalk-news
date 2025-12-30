@@ -13,9 +13,7 @@ function postHref(slug: string) {
   return `/news/${slug}`
 }
 
-function safeImg(src?: string) {
-  return src && src.trim().length ? src : "/assets/placeholders/placeholder.jpg"
-}
+
 
 function formatArabicDate(dateISO?: string) {
   if (!dateISO) return ""

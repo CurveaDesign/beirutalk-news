@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import type { Post } from "@/lib/content/types"
@@ -25,8 +25,8 @@ export default function HeroStack({ posts }: { posts?: Post[] }) {
   const downX = useRef<number | null>(null)
   const dx = useRef(0)
 
-  const next = () => setActive((v) => (v + 1) % items.length)
-  const prev = () => setActive((v) => (v - 1 + items.length) % items.length)
+  const next = useCallback(() => setActive((v) => (v + 1) % items.length), [items.length])
+  const prev = useCallback(() => setActive((v) => (v - 1 + items.length) % items.length), [items.length])
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -36,7 +36,7 @@ export default function HeroStack({ posts }: { posts?: Post[] }) {
     }
     window.addEventListener("keydown", onKey)
     return () => window.removeEventListener("keydown", onKey)
-  }, [items.length])
+  }, [items.length, next, prev])
 
   const onPointerDown = (e: React.PointerEvent) => {
     downX.current = e.clientX

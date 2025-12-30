@@ -1,4 +1,3 @@
-import { ReactNode } from "react"
 import TopSystem from "./TopSystem"
 import Footer from "./Footer"
 import type { AdsConfig, MenusConfig } from "@/lib/content/data"
