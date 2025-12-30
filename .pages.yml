@@ -464,11 +464,13 @@ content:
             required: true
           - name: strategy
             label: Strategy
-            type: string
+            type: select
+            required: false
             options:
-              - beforeInteractive
-              - afterInteractive
-              - lazyOnload
+              values:
+                - { value: beforeInteractive, label: beforeInteractive }
+                - { value: afterInteractive, label: afterInteractive }
+                - { value: lazyOnload, label: lazyOnload }
             default: afterInteractive
           - name: src
             label: Script src
