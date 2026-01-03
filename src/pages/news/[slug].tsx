@@ -294,7 +294,7 @@ export default function NewsArticlePage({
   related: Post[]
   ads?: AdsConfig
   breaking?: Post[]
-  authorsMap: Record<string, { slug: string; display_name: string }>
+  authorsMap: Record<string, { slug: string; display_name: string; avatar?: string }>
   tagsMap: Record<string, { slug: string; display_name: string }>
   menus: MenusConfig
 }) {
@@ -306,7 +306,7 @@ export default function NewsArticlePage({
 
   const authorSlug = (post.fm.author || "").trim()
   const authorName = authorSlug ? authorsMap?.[authorSlug]?.display_name || authorSlug : undefined
-
+  const author = authorSlug ? authorsMap?.[authorSlug] : undefined
   const tagChips: TagChip[] = (post.fm.tags || [])
     .map((t) => String(t || "").trim())
     .filter(Boolean)
@@ -342,9 +342,12 @@ export default function NewsArticlePage({
 
       {/* ✅ fixed meta bar (your first screenshot issue) */}
       <div className="bt-container">
-        <div className="bt-rail">
-          <CurveaMetaRail authorName={authorName} authorSlug={authorSlug} date={dateText} readMins={readMins} />
+        <div className="mt-4 bt-rail md:mt-5">
+          <CurveaMetaRail authorName={authorName} authorSlug={authorSlug} date={dateText} readMins={readMins} authorAvatar={author?.avatar} />
         </div>
+      </div>
+      <div className="bt-container mt-4">
+        <ShareRail title={post.fm.title} url={url} />
       </div>
 
       <div className="bt-container py-7">
@@ -369,7 +372,6 @@ export default function NewsArticlePage({
               moreHref={post.fm.category_slug ? `/category/${post.fm.category_slug}` : undefined}
             />
 
-            <ShareRail title={post.fm.title} url={url} />
           </main>
 
           <aside className="sticky top-[110px]">
