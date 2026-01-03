@@ -1,9 +1,32 @@
 {
   "categories": [
-    { "title": "لبنان", "slug": "lebanon" },
-    { "title": "العالم", "slug": "world" },
-    { "title": "اقتصاد", "slug": "economy" },
-    { "title": "تحليلات", "slug": "analysis" },
-    { "title": "زاوية المحرّر", "slug": "editorial" }
+    {
+      "title": "زاوية المحرّر",
+      "slug": "editorial"
+    },
+    {
+      "title": "لبنان",
+      "slug": "lebanon"
+    },
+    {
+      "title": "العالم",
+      "slug": "world"
+    },
+    {
+      "title": "فن وثقافة",
+      "slug": "Art-culture"
+    },
+    {
+      "title": "إنتخابات نيابية",
+      "slug": "elections"
+    },
+    {
+      "title": "صحة",
+      "slug": "health"
+    },
+    {
+      "title": "مساحة القارئ",
+      "slug": "guest-posts"
+    }
   ]
 }
