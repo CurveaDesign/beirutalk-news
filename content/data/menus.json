@@ -9,14 +9,14 @@
     {
       "enabled": true,
       "type": "category",
-      "label": "لبنان",
-      "slug": "lebanon"
+      "label": "زاوية المحرّر",
+      "slug": "editorial"
     },
     {
       "enabled": true,
       "type": "category",
-      "label": "زاوية المحرّر",
-      "slug": "editorial"
+      "label": "لبنان",
+      "slug": "lebanon"
     },
     {
       "enabled": true,
@@ -27,46 +27,46 @@
     {
       "enabled": true,
       "type": "category",
-      "label": "اقتصاد",
-      "slug": "economy"
+      "label": "فن وثقافة",
+      "slug": "Art-culture"
     },
     {
       "enabled": true,
       "type": "category",
-      "label": "تحليلات",
-      "slug": "analysis"
+      "label": "إنتخابات نيابية",
+      "slug": "elections"
+    },
+    {
+      "enabled": true,
+      "type": "category",
+      "label": "صحة",
+      "slug": "health"
+    },
+    {
+      "enabled": true,
+      "type": "category",
+      "label": "مساحة القارئ",
+      "slug": "guest-posts"
     }
   ],
   "footerSections": [
     {
+      "enabled": true,
       "type": "custom",
       "label": "آخر الأخبار",
-      "href": "/latest",
-      "enabled": true
+      "href": "/latest"
     },
     {
-      "type": "custom",
-      "label": "كل الأخبار",
-      "href": "/news",
-      "enabled": true
-    },
-    {
+      "enabled": true,
       "type": "category",
       "label": "لبنان",
-      "slug": "lebanon",
-      "enabled": true
+      "slug": "lebanon"
     },
     {
+      "enabled": true,
       "type": "category",
-      "label": "العالم",
-      "slug": "world",
-      "enabled": false
-    },
-    {
-      "type": "category",
-      "label": "اقتصاد",
-      "slug": "economy",
-      "enabled": false
+      "label": "إنتخابات نيابية",
+      "slug": "elections"
     }
   ]
 }
