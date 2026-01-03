@@ -1,9 +1,33 @@
 {
   "blocks": [
-    { "type": "categorySpotlight", "title": "لبنان", "slug": "lebanon", "limit": 4 },
-    { "type": "threeCards", "title": "العالم", "slug": "world", "limit": 3 },
-    { "type": "horizontal", "title": "اقتصاد", "slug": "economy", "limit": 4 },
-    { "type": "textList", "title": "تحليلات", "slug": "analysis", "limit": 3 },
-    { "type": "videoStrip", "title": "BeiruTalk TV", "slug": "tv", "limit": 3, "href": "/videos" }
+    {
+      "type": "categorySpotlight",
+      "title": "لبنان",
+      "slug": "lebanon",
+      "limit": 4
+    },
+    {
+      "type": "threeCards",
+      "title": "العالم",
+      "slug": "world",
+      "limit": 3
+    },
+    {
+      "type": "textList",
+      "title": "إنتخابات نيابية",
+      "slug": "analysis",
+      "limit": 3
+    },
+    {
+      "type": "horizontal",
+      "title": "فن وثقافة",
+      "slug": "economy",
+      "limit": 4
+    },
+    {
+      "type": "threeCards",
+      "title": "صحة",
+      "slug": "editorial"
+    }
   ]
 }
