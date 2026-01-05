@@ -1,34 +1,45 @@
 import type { GetStaticProps } from "next"
 import ArchivePage from "@/components/archive/ArchivePage"
 import SeoHead from "@/components/seo/SeoHead"
-import { getAllPosts } from "@/lib/content/posts"
+
+import { getAllPosts, getAllPins, getAllBackstage } from "@/lib/content/posts"
 import type { Post } from "@/lib/content/types"
-import { getAdsConfig, getEditorPicks } from "@/lib/content/data"
-import type { AdsConfig } from "@/lib/content/data"
-import { getMenusConfig } from "@/lib/content/data"
-import type { MenusConfig } from "@/lib/content/data"
-import { siteContact, type SiteContactConfig } from "@/lib/siteConfig"
+
+import { getAdsConfig, getCategories, getMenusConfig, getSiteContact } from "@/lib/content/data"
+import type { AdsConfig, MenusConfig } from "@/lib/content/data"
+import type { SiteContactConfig } from "@/lib/siteConfig"
 
 function buildSidebar(all: Post[]) {
   const latest = all.slice(0, 8)
-  const breaking = all.filter((p) => p.fm.breaking).slice(0, 6)
+  const breaking = all.filter((p) => p.fm.breaking === true).slice(0, 6)
 
-  const categoriesMap = new Map<string, string>()
-  for (const p of all) {
-    if (p.fm.category && p.fm.category_slug) {
-      categoriesMap.set(p.fm.category, p.fm.category_slug)
-    }
-  }
-  const categories = Array.from(categoriesMap.entries()).map(([title, slug]) => ({ title, slug }))
+  const categories = getCategories()
+  const contact = getSiteContact() as SiteContactConfig
 
-  const editorPicks = getEditorPicks(all)
+  const mostRead = all
+    .filter((p) => p.fm.most_read === true)
+    .sort((a, b) => {
+      const ao = a.fm.most_read_order ?? 9999
+      const bo = b.fm.most_read_order ?? 9999
+      if (ao !== bo) return ao - bo
+
+      const ad = a.fm.date ? new Date(a.fm.date).getTime() : 0
+      const bd = b.fm.date ? new Date(b.fm.date).getTime() : 0
+      return bd - ad
+    })
+    .slice(0, 6)
+
+  const pins = getAllPins().slice(0, 6)
+  const backstage = getAllBackstage().slice(0, 6)
 
   return {
     latest,
     breaking,
-    editorPicks,
     categories,
-    contact: siteContact as SiteContactConfig,
+    contact,
+    mostRead,
+    pins,
+    backstage,
   }
 }
 
@@ -65,6 +76,7 @@ export default function AllNewsPage({
 export const getStaticProps: GetStaticProps = async () => {
   const all = getAllPosts()
   const menus = getMenusConfig()
+
   return {
     props: {
       posts: all,

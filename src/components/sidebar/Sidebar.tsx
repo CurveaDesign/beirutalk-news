@@ -1,17 +1,22 @@
 import Link from "next/link"
 import Image from "next/image"
 import type { Post } from "@/lib/content/types"
-import type { SiteContactConfig, SocialKey } from "@/lib/siteConfig" // adjust path if needed
+import type { SiteContactConfig, SocialKey } from "@/lib/siteConfig"
 import { Facebook, Instagram, Youtube, Twitter, Linkedin } from "lucide-react"
 import type { AdsConfig } from "@/lib/content/data"
 import AdSlot from "@/components/ads/AdSlot"
 import { resolvePostImage } from "@/lib/content/media"
 
-type EditorPick = { title: string; slug: string }
 type CategoryItem = { title: string; slug: string }
 
 function postHref(slug: string) {
   return `/news/${slug}`
+}
+function pinHref(slug: string) {
+  return `/pin/${slug}`
+}
+function backstageHref(slug: string) {
+  return `/backstage/${slug}`
 }
 
 function cx(...a: Array<string | false | undefined>) {
@@ -63,9 +68,14 @@ function Card({
   )
 }
 
-
-/** Premium row with thumb + meta + hover underline */
-function ListPostRows({ posts }: { posts: Post[] }) {
+/** thumb + meta rows */
+function ListPostRows({
+  posts,
+  hrefOf,
+}: {
+  posts: Post[]
+  hrefOf: (slug: string) => string
+}) {
   return (
     <div className="divide-y divide-black/10">
       {posts.map((p) => {
@@ -73,7 +83,7 @@ function ListPostRows({ posts }: { posts: Post[] }) {
         return (
           <Link
             key={p.fm.slug}
-            href={postHref(p.fm.slug)}
+            href={hrefOf(p.fm.slug)}
             className="group flex gap-3 px-4 py-3 transition hover:bg-black/[0.03]"
           >
             <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-2xl bg-black/5">
@@ -115,6 +125,41 @@ function ListPostRows({ posts }: { posts: Post[] }) {
           </Link>
         )
       })}
+    </div>
+  )
+}
+
+/** lightweight text list (good for pins/backstage if you don't want thumbs) */
+function TextRows({
+  items,
+  hrefOf,
+}: {
+  items: Post[]
+  hrefOf: (slug: string) => string
+}) {
+  return (
+    <div className="divide-y divide-black/10">
+      {items.map((p) => (
+        <Link
+          key={p.fm.slug}
+          href={hrefOf(p.fm.slug)}
+          className="group block px-4 py-3 transition hover:bg-black/[0.03]"
+        >
+          <div className="flex items-center gap-2 text-[11px] font-semibold text-black/45">
+            {p.fm.date ? <span className="truncate">{fmt(p.fm.date)}</span> : <span />}
+            <span className="ms-auto text-black/30 transition group-hover:text-black/55">‹</span>
+          </div>
+
+          <div className="mt-1 line-clamp-2 text-[13px] font-extrabold leading-snug text-[color:var(--bt-headline)]">
+            {p.fm.title}
+          </div>
+
+          <div
+            className="mt-2 h-[2px] w-0 rounded-full transition-all duration-300 group-hover:w-10"
+            style={{ background: "var(--bt-primary)" }}
+          />
+        </Link>
+      ))}
     </div>
   )
 }
@@ -170,21 +215,22 @@ function SocialPill({
 }
 
 export default function Sidebar({
-  latest = [],
   breaking = [],
-  editorPicks = [],
+  mostRead = [],
+  pins = [],
+  backstage = [],
   categories = [],
   contact,
   ads,
 }: {
-  latest: Post[]
   breaking: Post[]
-  editorPicks: EditorPick[]
+  mostRead: Post[]
+  pins: Post[]
+  backstage: Post[]
   categories: CategoryItem[]
   contact: SiteContactConfig
   ads?: AdsConfig
 }) {
-
   const s = contact?.socials ?? {}
 
   const socialDefs: Array<{
@@ -208,58 +254,42 @@ export default function Sidebar({
     { key: "tiktok", label: "تيك توك", href: s.tiktok, Icon: undefined, bg: "#000000" },
   ]
 
-  const socialItems = socialDefs.filter((i) => i.href)
+  const socialItems = socialDefs.filter((i) => !!i.href && String(i.href).trim().length > 0)
 
   return (
-    <div className="sticky top-24 space-y-5">
-{/* Ad #1 */}
-<Card title="" kicker="Advertisement" className="p-0">
-  <div className="p-4">
-    <AdSlot id="sidebar_top" ads={ads} />
-  </div>
-</Card>
+    <div className="space-y-5">
+      {/* Ad #1 */}
+      <Card title="" kicker="Advertisement" className="p-0">
+        <div className="p-4">
+          <AdSlot id="sidebar_top" ads={ads} />
+        </div>
+      </Card>
 
-      {/* Breaking */}
-      {breaking.length ? (
-        <Card title="عاجل الآن" kicker="عاجل">
-          <ListPostRows posts={breaking.slice(0, 5)} />
+      {/* Most Read */}
+      {mostRead.length ? (
+        <Card title="الأكثر قراءة" kicker="مختار يدويًا">
+          <ListPostRows posts={mostRead.slice(0, 6)} hrefOf={postHref} />
         </Card>
       ) : null}
 
-{/* Ad #2 */}
-<Card title="" kicker="Advertisement" className="p-0">
-  <div className="p-4">
-    <AdSlot id="sidebar_mid" ads={ads} />
-  </div>
-</Card>
+      {/* Ad #2 */}
+      <Card title="" kicker="Advertisement" className="p-0">
+        <div className="p-4">
+          <AdSlot id="sidebar_mid" ads={ads} />
+        </div>
+      </Card>
 
-      {/* Editor Picks */}
-      {editorPicks.length ? (
-        <Card title="مختارات المحرّر" kicker="مختارات">
-          <div className="divide-y divide-black/10">
-            {editorPicks.slice(0, 6).map((it) => (
-              <Link
-                key={it.slug}
-                href={postHref(it.slug)}
-                className="group block px-4 py-3 transition hover:bg-black/[0.03]"
-              >
-                <div className="line-clamp-2 text-[13px] font-extrabold leading-snug text-[color:var(--bt-headline)]">
-                  {it.title}
-                </div>
-                <div
-                  className="mt-2 h-[2px] w-0 rounded-full transition-all duration-300 group-hover:w-10"
-                  style={{ background: "var(--bt-primary)" }}
-                />
-              </Link>
-            ))}
-          </div>
+      {/* Pins */}
+      {pins.length ? (
+        <Card title="دبوس" kicker="مختصر">
+          <TextRows items={pins.slice(0, 6)} hrefOf={pinHref} />
         </Card>
-      ) : null
+      ) : null}
 
-      /* Latest */}
-      {latest.length ? (
-        <Card title="آخر العناوين" kicker="تغطية مباشرة">
-          <ListPostRows posts={latest.slice(0, 6)} />
+      {/* Backstage */}
+      {backstage.length ? (
+        <Card title="كواليس BeiruTalk" kicker="بدون أسماء">
+          <TextRows items={backstage.slice(0, 6)} hrefOf={backstageHref} />
         </Card>
       ) : null}
 
@@ -286,12 +316,13 @@ export default function Sidebar({
         </Card>
       ) : null}
 
-{/* Ad #3 */}
-<Card title="" kicker="Advertisement" className="p-0">
-  <div className="p-4">
-    <AdSlot id="sidebar_bottom" ads={ads} />
-  </div>
-</Card>
+      {/* Ad #3 */}
+      <Card title="" kicker="Advertisement" className="p-0">
+        <div className="p-4">
+          <AdSlot id="sidebar_bottom" ads={ads} />
+        </div>
+      </Card>
+
       {/* Newsletter */}
       <Card title="النشرة البريدية" kicker="بريد">
         <div className="p-4">

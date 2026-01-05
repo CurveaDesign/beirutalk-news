@@ -2,18 +2,19 @@ import type { GetStaticPaths, GetStaticProps } from "next"
 import ArchivePage from "@/components/archive/ArchivePage"
 import SeoHead from "@/components/seo/SeoHead"
 
-import { getAllPosts } from "@/lib/content/posts"
+import { getAllPosts, getAllPins, getAllBackstage } from "@/lib/content/posts"
 import type { Post } from "@/lib/content/types"
 
 import {
   getAdsConfig,
-  getEditorPicks,
   getTags,
   getMenusConfig,
+  getSiteContact,
   type AdsConfig,
   type MenusConfig,
 } from "@/lib/content/data"
-import { siteContact, type SiteContactConfig } from "@/lib/siteConfig"
+
+import type { SiteContactConfig } from "@/lib/siteConfig"
 
 /* ======================
    Sidebar builder
@@ -34,14 +35,32 @@ function buildSidebar(all: Post[]) {
     slug,
   }))
 
-  const editorPicks = getEditorPicks(all)
+  const mostRead = all
+    .filter((p) => p.fm.most_read === true)
+    .sort((a, b) => {
+      const ao = a.fm.most_read_order ?? 9999
+      const bo = b.fm.most_read_order ?? 9999
+      if (ao !== bo) return ao - bo
+
+      const ad = a.fm.date ? new Date(a.fm.date).getTime() : 0
+      const bd = b.fm.date ? new Date(b.fm.date).getTime() : 0
+      return bd - ad
+    })
+    .slice(0, 6)
+
+  const pins = getAllPins().slice(0, 6)
+  const backstage = getAllBackstage().slice(0, 6)
+
+  const contact = getSiteContact() as SiteContactConfig
 
   return {
     latest,
     breaking,
-    editorPicks,
     categories,
-    contact: siteContact as SiteContactConfig,
+    contact,
+    mostRead,
+    pins,
+    backstage,
   }
 }
 
@@ -70,6 +89,7 @@ export default function TagArchive({
         description={`أرشيف الوسم ${tagName} لأبرز الأخبار والمواضيع المتداولة على BeiruTalk.`}
         path={`/tag/${tagSlug}`}
       />
+
       <ArchivePage
         title={tagName}
         kicker="أرشيف الوسم"

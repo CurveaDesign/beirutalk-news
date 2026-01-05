@@ -1,17 +1,20 @@
 import type { GetStaticPaths, GetStaticProps } from "next"
 import ArchivePage from "@/components/archive/ArchivePage"
 import SeoHead from "@/components/seo/SeoHead"
-import { getAllPosts, pickCategoryPosts } from "@/lib/content/posts"
+
+import { getAllPosts, getAllPins, getAllBackstage, pickCategoryPosts } from "@/lib/content/posts"
+import type { Post } from "@/lib/content/types"
+
 import {
   getAdsConfig,
   getCategories,
-  getEditorPicks,
   getMenusConfig,
+  getSiteContact,
   type AdsConfig,
   type MenusConfig,
 } from "@/lib/content/data"
-import type { Post } from "@/lib/content/types"
-import { siteContact, type SiteContactConfig } from "@/lib/siteConfig"
+
+import type { SiteContactConfig } from "@/lib/siteConfig"
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const categories = getCategories()
@@ -34,6 +37,24 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
   const latest = posts.slice(0, 6)
   const breaking = posts.filter((p) => p.fm.breaking === true).slice(0, 6)
 
+  const mostRead = posts
+    .filter((p) => p.fm.most_read === true)
+    .sort((a, b) => {
+      const ao = a.fm.most_read_order ?? 9999
+      const bo = b.fm.most_read_order ?? 9999
+      if (ao !== bo) return ao - bo
+
+      const ad = a.fm.date ? new Date(a.fm.date).getTime() : 0
+      const bd = b.fm.date ? new Date(b.fm.date).getTime() : 0
+      return bd - ad
+    })
+    .slice(0, 6)
+
+  const pins = getAllPins().slice(0, 6)
+  const backstage = getAllBackstage().slice(0, 6)
+
+  const contact = getSiteContact() as SiteContactConfig
+
   return {
     props: {
       title,
@@ -43,9 +64,11 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
       sidebar: {
         latest,
         breaking,
-        editorPicks: getEditorPicks(posts),
         categories,
-        contact: siteContact,
+        contact,
+        mostRead,
+        pins,
+        backstage,
       },
       ads: getAdsConfig(),
       menus,
@@ -69,9 +92,11 @@ export default function CategoryArchive({
   sidebar: {
     latest: Post[]
     breaking: Post[]
-    editorPicks: { title: string; slug: string }[]
     categories: { title: string; slug: string }[]
     contact: SiteContactConfig
+    mostRead: Post[]
+    pins: Post[]
+    backstage: Post[]
   }
   ads?: AdsConfig
   menus: MenusConfig
@@ -83,14 +108,8 @@ export default function CategoryArchive({
         description={`أرشيف أخبار قسم ${title} مع أحدث العناوين اليومية والتقارير على BeiruTalk.`}
         path={`/category/${slug}`}
       />
-      <ArchivePage
-        title={title}
-        kicker={kicker}
-        posts={posts}
-        sidebar={sidebar}
-        ads={ads}
-        menus={menus}
-      />
+
+      <ArchivePage title={title} kicker={kicker} posts={posts} sidebar={sidebar} ads={ads} menus={menus} />
     </>
   )
 }

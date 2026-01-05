@@ -5,6 +5,8 @@ import type { Post, PostFrontmatter } from "./types"
 import { getCategories } from "@/lib/content/data"
 
 const POSTS_DIR = path.join(process.cwd(), "content", "posts")
+const PINS_DIR = path.join(process.cwd(), "content", "pins")
+const BACKSTAGE_DIR = path.join(process.cwd(), "content", "backstage")
 
 function safeReadDir(dir: string) {
   try {
@@ -14,14 +16,14 @@ function safeReadDir(dir: string) {
   }
 }
 
-export function getAllPosts(): Post[] {
-  const files = safeReadDir(POSTS_DIR).filter((f) => f.endsWith(".md"))
+function parseMarkdownDir(dir: string): Post[] {
+  const files = safeReadDir(dir).filter((f) => f.endsWith(".md"))
   const categoryList = getCategories()
-  const posts: Post[] = files.map((file) => {
-    const fullPath = path.join(POSTS_DIR, file)
+
+  const items: Post[] = files.map((file) => {
+    const fullPath = path.join(dir, file)
     const raw = fs.readFileSync(fullPath, "utf8")
     const parsed = matter(raw)
-
     const fm = parsed.data as PostFrontmatter
 
     // fallback slug from filename
@@ -30,6 +32,7 @@ export function getAllPosts(): Post[] {
     const category = (fm.category || "").trim()
     const categorySlug = (fm.category_slug || "").trim()
 
+    // keep your category mapping logic safe (for normal posts)
     if (!categorySlug && category) {
       fm.category_slug = category
       const match = categoryList.find((c) => c.slug === fm.category_slug)
@@ -42,7 +45,6 @@ export function getAllPosts(): Post[] {
       if (category && category === fm.category_slug && match) fm.category = match.title
     }
 
-
     return {
       fm,
       content: parsed.content ?? "",
@@ -50,13 +52,25 @@ export function getAllPosts(): Post[] {
   })
 
   // newest first
-  posts.sort((a, b) => {
+  items.sort((a, b) => {
     const ad = new Date(a.fm.date).getTime() || 0
     const bd = new Date(b.fm.date).getTime() || 0
     return bd - ad
   })
 
-  return posts
+  return items
+}
+
+export function getAllPosts(): Post[] {
+  return parseMarkdownDir(POSTS_DIR)
+}
+
+export function getAllPins(): Post[] {
+  return parseMarkdownDir(PINS_DIR)
+}
+
+export function getAllBackstage(): Post[] {
+  return parseMarkdownDir(BACKSTAGE_DIR)
 }
 
 export function pickHeroPosts(posts: Post[], limit = 4) {
@@ -66,10 +80,9 @@ export function pickHeroPosts(posts: Post[], limit = 4) {
 }
 
 export function pickEditorialPosts(posts: Post[], limit = 4) {
-  return posts
-    .filter((p) => p.fm.category_slug === "editorial")
-    .slice(0, limit)
+  return posts.filter((p) => p.fm.category_slug === "editorial").slice(0, limit)
 }
+
 export function pickCategoryPosts(posts: Post[], slug: string, limit = 4) {
   return posts.filter((p) => p.fm.category_slug === slug).slice(0, limit)
 }
@@ -90,4 +103,14 @@ export function pickRelatedPosts(posts: Post[], current: Post, limit = 6) {
 export function getAllPostSlugs() {
   const posts = getAllPosts()
   return posts.map((p) => p.fm.slug)
+}
+
+export function getAllPinSlugs() {
+  const pins = getAllPins()
+  return pins.map((p) => p.fm.slug)
+}
+
+export function getAllBackstageSlugs() {
+  const items = getAllBackstage()
+  return items.map((p) => p.fm.slug)
 }

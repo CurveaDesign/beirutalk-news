@@ -1,17 +1,20 @@
 import type { GetStaticPaths, GetStaticProps } from "next"
 import ArchivePage from "@/components/archive/ArchivePage"
 import SeoHead from "@/components/seo/SeoHead"
-import { getAllPosts } from "@/lib/content/posts"
+
+import { getAllPosts, getAllPins, getAllBackstage } from "@/lib/content/posts"
 import type { Post } from "@/lib/content/types"
+
 import {
   getAdsConfig,
   getAuthors,
-  getEditorPicks,
   getMenusConfig,
+  getSiteContact,
   type AdsConfig,
   type MenusConfig,
 } from "@/lib/content/data"
-import { siteContact, type SiteContactConfig } from "@/lib/siteConfig"
+
+import type { SiteContactConfig } from "@/lib/siteConfig"
 
 function buildSidebar(all: Post[]) {
   const latest = all.slice(0, 8)
@@ -25,18 +28,34 @@ function buildSidebar(all: Post[]) {
   }
   const categories = Array.from(categoriesMap.entries()).map(([title, slug]) => ({ title, slug }))
 
-  const editorPicks = getEditorPicks(all)
+  const mostRead = all
+    .filter((p) => p.fm.most_read === true)
+    .sort((a, b) => {
+      const ao = a.fm.most_read_order ?? 9999
+      const bo = b.fm.most_read_order ?? 9999
+      if (ao !== bo) return ao - bo
+
+      const ad = a.fm.date ? new Date(a.fm.date).getTime() : 0
+      const bd = b.fm.date ? new Date(b.fm.date).getTime() : 0
+      return bd - ad
+    })
+    .slice(0, 6)
+
+  const pins = getAllPins().slice(0, 6)
+  const backstage = getAllBackstage().slice(0, 6)
+
+  const contact = getSiteContact() as SiteContactConfig
 
   return {
     latest,
     breaking,
-    editorPicks,
     categories,
-    contact: siteContact as SiteContactConfig,
+    contact,
+    mostRead,
+    pins,
+    backstage,
   }
 }
-
-// Author slug is stored directly in taxonomy files (content/data/authors/<slug>.json)
 
 export default function AuthorArchive({
   authorName,
@@ -60,6 +79,7 @@ export default function AuthorArchive({
         description={`مقالات وأخبار الكاتب ${authorName} مع أحدث التحليلات والتقارير على BeiruTalk.`}
         path={`/author/${authorSlug}`}
       />
+
       <ArchivePage
         title={authorName}
         kicker="أرشيف الكاتب"

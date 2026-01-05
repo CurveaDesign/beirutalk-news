@@ -1,5 +1,3 @@
-import siteContactData from "@/lib/content/data/siteContact.json"
-
 export type SocialKey =
   | "facebook"
   | "instagram"
@@ -14,4 +12,14 @@ export type SiteContactConfig = {
   socials: Partial<Record<SocialKey, string>>
 }
 
-export const siteContact: SiteContactConfig = siteContactData
+/**
+ * NOTE:
+ * We no longer import siteContact.json here.
+ * Source of truth is PageCMS file: content/data/siteContact.json
+ * Read it via getSiteContact() from src/lib/content/data.ts inside getStaticProps.
+ */
+export const siteContact: SiteContactConfig = {
+  email: "",
+  whatsapp: "",
+  socials: {},
+}

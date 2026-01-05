@@ -11,7 +11,7 @@ export default function AfterHeroGrid({
         <main className="min-w-0">{main}</main>
 
         {/* STICKY LIVES HERE */}
-        <aside className="hidden lg:block">
+        <aside className="lg:block">
           <div className="sticky top-[120px]">
             {aside}
           </div>

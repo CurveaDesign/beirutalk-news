@@ -1,7 +1,7 @@
 import fs from "fs"
 import path from "path"
-import { siteContact } from "@/lib/siteConfig"
 import type { Post } from "@/lib/content/types"
+import type { SiteContactConfig } from "@/lib/siteConfig"
 
 const DATA_DIR = path.join(process.cwd(), "content", "data")
 
@@ -17,7 +17,9 @@ function readJson<T>(file: string, fallback: T): T {
 
 export type EditorPick = { title: string; slug: string }
 export type CategoryItem = { title: string; slug: string }
-export type SocialLinks = Partial<Record<"facebook" | "instagram" | "x" | "youtube" | "tiktok" | "linkedin", string>>
+export type SocialLinks = Partial<
+  Record<"facebook" | "instagram" | "x" | "youtube" | "tiktok" | "linkedin", string>
+>
 
 export type AdsConfig = {
   adsense: { enabled: boolean; client?: string }
@@ -26,7 +28,14 @@ export type AdsConfig = {
     enabled: boolean
     label?: string
     type: "custom" | "adsense"
-    custom?: { image?: string; href?: string; alt?: string; openInNewTab?: boolean; width?: number; height?: number }
+    custom?: {
+      image?: string
+      href?: string
+      alt?: string
+      openInNewTab?: boolean
+      width?: number
+      height?: number
+    }
     adsense?: { slot?: string; format?: string; responsive?: boolean }
   }>
 }
@@ -36,21 +45,15 @@ export function getAdsConfig() {
 }
 
 export type MenuLink = {
-  /** home | category | custom */
   type: "home" | "category" | "custom"
-  /** Label shown in UI (Arabic) */
   label: string
-  /** For type=custom (or if you want to override) */
   href?: string
-  /** For type=category */
   slug?: string
-  /** Toggle visibility */
   enabled?: boolean
 }
+
 export type MenusConfig = {
-  /** Header navbar items (order matters) */
   header: MenuLink[]
-  /** Footer "الأقسام" links (order matters) */
   footerSections: MenuLink[]
 }
 
@@ -74,7 +77,6 @@ export function getMenusConfig(): MenusConfig {
     ],
   }
 
-  // menus.json is optional. If missing, fallback is used.
   const cfg = readJson<Partial<MenusConfig>>("menus.json", fallback)
 
   const normalize = (items?: MenuLink[]) =>
@@ -82,19 +84,17 @@ export function getMenusConfig(): MenusConfig {
       .filter((x) => (x?.enabled ?? true) && !!(x?.label || "").trim())
       .map((x) => ({ ...x, enabled: x.enabled ?? true }))
 
-  const out: MenusConfig = {
+  return {
     header: normalize(cfg.header ?? fallback.header),
     footerSections: normalize(cfg.footerSections ?? fallback.footerSections),
   }
-
-  return out
 }
 
-
+/**
+ * OLD: editor picks (will be removed later once you remove from YAML + UI)
+ * Keeping it here temporarily because your project still imports it in some places.
+ */
 export function getEditorPicks(allPosts: Post[] = []): EditorPick[] {
-  // Preferred: editor chooses directly inside each post frontmatter
-  // editor_pick: true
-  // editor_pick_order: number (optional)
   const picks = allPosts
     .filter((p) => p.fm.editor_pick === true)
     .sort((a, b) => {
@@ -111,7 +111,6 @@ export function getEditorPicks(allPosts: Post[] = []): EditorPick[] {
 
   if (picks.length) return picks
 
-  // Backward compatibility: if no posts are flagged, we fall back to editor_picks.json (if present)
   const data = readJson<{ picks: Array<Partial<EditorPick> & { slug: string }> }>("editor_picks.json", { picks: [] })
   const fromJson = (data.picks || [])
     .map((p) => {
@@ -127,7 +126,6 @@ export function getEditorPicks(allPosts: Post[] = []): EditorPick[] {
 
   if (fromJson.length) return fromJson
 
-  // Final fallback: most recent posts
   return allPosts.slice(0, 5).map((p) => ({ title: p.fm.title, slug: p.fm.slug }))
 }
 
@@ -136,15 +134,19 @@ export function getCategories(): CategoryItem[] {
   return data.categories || []
 }
 
+/** ✅ Source of truth: PageCMS file content/data/siteContact.json */
+export function getSiteContact(): SiteContactConfig {
+  return readJson<SiteContactConfig>("siteContact.json", { email: "", whatsapp: "", socials: {} })
+}
+
+/** ✅ Social links should come from the same source as Sidebar */
 export function getSocialLinks(): SocialLinks {
-  return siteContact.socials || {}
+  const c = getSiteContact()
+  return (c?.socials || {}) as SocialLinks
 }
 
 // -------------------------
 // Authors & Tags taxonomies
-// Stored as individual JSON files in:
-// - content/data/authors/<slug>.json
-// - content/data/tags/<slug>.json
 // -------------------------
 
 export type TaxonomyItem = {
@@ -153,17 +155,11 @@ export type TaxonomyItem = {
   [key: string]: unknown
 }
 
-function readJsonDir<T extends Record<string, unknown>>(
-  dirName: string,
-  fallback: T[] = [] as T[]
-): T[] {
+function readJsonDir<T extends Record<string, unknown>>(dirName: string, fallback: T[] = [] as T[]): T[] {
   try {
     const dir = path.join(DATA_DIR, dirName)
     if (!fs.existsSync(dir)) return fallback
-    const files = fs
-      .readdirSync(dir)
-      .filter((f) => f.toLowerCase().endsWith(".json"))
-      .sort()
+    const files = fs.readdirSync(dir).filter((f) => f.toLowerCase().endsWith(".json")).sort()
 
     const out: T[] = []
     for (const f of files) {
@@ -206,4 +202,3 @@ export function getTagsMap(): Record<string, TaxonomyItem> {
   }
   return map
 }
-

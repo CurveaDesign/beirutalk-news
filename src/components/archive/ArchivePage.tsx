@@ -1,3 +1,5 @@
+// components/archive/ArchivePage.tsx
+
 import Link from "next/link"
 import Image from "next/image"
 import SiteLayout from "@/components/layout/SiteLayout"
@@ -12,8 +14,6 @@ import { resolvePostImage } from "@/lib/content/media"
 function postHref(slug: string) {
   return `/news/${slug}`
 }
-
-
 
 function formatArabicDate(dateISO?: string) {
   if (!dateISO) return ""
@@ -65,9 +65,7 @@ function Header({
   return (
     <section className="bt-container py-4 sm:py-6">
       <div className="bt-rail p-5">
-        {kicker ? (
-          <div className="text-[12px] font-extrabold text-black/45">{kicker}</div>
-        ) : null}
+        {kicker ? <div className="text-[12px] font-extrabold text-black/45">{kicker}</div> : null}
 
         <div className="mt-1 flex flex-wrap items-end justify-between gap-3">
           <h1 className="text-2xl font-extrabold tracking-tight text-[color:var(--bt-headline)] sm:text-3xl">
@@ -105,8 +103,7 @@ function LeadStory({ post }: { post: Post }) {
   return (
     <article className="overflow-hidden rounded-[22px] border border-black/10 bg-white">
       <Link href={postHref(post.fm.slug)} className="block">
-        {/* Taller hero on mobile */}
-        <div className="relative aspect-[4/3] sm:aspect-[16/9] bg-black/5">
+        <div className="relative aspect-[4/3] bg-black/5 sm:aspect-[16/9]">
           <Image
             src={img}
             alt={post.fm.title}
@@ -130,14 +127,13 @@ function LeadStory({ post }: { post: Post }) {
             {post.fm.title}
           </h2>
 
-          {/* Desktop only excerpt/meta to avoid heavy mobile */}
           {post.fm.description ? (
-            <p className="mt-2 hidden sm:block line-clamp-3 text-[14px] leading-relaxed text-black/60">
+            <p className="mt-2 hidden line-clamp-3 text-[14px] leading-relaxed text-black/60 sm:block">
               {post.fm.description}
             </p>
           ) : null}
 
-          <div className="mt-4 hidden sm:flex items-center justify-between text-[12px] font-bold text-black/45">
+          <div className="mt-4 hidden items-center justify-between text-[12px] font-bold text-black/45 sm:flex">
             <span>{post.fm.author || "BeiruTalk"}</span>
             <span className="font-extrabold text-black/55">
               اقرأ الخبر <span className="inline-block translate-y-[1px]">←</span>
@@ -157,7 +153,6 @@ function ListRow({ post }: { post: Post }) {
     <article>
       <Link href={postHref(post.fm.slug)} className="group block py-5 sm:py-4">
         <div className="flex items-start gap-4">
-          {/* Bigger thumbs on mobile (anchors the row) */}
           <div className="relative h-[102px] w-[102px] flex-none overflow-hidden rounded-[14px] border border-black/10 bg-black/5 sm:h-[78px] sm:w-[78px]">
             <Image
               src={img}
@@ -181,14 +176,12 @@ function ListRow({ post }: { post: Post }) {
             </h3>
 
             {post.fm.description ? (
-              <p className="mt-1 line-clamp-1 sm:line-clamp-2 text-[12px] sm:text-[13px] leading-relaxed text-black/55">
+              <p className="mt-1 line-clamp-1 text-[12px] leading-relaxed text-black/55 sm:line-clamp-2 sm:text-[13px]">
                 {post.fm.description}
               </p>
             ) : null}
 
-            <div className="mt-2 text-[11px] font-bold text-black/40">
-              {post.fm.author || "BeiruTalk"}
-            </div>
+            <div className="mt-2 text-[11px] font-bold text-black/40">{post.fm.author || "BeiruTalk"}</div>
           </div>
         </div>
       </Link>
@@ -212,15 +205,15 @@ export default function ArchivePage({
   sidebar: {
     latest: Post[]
     breaking: Post[]
-    editorPicks: { title: string; slug: string }[]
     categories: { title: string; slug: string }[]
     contact: SiteContactConfig
-
+    mostRead: Post[]
+    pins: Post[]
+    backstage: Post[]
   }
   ads?: AdsConfig
   menus?: MenusConfig
 }) {
-
   const lead = posts[0]
   const rest = posts.slice(1)
 
@@ -229,7 +222,6 @@ export default function ArchivePage({
 
   return (
     <SiteLayout ads={ads} breaking={sidebar.breaking} menus={menus}>
-
       <Header title={title} kicker={kicker} count={posts.length} />
 
       <AfterHeroGrid
@@ -242,7 +234,6 @@ export default function ArchivePage({
                 </div>
               ) : null}
 
-              {/* List: flat on mobile, boxed on desktop */}
               <div className="bg-white sm:overflow-hidden sm:rounded-[22px] sm:border sm:border-black/10">
                 <div className="px-4 sm:px-5">
                   {stream.map((x, idx) => {
@@ -258,9 +249,10 @@ export default function ArchivePage({
         }
         aside={
           <Sidebar
-            latest={sidebar.latest}
             breaking={sidebar.breaking}
-            editorPicks={sidebar.editorPicks}
+            mostRead={sidebar.mostRead}
+            pins={sidebar.pins}
+            backstage={sidebar.backstage}
             categories={sidebar.categories}
             contact={sidebar.contact}
             ads={ads}

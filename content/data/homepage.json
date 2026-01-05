@@ -28,6 +28,12 @@
       "type": "threeCards",
       "title": "صحة",
       "slug": "editorial"
-    }
+    },
+    {
+  "type": "videoStrip",
+  "title": "BeiruTalk TV",
+  "href": "/videos",
+  "limit": 3
+}
   ]
 }
