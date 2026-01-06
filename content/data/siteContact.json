@@ -1,9 +1,9 @@
 {
   "email": "info@beirutalk.news",
   "socials": {
-    "facebook": "facebook.com",
-    "instagram": "instagram.com",
-    "x": "x.com",
-    "youtube": "youtube.com"
+    "facebook": "https://facebook.com/yourpage",
+    "instagram": "https://instagram.com/yourpage",
+    "x": "https://x.com/yourpage",
+    "youtube": "https://youtube.com/@yourchannel"
   }
 }

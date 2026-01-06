@@ -12,7 +12,7 @@ import { getAdsConfig, getSiteContact } from "@/lib/content/data"
 import type { AdsConfig } from "@/lib/content/data"
 import type { SiteContactConfig } from "@/lib/siteConfig"
 
-import { getAllPins } from "@/lib/content/posts"
+import { getAllPins, getAllPosts } from "@/lib/content/posts"
 import type { Post } from "@/lib/content/types"
 
 import { getMenusConfig } from "@/lib/content/data"
@@ -91,9 +91,27 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
   const post = findBySlug(pins, slug)
   if (!post) return { notFound: true }
 
-  // Sidebar content can still come from pins (simple) or from posts later if you want.
-  const latest = pins.filter((p) => p.fm.slug !== post.fm.slug).slice(0, 6)
-  const mostRead = pins.slice(0, 6) // pins don’t have most_read normally — keep simple & stable
+  // ✅ Global sidebar like /news/[slug]
+  const posts = getAllPosts()
+
+  const latest = posts.slice(0, 6)
+
+  const breaking = posts
+    .filter((p) => p.fm.breaking === true)
+    .slice(0, 8)
+
+  const mostRead = posts
+    .filter((p) => p.fm.most_read === true)
+    .sort((a, b) => {
+      const ao = a.fm.most_read_order ?? 9999
+      const bo = b.fm.most_read_order ?? 9999
+      if (ao !== bo) return ao - bo
+
+      const ad = a.fm.date ? new Date(a.fm.date).getTime() : 0
+      const bd = b.fm.date ? new Date(b.fm.date).getTime() : 0
+      return bd - ad
+    })
+    .slice(0, 6)
 
   const contact = getSiteContact() as SiteContactConfig
 
@@ -101,6 +119,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
     props: {
       post,
       latest,
+      breaking,
       mostRead,
       contact,
       ads: getAdsConfig(),
@@ -118,6 +137,7 @@ export default function PinSlugPage({
   mostRead,
   contact,
   ads,
+  breaking,
   menus,
 }: {
   post: Post
@@ -125,6 +145,7 @@ export default function PinSlugPage({
   mostRead: Post[]
   contact: SiteContactConfig
   ads?: AdsConfig
+  breaking?: Post[]
   menus: MenusConfig
 }) {
   const clean = stripMarkdown(post.content || "")
@@ -135,7 +156,7 @@ export default function PinSlugPage({
   const heroImg = resolvePostImage(post.fm)
 
   return (
-    <SiteLayout ads={ads} breaking={[]} menus={menus}>
+    <SiteLayout ads={ads} breaking={breaking} menus={menus}>
       <SeoHead
         title={post.fm.title}
         description={post.fm.description || "دبوس BeiruTalk"}
