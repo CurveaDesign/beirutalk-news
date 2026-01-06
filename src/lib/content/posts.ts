@@ -19,6 +19,15 @@ function safeReadDir(dir: string) {
 function parseMarkdownDir(dir: string): Post[] {
   const files = safeReadDir(dir).filter((f) => f.endsWith(".md"))
   const categoryList = getCategories()
+  const categoriesBySlug = new Map<string, string>()
+  const categoriesByTitle = new Map<string, string>()
+  for (const category of categoryList) {
+    const slug = typeof category.slug === "string" ? category.slug.trim() : ""
+    const title = typeof category.title === "string" ? category.title.trim() : ""
+    if (!slug || !title) continue
+    categoriesBySlug.set(slug, title)
+    categoriesByTitle.set(title, slug)
+  }
 
   const items: Post[] = files.map((file) => {
     const fullPath = path.join(dir, file)
@@ -29,20 +38,43 @@ function parseMarkdownDir(dir: string): Post[] {
     // fallback slug from filename
     if (!fm.slug) fm.slug = file.replace(/\.md$/, "")
 
-    const category = (fm.category || "").trim()
-    const categorySlug = (fm.category_slug || "").trim()
+    const category =
+      typeof fm.category === "string"
+        ? fm.category.trim()
+        : ""
+    const categorySlug =
+      typeof fm.category_slug === "string"
+        ? fm.category_slug.trim()
+        : ""
 
-    // keep your category mapping logic safe (for normal posts)
-    if (!categorySlug && category) {
-      fm.category_slug = category
-      const match = categoryList.find((c) => c.slug === fm.category_slug)
-      if (match) fm.category = match.title
+    let resolvedSlug = categorySlug
+    let resolvedTitle = category
+
+    if (!resolvedSlug && category) {
+      const titleFromSlug = categoriesBySlug.get(category)
+      if (titleFromSlug) {
+        resolvedSlug = category
+        resolvedTitle = titleFromSlug
+      } else {
+        const slugFromTitle = categoriesByTitle.get(category)
+        if (slugFromTitle) {
+          resolvedSlug = slugFromTitle
+          const mappedTitle = categoriesBySlug.get(slugFromTitle)
+          if (mappedTitle) resolvedTitle = mappedTitle
+        }
+      }
     }
 
-    if (fm.category_slug) {
-      const match = categoryList.find((c) => c.slug === fm.category_slug)
-      if (!category && match) fm.category = match.title
-      if (category && category === fm.category_slug && match) fm.category = match.title
+    if (resolvedSlug) {
+      const titleFromSlug = categoriesBySlug.get(resolvedSlug)
+      if (titleFromSlug && (!resolvedTitle || resolvedTitle === resolvedSlug)) {
+        resolvedTitle = titleFromSlug
+      }
+      fm.category_slug = resolvedSlug
+    }
+
+    if (resolvedTitle) {
+      fm.category = resolvedTitle
     }
 
     return {

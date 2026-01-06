@@ -21,11 +21,21 @@ export type HomeConfig = {
 }
 
 const HOMEPAGE_PATH = path.join(process.cwd(), "content", "data", "homepage.json")
+const BLOCK_TYPES: HomeBlockType[] = [
+  "categorySpotlight",
+  "threeCards",
+  "horizontal",
+  "textList",
+  "videoStrip",
+]
 
-function normalizeBlock(b: Partial<HomeBlock>): HomeBlock {
+function normalizeBlock(b: Partial<HomeBlock>): HomeBlock | null {
   // required fields
-  const type = b.type as HomeBlockType
-  const title = String(b.title || "").trim()
+  const rawType = typeof b.type === "string" ? b.type.trim() : ""
+  if (!BLOCK_TYPES.includes(rawType as HomeBlockType)) return null
+
+  const title = typeof b.title === "string" ? b.title.trim() : ""
+  if (!title) return null
 
   // optional fields (only keep if valid)
   const slug = typeof b.slug === "string" && b.slug.trim() ? b.slug.trim() : undefined
@@ -34,7 +44,7 @@ function normalizeBlock(b: Partial<HomeBlock>): HomeBlock {
 
   // IMPORTANT: omit undefined keys (Next 16 strict serialization)
   return {
-    type,
+    type: rawType as HomeBlockType,
     title,
     ...(slug ? { slug } : {}),
     ...(href ? { href } : {}),
@@ -50,7 +60,7 @@ export function getHomepageConfig(): HomeConfig {
     const blocksRaw = Array.isArray(parsed?.blocks) ? parsed.blocks : []
     const blocks = blocksRaw
       .map((b) => normalizeBlock(b))
-      .filter((b) => b.type && b.title) // keep only valid
+      .filter((b): b is HomeBlock => Boolean(b))
 
     return { blocks }
   } catch {

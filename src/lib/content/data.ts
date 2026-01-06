@@ -129,11 +129,6 @@ export function getEditorPicks(allPosts: Post[] = []): EditorPick[] {
   return allPosts.slice(0, 5).map((p) => ({ title: p.fm.title, slug: p.fm.slug }))
 }
 
-export function getCategories(): CategoryItem[] {
-  const data = readJson<{ categories: CategoryItem[] }>("categories.json", { categories: [] })
-  return data.categories || []
-}
-
 /** ✅ Source of truth: PageCMS file content/data/siteContact.json */
 export function getSiteContact(): SiteContactConfig {
   return readJson<SiteContactConfig>("siteContact.json", { email: "", whatsapp: "", socials: {} })
@@ -175,6 +170,13 @@ function readJsonDir<T extends Record<string, unknown>>(dirName: string, fallbac
   } catch {
     return fallback
   }
+}
+
+export function getCategories(): CategoryItem[] {
+  const items = readJsonDir<CategoryItem>("categories", [])
+  return items.filter(
+    (item) => typeof item?.slug === "string" && item.slug.trim() && typeof item?.title === "string" && item.title.trim(),
+  )
 }
 
 export function getAuthors(): TaxonomyItem[] {
