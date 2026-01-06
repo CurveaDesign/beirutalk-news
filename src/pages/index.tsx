@@ -94,24 +94,23 @@ export async function getStaticProps() {
 
   const cfg = getHomepageConfig()
 
-  const tvPosts = posts.filter((p) => String(p.fm.type || "").toLowerCase() === "tv")
 
   const blocks = cfg.blocks.map((b) => {
     const limit = b.limit ?? 4
 
-    // ✅ videoStrip does NOT need slug, it uses TV posts
+    // ✅ videoStrip pulls TV posts (doesn't depend on category slug)
     if (b.type === "videoStrip") {
-      return { block: b, posts: tvPosts.slice(0, limit) }
+      const tv = posts
+        .filter((p) => String(p.fm.type || "").toLowerCase() === "tv")
+        .slice(0, limit)
+      return { block: b, posts: tv }
     }
 
-    // ✅ category blocks must have slug, otherwise render nothing
-    if (!b.slug) {
-      return { block: b, posts: [] as Post[] }
-    }
-
-    const list = pickCategoryPosts(posts, b.slug, limit)
+    const slug = (b.slug || "").trim()
+    const list = slug ? pickCategoryPosts(posts, slug, limit) : []
     return { block: b, posts: list }
   })
+
   return {
     props: {
       hero,
@@ -192,8 +191,8 @@ export default function HomePage({
 
               <LatestBlock posts={latest} />
 
-              {blocks.map(({ block, posts }, idx) => {
-                if (!posts?.length) return null
+              {blocks.map(({ block, posts: blockPosts }, idx) => {
+                if (!blockPosts?.length) return null
                 return (
                   <div key={`${block.type}:${block.slug || "no-slug"}:${idx}`}>
 
@@ -215,7 +214,7 @@ export default function HomePage({
                       </div>
                     </div>
 
-                    {renderBlock(block, posts)}
+                    {renderBlock(block, blockPosts)}
                   </div>
                 )
               })}

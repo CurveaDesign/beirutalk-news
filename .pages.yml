@@ -135,7 +135,7 @@ content:
     label: دبوس
     type: collection
     path: content/pins
-    filename: "{slug}.md"
+    filename: "{primary}.md"
     view:
       primary: slug
       fields: [title, date]
@@ -179,7 +179,7 @@ content:
     label: كواليس BeiruTalk
     type: collection
     path: content/backstage
-    filename: "{slug}.md"
+    filename: "{primary}.md"
     view:
       primary: slug
       fields: [title, date]

@@ -150,11 +150,12 @@ export default function TopSystem({
                       <Image
                         src="/assets/beirutalk-logo.png"
                         alt="BeiruTalk"
-                        width={240}
-                        height={56}
+                        width={320}
+                        height={80}
                         priority
-                        className="h-12 w-auto"
+                        className="h-14 sm:h-16 md:h-18 w-auto"
                       />
+
                     </Link>
 
                     <div className="hidden md:flex justify-end">
