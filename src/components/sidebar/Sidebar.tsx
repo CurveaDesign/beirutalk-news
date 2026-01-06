@@ -215,7 +215,6 @@ function SocialPill({
 }
 
 export default function Sidebar({
-  breaking = [],
   mostRead = [],
   pins = [],
   backstage = [],
@@ -271,6 +270,12 @@ export default function Sidebar({
           <ListPostRows posts={mostRead.slice(0, 6)} hrefOf={postHref} />
         </Card>
       ) : null}
+      {/* Pins */}
+      {pins.length ? (
+        <Card title="دبوس" kicker="مختصر">
+          <TextRows items={pins.slice(0, 6)} hrefOf={pinHref} />
+        </Card>
+      ) : null}
 
       {/* Ad #2 */}
       <Card title="" kicker="Advertisement" className="p-0">
@@ -279,12 +284,6 @@ export default function Sidebar({
         </div>
       </Card>
 
-      {/* Pins */}
-      {pins.length ? (
-        <Card title="دبوس" kicker="مختصر">
-          <TextRows items={pins.slice(0, 6)} hrefOf={pinHref} />
-        </Card>
-      ) : null}
 
       {/* Backstage */}
       {backstage.length ? (

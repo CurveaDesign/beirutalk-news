@@ -25,33 +25,71 @@ export default function HeroStack({ posts }: { posts?: Post[] }) {
   const downX = useRef<number | null>(null)
   const dx = useRef(0)
 
-  const next = useCallback(() => setActive((v) => (v + 1) % items.length), [items.length])
-  const prev = useCallback(() => setActive((v) => (v - 1 + items.length) % items.length), [items.length])
+  // auto-rotate
+  const timerRef = useRef<number | null>(null)
+  const pauseUntilRef = useRef<number>(0)
+
+  const pauseAuto = useCallback((ms: number = 8000) => {
+    pauseUntilRef.current = Date.now() + ms
+  }, [])
+
+  const next = useCallback(() => {
+    if (items.length <= 1) return
+    setActive((v) => (v + 1) % items.length)
+  }, [items.length])
+
+  const prev = useCallback(() => {
+    if (items.length <= 1) return
+    setActive((v) => (v - 1 + items.length) % items.length)
+  }, [items.length])
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (items.length <= 1) return
+      pauseAuto()
       if (e.key === "ArrowLeft") next()
       if (e.key === "ArrowRight") prev()
     }
     window.addEventListener("keydown", onKey)
     return () => window.removeEventListener("keydown", onKey)
-  }, [items.length, next, prev])
+  }, [items.length, next, prev, pauseAuto])
+
+  useEffect(() => {
+    if (items.length <= 1) return
+
+    const tick = () => {
+      const now = Date.now()
+      if (now >= pauseUntilRef.current) {
+        setActive((v) => (v + 1) % items.length)
+      }
+    }
+
+    timerRef.current = window.setInterval(tick, 6000)
+
+    return () => {
+      if (timerRef.current) window.clearInterval(timerRef.current)
+      timerRef.current = null
+    }
+  }, [items.length])
 
   const onPointerDown = (e: React.PointerEvent) => {
+    pauseAuto()
     downX.current = e.clientX
     dx.current = 0
   }
+
   const onPointerMove = (e: React.PointerEvent) => {
     if (downX.current == null) return
     dx.current = e.clientX - downX.current
   }
+
   const onPointerUp = () => {
     if (downX.current == null) return
     const delta = dx.current
     downX.current = null
     dx.current = 0
     if (Math.abs(delta) < 48) return
+    pauseAuto()
     if (delta < 0) next()
     else prev()
   }
@@ -93,7 +131,6 @@ export default function HeroStack({ posts }: { posts?: Post[] }) {
               aria-hidden={!isFront}
             >
               <article className="relative h-full overflow-hidden rounded-[32px] border border-black/10 bg-[color:var(--bt-gray-light)] shadow-[0_30px_80px_rgba(0,0,0,0.14)]">
-                {/* If image exists (or placeholder), we render it */}
                 <Image
                   src={img}
                   alt={p.fm.title}
@@ -112,32 +149,37 @@ export default function HeroStack({ posts }: { posts?: Post[] }) {
 
                 {/* content */}
                 <div className="relative z-10 flex h-full items-end p-4 md:p-10">
-
-                  <div className="w-full max-w-[58ch] rounded-[22px] bg-black/30 p-4 backdrop-blur-[6px] ring-1 ring-white/10 md:p-6 md:w-auto">
+                  <div className="w-full max-w-[58ch] rounded-[22px] bg-black/30 p-4 backdrop-blur-[6px] ring-1 ring-white/10 md:w-auto md:p-6">
                     <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-black/25 px-3 py-1.5 text-[11px] font-extrabold text-white/80">
                       <span className="h-2 w-2 rounded-full bg-[color:var(--bt-primary)]" />
                       أهم القصص
                     </div>
 
                     <h1 className="mt-5 text-[28px] font-extrabold leading-[1.12] line-clamp-2 tracking-tight text-white md:text-[54px] [text-shadow:0_10px_28px_rgba(0,0,0,0.45)]">
-                      <Link href={href} className="hover:underline underline-offset-4" tabIndex={isFront ? 0 : -1}>
+                      <Link
+                        href={href}
+                        className="hover:underline underline-offset-4"
+                        tabIndex={isFront ? 0 : -1}
+                        onClick={() => pauseAuto()}
+                      >
                         {p.fm.title}
                       </Link>
                     </h1>
 
-{p.fm.description ? (
-  <div className="hidden md:block">
-    <p className="bt-clamp-2 mt-3 max-w-[60ch] text-sm leading-relaxed text-white/80 md:text-[15px]">
-      {p.fm.description}
-    </p>
-  </div>
-) : null}
+                    {p.fm.description ? (
+                      <div className="hidden md:block">
+                        <p className="bt-clamp-2 mt-3 max-w-[60ch] text-sm leading-relaxed text-white/80 md:text-[15px]">
+                          {p.fm.description}
+                        </p>
+                      </div>
+                    ) : null}
 
                     {isFront ? (
                       <div className="mt-7 flex flex-wrap items-center gap-3">
                         <Link
                           href={href}
                           className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/95 px-5 py-3 text-sm font-extrabold text-black/80 transition hover:-translate-y-[1px] hover:bg-white"
+                          onClick={() => pauseAuto()}
                         >
                           اقرأ
                           <span className="text-black/35">‹</span>
@@ -147,7 +189,10 @@ export default function HeroStack({ posts }: { posts?: Post[] }) {
                           <div className="flex items-center gap-2">
                             <button
                               type="button"
-                              onClick={prev}
+                              onClick={() => {
+                                pauseAuto()
+                                prev()
+                              }}
                               className="rounded-full border border-white/15 bg-black/20 px-3 py-2 text-sm font-extrabold text-white/65 transition hover:-translate-y-[1px]"
                               aria-label="السابق"
                             >
@@ -155,7 +200,10 @@ export default function HeroStack({ posts }: { posts?: Post[] }) {
                             </button>
                             <button
                               type="button"
-                              onClick={next}
+                              onClick={() => {
+                                pauseAuto()
+                                next()
+                              }}
                               className="rounded-full border border-white/15 bg-black/20 px-3 py-2 text-sm font-extrabold text-white/65 transition hover:-translate-y-[1px]"
                               aria-label="التالي"
                             >
@@ -176,7 +224,6 @@ export default function HeroStack({ posts }: { posts?: Post[] }) {
                             </div>
                           </div>
                         </div>
-
                       </div>
                     ) : null}
                   </div>
@@ -186,7 +233,6 @@ export default function HeroStack({ posts }: { posts?: Post[] }) {
           )
         })}
       </div>
-
     </section>
   )
 }

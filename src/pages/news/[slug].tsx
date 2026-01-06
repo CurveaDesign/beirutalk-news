@@ -1,6 +1,4 @@
 import type { GetStaticPaths, GetStaticProps } from "next"
-import Link from "next/link"
-import Image from "next/image"
 
 import SiteLayout from "@/components/layout/SiteLayout"
 import ArticleHero from "@/components/article/ArticleHero"
@@ -145,13 +143,11 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
 export default function NewsArticlePage({
   post,
   latest,
-  related,
   mostRead,
   contact,
   ads,
   breaking,
   authorsMap,
-  tagsMap,
   menus,
 }: {
   post: Post

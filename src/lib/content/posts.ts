@@ -35,6 +35,18 @@ function parseMarkdownDir(dir: string): Post[] {
     const parsed = matter(raw)
     const fm = parsed.data as PostFrontmatter
 
+    // gray-matter (via js-yaml) can parse unquoted YAML dates into Date objects.
+    // Next.js (getStaticProps) requires JSON-serializable props, so normalize to strings.
+    const rawDate = (fm as unknown as { date?: unknown }).date
+    if (rawDate instanceof Date) {
+      fm.date = rawDate.toISOString()
+    } else if (typeof rawDate === "string") {
+      fm.date = rawDate.trim()
+    } else {
+      // Keep a stable fallback to avoid crashes in sort/new Date(...)
+      fm.date = ""
+    }
+
     // fallback slug from filename
     if (!fm.slug) fm.slug = file.replace(/\.md$/, "")
 
