@@ -13,27 +13,27 @@
       "limit": 3
     },
     {
-      "type": "textList",
-      "title": "إنتخابات نيابية",
-      "slug": "analysis",
-      "limit": 3
-    },
-    {
       "type": "horizontal",
       "title": "فن وثقافة",
-      "slug": "economy",
+      "slug": "art-culture",
       "limit": 4
+    },
+    {
+      "type": "textList",
+      "title": "إنتخابات نيابية",
+      "slug": "elections",
+      "limit": 3
     },
     {
       "type": "threeCards",
       "title": "صحة",
-      "slug": "editorial"
+      "slug": "health"
     },
     {
-  "type": "videoStrip",
-  "title": "BeiruTalk TV",
-  "href": "/videos",
-  "limit": 3
-}
+      "type": "videoStrip",
+      "title": "BeiruTalk TV",
+      "href": "/videos",
+      "limit": 3
+    }
   ]
 }
